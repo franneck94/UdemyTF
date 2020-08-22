@@ -1,4 +1,0 @@
-{
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\tensorflow\\python.exe",
-    "python.linting.pylintArgs": ["--rcfile ${workspacedir}/.pylintrc"]
-}
