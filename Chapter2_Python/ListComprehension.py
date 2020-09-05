@@ -15,12 +15,12 @@ print(my_list3)
 
 # Multi-dim List
 # Matrix (3 rows, 2 columns)
-M = [[1, 2], 
+M = [[1, 2],
      [3, 4],
      [5, 6]]
 print(M)
 
 NUM_ROWS = 2
 NUM_COLS = 3
-M2 = [[i+j for j in range(NUM_COLS)] for i in range(NUM_ROWS)]
+M2 = [[i + j for j in range(NUM_COLS)] for i in range(NUM_ROWS)]
 print(M2)

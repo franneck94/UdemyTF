@@ -25,4 +25,4 @@ print("\n")
 präferenzen = ["Mathe", "Deutsch", "Englisch", "Reli", "Sport", "Kunst", "Informatik", "Geschichte"]
 
 for index, fach in enumerate(präferenzen):
-    print("Das Fach: ", fach, " ist an Stelle: ", index+1)
+    print("Das Fach: ", fach, " ist an Stelle: ", index + 1)

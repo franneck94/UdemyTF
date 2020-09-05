@@ -14,7 +14,7 @@ x1 = x[0]
 x2 = x[1]
 
 plt.scatter(x1, x2, color=y)
-#plt.show()
+# plt.show()
 
 w = [1, 3, 6, 9, 7, 4]
 print(w)

@@ -6,7 +6,7 @@ def list_max(my_list):
             result = my_list[i]
 
     return result
-    
+
 
 l1 = [-2, 1, 2, -10, 22, -10]
 l1_max = list_max(l1)
