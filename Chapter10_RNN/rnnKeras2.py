@@ -7,15 +7,18 @@ np.random.seed(0)
 import tensorflow as tf
 tf.random.set_seed(0)
 
-from tensorflow.keras.models import *
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.layers import *
+from tensorflow.keras.models import *
 
-def sigmoid(x):
+
+def sigmoid_fn(x):
     pass
 
-def tanh(x):
+
+def tanh_fn(x):
     pass
+
 
 class SimpleRNNInference:
     def __init__(self, rnn_layer, return_sequences=False):
@@ -32,6 +35,7 @@ class SimpleRNNInference:
     def forward_step(self):
         pass
 
+
 # data set shape = (num_samples, num_timesteps, num_features)
 # input shape = (num_timesteps, num_features)
 # If return_sequences == True:
@@ -44,18 +48,18 @@ return_sequences = False
 
 # num_features = 2
 # units = 4
-# h_t shape = (4),        (units)       
+# h_t shape = (4),        (units)
 # W shape   = (2, 4),     (num_features, units)
 # U shape   = (4, 4),     (units, units)
 # b shape   = (4),        (units)
-# 
+#
 # matmul(x, W)      (2)*(2,4) => (4)
 # matmul(h, U)      (4)*(4,4) => (4)
-# intern + b        (4)+(4)   => (4) 
+# intern + b        (4)+(4)   => (4)
 model = Sequential()
 model.add(SimpleRNN(units=units, return_sequences=return_sequences, input_shape=x.shape[1:]))
 model.compile(loss="mse", optimizer="Adam")
-#model.summary()
+# model.summary()
 
 rnn = SimpleRNNInference(rnn_layer=model.layers[0], return_sequences=return_sequences)
 output_rnn_own = rnn(x[0]) # 10.5

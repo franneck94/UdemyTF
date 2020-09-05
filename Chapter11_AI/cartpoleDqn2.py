@@ -1,16 +1,10 @@
-import os
-import time
-
-import numpy as np
-
-import tensorflow as tf
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+
 
 class DQN(Model):
     def __init__(self, state_shape, num_actions, lr):

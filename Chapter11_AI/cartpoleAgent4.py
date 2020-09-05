@@ -1,15 +1,12 @@
-import os
-import time
-import random
 import collections
+import random
 
 import gym
 import numpy as np
 
-import tensorflow as tf
-
 from cartpoleDqn4 import *
- 
+
+
 class Agent:
     def __init__(self, env):
         # DQN Env Variables
@@ -64,7 +61,7 @@ class Agent:
                         best_total_reward = total_reward
                         self.model.save_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/dqn.h5")
 
-                    print("Episode: ", episode+1, " Total Reward: ", total_reward, " Epsilon:", self.epsilon)
+                    print("Episode: ", episode + 1, " Total Reward: ", total_reward, " Epsilon:", self.epsilon)
                     break
 
     def remember(self, state, action, reward, next_state, done):
@@ -109,6 +106,7 @@ class Agent:
                     self.env.render()
                 if done:
                     break
+
 
 if __name__ == "__main__":
     env = gym.make("CartPole-v1")

@@ -7,15 +7,18 @@ np.random.seed(0)
 import tensorflow as tf
 tf.random.set_seed(0)
 
-from tensorflow.keras.models import *
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.layers import *
+from tensorflow.keras.models import *
 
-def sigmoid(x):
+
+def sigmoid_fn(x):
     return 1.0 / (1.0 + np.exp(-x))
 
-def tanh(x):
-    return np.tanh(x)
+
+def tanh_fn(x):
+    return np.tanh_fn(x)
+
 
 class LSTMInference:
     def __init__(self, lstm_layer, return_sequences=False):
@@ -56,9 +59,9 @@ class LSTMInference:
 
     def forward_step(self, x_t, h_t):
         h_t = np.matmul(h_t, self.U) + np.matmul(x_t, self.W) + self.b
-        h_t = tanh(h_t) # (-1, 1)
+        h_t = tanh_fn(h_t) # (-1, 1)
         return h_t
-        
+
 
 # data set shape = (num_samples, num_timesteps, num_features)
 # input shape = (num_timesteps, num_features)
@@ -72,18 +75,18 @@ return_sequences = True
 
 # num_features = 2
 # units = 4
-# h_t shape = (4),        (units)       
+# h_t shape = (4),        (units)
 # W shape   = (2, 4),     (num_features, units)
 # U shape   = (4, 4),     (units, units)
 # b shape   = (4),        (units)
-# 
+#
 # matmul(x, W)      (1, 2)*(2,4) => (4)
 # matmul(h, U)      (1, 4)*(4,4) => (4)
-# intern + b        (4)+(4)   => (4) 
+# intern + b        (4)+(4)   => (4)
 model = Sequential()
 model.add(LSTM(units=units, return_sequences=return_sequences, input_shape=x.shape[1:]))
 model.compile(loss="mse", optimizer="Adam")
-#model.summary()
+# model.summary()
 
 rnn = LSTMInference(lstm_layer=model.layers[0], return_sequences=return_sequences)
 output_rnn_own = rnn(x[0]) # 10.5

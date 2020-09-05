@@ -7,25 +7,29 @@ np.random.seed(0)
 import tensorflow as tf
 tf.random.set_seed(0)
 
-from tensorflow.keras.models import *
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.layers import *
+from tensorflow.keras.models import *
 
-def sigmoid(x):
+
+def sigmoid_fn(x):
     pass
 
-def tanh(x):
+
+def tanh_fn(x):
     pass
+
 
 class SimpleRNNInference:
-    def __init__():
+    def __init__(self):
         pass
 
-    def __call__():
+    def __call__(self):
         pass
 
-    def forward_step():
+    def forward_step(self):
         pass
+
 
 # data set shape = (num_samples, num_timesteps, num_features)
 # input shape = (num_timesteps, num_features)

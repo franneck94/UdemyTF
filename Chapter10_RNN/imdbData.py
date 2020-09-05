@@ -1,8 +1,8 @@
 import numpy as np
-
 from tensorflow.keras.datasets import imdb
-from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing import sequence
+from tensorflow.keras.utils import to_categorical
+
 
 class IMDBData:
     def __init__(self, num_words, skip_top, maxlen):
@@ -13,7 +13,7 @@ class IMDBData:
         self.maxlen = maxlen
         # Word index: Word -> Index
         self.word_index = imdb.get_word_index()
-        self.word_index = {key: (val+3) for key,val in self.word_index.items()}
+        self.word_index = {key: (val + 3) for key, val in self.word_index.items()}
         self.word_index["<PAD>"] = 0
         self.word_index["<START>"] = 1
         self.word_index["<UNK>"] = 2
@@ -25,6 +25,7 @@ class IMDBData:
             skip_top=self.skip_top)
         print(self.x_train[0])
         print(self.y_train[0])
+
 
 if __name__ == "__main__":
     num_words = 10000

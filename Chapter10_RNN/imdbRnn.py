@@ -1,15 +1,10 @@
-import os
-
-import numpy as np
-
-import tensorflow as tf
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
- 
+
 from imdbData2 import *
 
 # Load MNIST dataset
@@ -27,7 +22,7 @@ num_classes = imdb_data.num_classes
 batch_size = 256
 epochs = 10
 
-# Define the LSTM
+
 def create_model():
     input_text = Input(shape=x_train.shape[1:])
     x = SimpleRNN(units=100)(input_text)
@@ -39,28 +34,29 @@ def create_model():
     optimizer = Adam(
         lr=1e-3)
     model = Model(
-        inputs=input_text, 
+        inputs=input_text,
         outputs=output_pred)
     model.compile(
-        loss="binary_crossentropy", 
-        optimizer=optimizer, 
+        loss="binary_crossentropy",
+        optimizer=optimizer,
         metrics=["accuracy"])
     model.summary()
     return model
 
+
 model = create_model()
 model.fit(
-    x=x_train, 
-    y=y_train, 
-    verbose=1, 
-    batch_size=batch_size, 
-    epochs=epochs, 
+    x=x_train,
+    y=y_train,
+    verbose=1,
+    batch_size=batch_size,
+    epochs=epochs,
     validation_data=(x_test, y_test))
 
 # Test the DNN
 score = model.evaluate(
-    x_test, 
-    y_test, 
-    verbose=0, 
+    x_test,
+    y_test,
+    verbose=0,
     batch_size=batch_size)
 print("Test performance: ", score)

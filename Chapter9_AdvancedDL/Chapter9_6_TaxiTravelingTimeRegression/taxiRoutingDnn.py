@@ -21,6 +21,7 @@ x_test, y_test = taxi_data.x_test, taxi_data.y_test
 num_features = taxi_data.num_features
 num_targets = taxi_data.num_targets
 
+
 def r_squared(y_true, y_pred):
     numerator = tf.math.reduce_sum(tf.math.square(tf.math.subtract(y_true, y_pred)))
     y_true_mean = tf.math.reduce_mean(y_true)
@@ -28,6 +29,7 @@ def r_squared(y_true, y_pred):
     r2 = tf.math.subtract(1.0, tf.math.divide(numerator, denominator))
     r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
     return r2_clipped
+
 
 # Model params
 lr = 0.001
@@ -50,8 +52,8 @@ model.compile(
     optimizer=optimizer,
     metrics=[r_squared])
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=(x_test, y_test))

@@ -13,8 +13,8 @@ def model_fn():
         weights='imagenet',
         input_shape=IMG_SHAPE,
         include_top=False,
-        classes=NUM_CLASSES) 
-    base_model.trainable = False    
+        classes=NUM_CLASSES)
+    base_model.trainable = False
 
     inputs = tf.keras.Input(shape=IMG_SHAPE)
     x = base_model(inputs, training=False)

@@ -1,10 +1,6 @@
-import os
-import time
-
 import gym
 import numpy as np
 
-import tensorflow as tf
 
 class Agent:
     def __init__(self, env):
@@ -36,9 +32,10 @@ class Agent:
                 if done:
                     break
 
+
 if __name__ == "__main__":
     env = gym.make("CartPole-v1")
     agent = Agent(env)
-    #agent.train()
+    # agent.train()
     input("Play?")
     agent.play(num_episodes=100, render=True)

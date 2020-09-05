@@ -1,4 +1,4 @@
-# C Komplettkurs: Praxisnahe Programmierung für C Einsteiger
+# Deep Learning, Neuronale Netze und TensorFlow 2 in Python
 
 Dies ist der Code zu meinem Udemy Kurs:
-*C Komplettkurs: Praxisnahe Programmierung für C Einsteiger* von Jan Schaffranek.
+*Deep Learning, Neuronale Netze und TensorFlow 2 in Python* von Jan Schaffranek.
