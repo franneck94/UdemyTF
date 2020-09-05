@@ -1,13 +1,8 @@
-import os
-
 import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 
-from plotting import *
 
 # Dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -37,6 +32,7 @@ hidden_layer_size = 50
 nodes = [num_features, hidden_layer_size, num_classes] # input, hidden, output
 epochs = 10
 
+
 class Model:
     def __init__(self):
         # Weights (Matrices)
@@ -52,10 +48,10 @@ class Model:
         self.loss_fn = tf.losses.CategoricalCrossentropy()
         self.metric_fn = tf.metrics.CategoricalAccuracy()
         self.current_loss_val = None
-        
+
     def get_variables(self):
         return {var.name: var.numpy() for var in self.variables}
-        
+
     def predict(self, x):
         input_layer = x
         hidden_layer = tf.math.add(tf.linalg.matmul(input_layer, self.W1), self.b1)
@@ -63,42 +59,43 @@ class Model:
         output_layer = tf.math.add(tf.linalg.matmul(hidden_layer_act, self.W2), self.b2)
         output_layer_act = tf.nn.softmax(output_layer)
         return output_layer_act
-    
+
     def loss(self, y_true, y_pred):
         loss_val = self.loss_fn(y_true, y_pred)
         self.current_loss_val = loss_val.numpy()
         return loss_val
-    
+
     def update_variables(self, x_train, y_train):
         with tf.GradientTape() as tape:
             y_pred = self.predict(x_train)
             loss = self.loss(y_train, y_pred)
         gradients = tape.gradient(loss, self.variables)
-        self.optimizer.apply_gradients(zip(gradients, self.variables)) 
+        self.optimizer.apply_gradients(zip(gradients, self.variables))
         return loss
-    
+
     def compute_metrics(self, x, y):
         y_pred = self.predict(x)
         self.metric_fn.update_state(y, y_pred)
         metric_val = self.metric_fn.result()
         self.metric_fn.reset_states()
         return metric_val
-    
+
     def fit(self, x_train, y_train, epochs=10):
-        #print("Weights at the start: ", self.get_variables())
+        # print("Weights at the start: ", self.get_variables())
         for epoch in range(epochs):
             train_loss = self.update_variables(x_train, y_train).numpy()
             train_metric = self.compute_metrics(x_train, y_train).numpy()
-            print("Epoch: ", epoch+1, " of ", epochs,
-                    " - Train Loss: ", round(train_loss, 4),
-                    " - Train Metric: ", round(train_metric, 4))
-        #print("Weights at the end: ", self.get_variables())
-        
+            print("Epoch: ", epoch + 1, " of ", epochs,
+                  " - Train Loss: ", round(train_loss, 4),
+                  " - Train Metric: ", round(train_metric, 4))
+        # print("Weights at the end: ", self.get_variables())
+
     def evaluate(self, x, y):
         loss = self.loss(self.predict(x), y).numpy()
         metric = self.compute_metrics(x, y).numpy()
         print("Loss: ", round(loss, 4), " Metric: ", round(metric, 4))
-             
+
+
 model = Model()
 model.fit(x_train, y_train, epochs=epochs)
 model.evaluate(x_test, y_test)

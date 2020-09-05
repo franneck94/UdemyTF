@@ -1,11 +1,11 @@
 import io
 import os
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
 from sklearn.metrics import confusion_matrix
 
-import tensorflow as tf
 
 def display_digit(image, label=None, pred_label=None):
     """Display the Digit from the image.
@@ -20,6 +20,7 @@ def display_digit(image, label=None, pred_label=None):
         plt.figure_title('Label: %d, Pred: %d' % (label, pred_label))
     plt.imshow(image, cmap=plt.get_cmap('gray_r'))
     plt.show()
+
 
 def display_digit_and_predictions(image, label, pred, pred_one_hot):
     if image.shape == (784,):
@@ -37,6 +38,7 @@ def display_digit_and_predictions(image, label, pred, pred_one_hot):
     plt.figure_title('Label: %d, Pred: %d' % (label, pred))
     plt.show()
 
+
 def display_convergence_error(train_losses, valid_losses):
     """Display the convergence of the errors.
     """
@@ -51,6 +53,7 @@ def display_convergence_error(train_losses, valid_losses):
     plt.ylabel('Loss')
     plt.show()
 
+
 def display_convergence_acc(train_accs, valid_accs):
     """Display the convergence of the accs
     """
@@ -64,6 +67,7 @@ def display_convergence_acc(train_accs, valid_accs):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.show()
+
 
 def plot_confusion_matrix(y_pred, y_true, classes_list):
     """Compute and create a plt.figure for the confusion matrix.
@@ -90,6 +94,7 @@ def plot_confusion_matrix(y_pred, y_true, classes_list):
     plt.xlabel('Predicted label')
     return fig
 
+
 def plot_to_image(fig):
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
@@ -98,6 +103,7 @@ def plot_to_image(fig):
     image = tf.image.decode_png(buffer.getvalue(), channels=4)
     image = tf.expand_dims(image, 0)
     return image
+
 
 class ImageCallback(tf.keras.callbacks.Callback):
     def __init__(self, model, x_test, y_test, log_dir="./", classes_list=None, figure_fn=None, figure_title=None):
@@ -116,7 +122,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         else:
             self.figure_title = figure_title
 
-    def on_epoch_end(self, epoch, logs):
+    def on_epoch_end(self, epoch, logs=None):
         y_pred_prob = self.model.predict(self.x_test)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
@@ -126,13 +132,15 @@ class ImageCallback(tf.keras.callbacks.Callback):
             tf_image = plot_to_image(fig)
             figure_title_curr_epoch = self.figure_title + str(epoch)
             with self.file_writer_images.as_default():
-                tf.summary.image(figure_title_curr_epoch, tf_image, step=epoch)   
+                tf.summary.image(figure_title_curr_epoch, tf_image, step=epoch)
+
 
 class ConfusionMatrix(ImageCallback):
     def __init__(self, model, x_test, y_test, classes_list, log_dir):
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
-        super().__init__(model, x_test, y_test, log_dir=log_dir, classes_list=classes_list, figure_fn=self.figure_fn, figure_title=self.figure_title)
+        super().__init__(model, x_test, y_test, log_dir=log_dir, classes_list=classes_list,
+                         figure_fn=self.figure_fn, figure_title=self.figure_title)
 
-    def on_epoch_end(self, epoch, logs):
+    def on_epoch_end(self, epoch, logs=None):
         super().on_epoch_end(epoch, logs)

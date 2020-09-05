@@ -1,23 +1,22 @@
 import os
 
-import numpy as np
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-
 import cv2
-from skimage import transform
 import matplotlib.pyplot as plt
-
-from tensorflow.keras.utils import to_categorical
+import numpy as np
+from skimage import transform
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
+
 
 def extract_cats_vs_dogs():
     pass
 
+
 def load_cats_vs_dogs():
     pass
+
 
 class DOGSCATS:
     def __init__(self):
@@ -107,6 +106,7 @@ class DOGSCATS:
             (self.train_size, self.width, self.height, self.depth))
         self.x_test = self.x_test.reshape(
             (self.test_size, self.width, self.height, self.depth))
+
 
 if __name__ == "__main__":
     pass

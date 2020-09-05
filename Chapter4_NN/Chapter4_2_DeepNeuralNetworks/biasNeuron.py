@@ -24,14 +24,14 @@ plt.ylabel('step(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 1.1)
 plt.legend(['Verschoben -2', 'Normal', 'Verschoben +2'])
-#plt.savefig(os.path.join(IMG_PATH, "step2.png"))
+# plt.savefig(os.path.join(IMG_PATH, "step2.png"))
 plt.show()
 
 # Tanh
 # f(a) = tanh(a) = 2 / (1+e^(-2x)) - 1
-data_neg = [2 / (1 + np.exp(-2 * (a - THRESHOLD) )) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
-data = [2 / (1 + np.exp(-2 * a )) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
-data_pos = [2 / (1 + np.exp(-2 * (a + THRESHOLD) )) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
+data_neg = [2 / (1 + np.exp(-2 * (a - THRESHOLD))) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
+data = [2 / (1 + np.exp(-2 * a)) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
+data_pos = [2 / (1 + np.exp(-2 * (a + THRESHOLD))) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
 
 plt.plot(np.linspace(start=-10, stop=10, num=1000), data_neg, color='blue')
 plt.plot(np.linspace(start=-10, stop=10, num=1000), data, color='black')
@@ -41,7 +41,7 @@ plt.ylabel('tanh(a)')
 plt.xlim(-12, 12)
 plt.ylim(-1.1, 1.1)
 plt.legend(['Verschoben -2', 'Normal', 'Verschoben +2'])
-#plt.savefig(os.path.join(IMG_PATH, "tanh.png"))
+# plt.savefig(os.path.join(IMG_PATH, "tanh.png"))
 plt.show()
 
 # SIGMOID
@@ -58,7 +58,7 @@ plt.ylabel('sigmoid(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 1.1)
 plt.legend(['Verschoben -2', 'Normal', 'Verschoben +2'])
-#plt.savefig(os.path.join(IMG_PATH, "sigmoid.png"))
+# plt.savefig(os.path.join(IMG_PATH, "sigmoid.png"))
 plt.show()
 
 # RELU = Rectified Linear Unit
@@ -76,5 +76,5 @@ plt.ylabel('relu(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 12.0)
 plt.legend(['Verschoben -2', 'Normal', 'Verschoben +2'])
-#plt.savefig(os.path.join(IMG_PATH, "relu2.png"))
+# plt.savefig(os.path.join(IMG_PATH, "relu2.png"))
 plt.show()

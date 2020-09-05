@@ -1,22 +1,19 @@
 import os
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-
 import cv2
+import matplotlib.pyplot as plt
+import numpy as np
 from skimage import transform
-
-from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
 
 FILE_DIR = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats")
 IMG_WIDTH = 64
 IMG_HEIGHT = 64
 IMG_DEPTH = 3
+
 
 def extract_cats_vs_dogs():
     cats_dir = os.path.join(FILE_DIR, "cat")
@@ -35,7 +32,7 @@ def extract_cats_vs_dogs():
     num_cats = len(os.listdir(cats_dir))
     num_dogs = len(os.listdir(dogs_dir))
     num_images = num_cats + num_dogs
-    
+
     x = np.zeros(shape=(num_images, IMG_WIDTH, IMG_HEIGHT, IMG_DEPTH), dtype=np.float32)
     y = np.zeros(shape=(num_images), dtype=np.int8)
 
@@ -73,8 +70,10 @@ def extract_cats_vs_dogs():
     np.save(os.path.join(FILE_DIR, "x.npy"), x)
     np.save(os.path.join(FILE_DIR, "y.npy"), y)
 
+
 def load_cats_vs_dogs():
     pass
+
 
 class DOGSCATS:
     def __init__(self):
@@ -165,6 +164,7 @@ class DOGSCATS:
             (self.train_size, self.width, self.height, self.depth))
         self.x_test = self.x_test.reshape(
             (self.test_size, self.width, self.height, self.depth))
+
 
 if __name__ == "__main__":
     extract_cats_vs_dogs()

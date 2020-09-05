@@ -4,8 +4,10 @@ import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
+
 def f(x):
     return 2.0 * x + 5.0
+
 
 def classification_data():
     x1 = np.random.multivariate_normal(mean=[5.0, 0.0], cov=[[5, 0], [0, 1]], size=15)
@@ -15,6 +17,7 @@ def classification_data():
     x = np.concatenate((x1, x2))
     y = np.concatenate((y1, y2))
     return x, y
+
 
 def regression_data():
     x = np.random.uniform(low=-10.0, high=10.0, size=100)

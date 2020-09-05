@@ -1,16 +1,14 @@
 import os
-import time
 
 import numpy as np
-
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.utils import to_categorical
 
 from plotting import *
 
@@ -84,14 +82,14 @@ model.compile(
     metrics=["accuracy"])
 
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=(x_test, y_test))
 
 score = model.evaluate(
-    x_test, 
-    y_test, 
+    x_test,
+    y_test,
     verbose=0)
 print("Score: ", score)

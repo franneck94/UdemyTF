@@ -1,15 +1,14 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-
+import numpy as np
 from sklearn.metrics import mean_squared_error
-
-from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
+from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
+
 
 def f(x):
     return x**2 + x + 10
+
 
 x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
 y = f(x)
@@ -34,7 +33,7 @@ for wi in w:
     loss = mean_squared_error(y, new_pred)
     losses.append(loss)
 
-fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12,6))
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 6))
 ax1.grid(True)
 ax2.grid(True)
 ax1.plot(x, y, color="blue")

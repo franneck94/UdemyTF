@@ -1,17 +1,18 @@
 import os
 
+import numpy as np
 from sklearn.model_selection import cross_val_score
-
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-from plotting import *
 from mnistDataValidation import *
+from plotting import *
+
 
 mnist = MNIST()
 mnist.data_augmentation(augment_size=5000)
@@ -39,6 +40,7 @@ lr = 0.001
 optimizer = Adam(lr=lr)
 epochs = 3
 batch_size = 128
+
 
 def model_fn():
     # Define the DNN
@@ -77,6 +79,7 @@ def model_fn():
         metrics=["accuracy"])
     return model
 
+
 keras_clf = KerasClassifier(
     build_fn=model_fn,
     epochs=epochs,
@@ -91,4 +94,4 @@ scores = cross_val_score(
     n_jobs=1)
 
 print("Score list: ", scores)
-print("Mean Acc: %0.6f (+/- %0.6f)" % (np.mean(scores), np.std(scores)*2))
+print("Mean Acc: %0.6f (+/- %0.6f)" % (np.mean(scores), np.std(scores) * 2))

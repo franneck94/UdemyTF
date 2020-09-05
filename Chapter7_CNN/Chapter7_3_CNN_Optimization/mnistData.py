@@ -1,8 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
+
 
 class MNIST:
     def __init__(self):
@@ -36,12 +35,12 @@ class MNIST:
         # self.x_train = (self.x_train - mean) / std
         # self.x_test = (self.x_test - mean) / std
 
-
     def get_train_set(self):
         return self.x_train, self.y_train
 
     def get_test_set(self):
         return self.x_test, self.y_test
+
 
 if __name__ == "__main__":
     mnist = MNIST()

@@ -6,18 +6,18 @@ random.seed(0)
 import numpy as np
 np.random.seed(0)
 
-from sklearn.model_selection import RandomizedSearchCV, ParameterSampler
-
-from tensorflow.keras.layers import *
+from sklearn.model_selection import RandomizedSearchCV
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-from plotting import *
 from mnistDataValidation import *
+from plotting import *
+
 
 mnist = MNIST()
 mnist.data_augmentation(augment_size=5000)
@@ -36,6 +36,7 @@ log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKu
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 model_log_dir = os.path.join(log_dir, "modelMinMaxFinal")
+
 
 def model_fn(optimizer, learning_rate):
     # Define the DNN
@@ -74,6 +75,7 @@ def model_fn(optimizer, learning_rate):
         optimizer=opt,
         metrics=["accuracy"])
     return model
+
 
 epochs = 3
 batch_size = 128

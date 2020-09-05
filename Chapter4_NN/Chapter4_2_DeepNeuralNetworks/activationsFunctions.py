@@ -14,7 +14,7 @@ plt.xlabel('a')
 plt.ylabel('step(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 1.1)
-#plt.savefig(os.path.join(IMG_PATH, "step.png"))
+# plt.savefig(os.path.join(IMG_PATH, "step.png"))
 plt.show()
 
 # Tanh
@@ -26,7 +26,7 @@ plt.xlabel('a')
 plt.ylabel('tanh(a)')
 plt.xlim(-12, 12)
 plt.ylim(-1.1, 1.1)
-#plt.savefig(os.path.join(IMG_PATH, "tanh.png"))
+# plt.savefig(os.path.join(IMG_PATH, "tanh.png"))
 plt.show()
 
 # SIGMOID
@@ -38,7 +38,7 @@ plt.xlabel('a')
 plt.ylabel('sigmoid(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 1.1)
-#plt.savefig(os.path.join(IMG_PATH, "sigmoid.png"))
+# plt.savefig(os.path.join(IMG_PATH, "sigmoid.png"))
 plt.show()
 
 # RELU = Rectified Linear Unit
@@ -50,5 +50,5 @@ plt.xlabel('a')
 plt.ylabel('relu(a)')
 plt.xlim(-12, 12)
 plt.ylim(-0.1, 10)
-#plt.savefig(os.path.join(IMG_PATH, "relu.png"))
+# plt.savefig(os.path.join(IMG_PATH, "relu.png"))
 plt.show()

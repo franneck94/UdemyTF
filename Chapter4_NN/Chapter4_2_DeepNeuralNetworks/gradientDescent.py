@@ -10,7 +10,7 @@ y_start = f(x0, x1)
 print("Global minimum: ", 1, 1)
 print("X_start = ", x_start)
 print("Y_start = ", y_start)
-# plot_rosenbrock(x_start)
+plot_rosenbrock(x_start)
 
 learning_rate = 0.005 # [0.001, 0.00001]
 num_iterations = 1000
@@ -29,4 +29,4 @@ x_end = (x0, x1)
 y_end = f(x0, x1)
 print("X_end = ", x_end)
 print("Y_end = ", y_end)
-# plot_rosenbrock(x_start=x_start, gradient_steps=gradient_steps)
+plot_rosenbrock(x_start=x_start, gradient_steps=gradient_steps)

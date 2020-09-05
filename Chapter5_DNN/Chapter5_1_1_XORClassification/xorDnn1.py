@@ -1,15 +1,13 @@
-import os
-
 import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
+
 
 # XOR dataset
 def get_dataset():
-    x = np.array([[0,0], [1,0], [0,1], [1,1]])
-    y = np.array([0,       1,     1,     0])
+    x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
+    y = np.array([0, 1, 1, 0])
     return x, y
+
 
 x, y = get_dataset()
 x_train, y_train = x, y
@@ -26,6 +24,7 @@ train_size = x_train.shape[0]
 test_size = x_test.shape[0]
 epochs = 10
 
+
 class Model:
     def __init__(self):
         # Create weights and biases
@@ -40,5 +39,6 @@ class Model:
         # Bias vector from the hidden layer to the output layer
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]))
         self.variables = [self.W1, self.W2, self.b1, self.b2]
-        
+
+
 model = Model()

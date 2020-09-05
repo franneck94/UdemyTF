@@ -1,11 +1,8 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
+
 
 class MNIST:
     def __init__(self):
@@ -30,6 +27,7 @@ class MNIST:
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
         # Preprocess the data
+        # self.scaler = MinMaxScaler()
         self.scaler = StandardScaler()
         self.scaler.fit(self.x_train.reshape(self.train_size, 784))
         self.x_train = self.scaler.transform(self.x_train.reshape(self.train_size, 784))
@@ -42,6 +40,7 @@ class MNIST:
 
     def get_test_set(self):
         return self.x_test, self.y_test
+
 
 if __name__ == "__main__":
     mnist = MNIST()

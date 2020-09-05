@@ -1,9 +1,5 @@
-import os
-
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
 from sklearn.datasets import load_boston
 
 dataset = load_boston()
@@ -17,5 +13,5 @@ print(df.head(n=10))
 print(df.info())
 print(df.describe())
 
-df.hist(bins=30, figsize=(15,15))
+df.hist(bins=30, figsize=(15, 15))
 plt.show()

@@ -1,24 +1,26 @@
 import os
 import shutil
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 from sklearn.model_selection import ParameterGrid
-
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
 
-from plotting import *
 from cifar10Data import *
+from plotting import *
 
 cifar = CIFAR10()
 cifar.data_augmentation(augment_size=5000)
@@ -38,7 +40,8 @@ log_dir = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTensorflowKu
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2, 
+
+def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
              kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size):
     # Input
     input_img = Input(shape=x_train.shape[1:])
@@ -75,6 +78,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
         optimizer=opt,
         metrics=["accuracy"])
     return model
+
 
 epochs = 30
 batch_size = 256
@@ -119,8 +123,8 @@ for idx, comb in enumerate(grid):
         log_dir=model_log_dir)
 
     curr_model.fit(
-        x=x_train_splitted, 
-        y=y_train_splitted, 
+        x=x_train_splitted,
+        y=y_train_splitted,
         epochs=epochs,
         batch_size=batch_size,
         validation_data=(x_val, y_val),

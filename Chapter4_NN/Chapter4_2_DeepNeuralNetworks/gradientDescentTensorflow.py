@@ -2,6 +2,7 @@ import tensorflow as tf
 
 from helper import plot_rosenbrock
 
+
 class Model:
     def __init__(self):
         self.x = tf.Variable(tf.random.uniform(minval=-2.0, maxval=2.0, shape=[2])) # x = [x0, x1]
@@ -15,6 +16,7 @@ class Model:
 
     def fit(self):
         self.optimizer.minimize(self.loss, self.x) # (loss, variable)
+
 
 model = Model()
 gradient_steps = []

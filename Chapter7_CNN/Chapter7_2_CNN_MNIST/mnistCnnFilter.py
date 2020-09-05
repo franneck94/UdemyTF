@@ -1,17 +1,18 @@
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
-
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.utils import to_categorical
 
 from plotting import *
+
 
 # Dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -86,15 +87,15 @@ model.compile(
     optimizer=optimizer,
     metrics=["accuracy"])
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=(x_test, y_test))
 
 score = model.evaluate(
-    x_test, 
-    y_test, 
+    x_test,
+    y_test,
     verbose=0)
 print("Score: ", score)
 
@@ -103,7 +104,7 @@ kernels = model.layers[1].get_weights()[0]
 print(kernels.shape)
 
 num_filters = kernels.shape[3]
-subplot_grid = (num_filters//4, 4)
+subplot_grid = (num_filters // 4, 4)
 
 fig, ax = plt.subplots(subplot_grid[0], subplot_grid[1], figsize=(20, 20))
 ax = ax.reshape(num_filters)

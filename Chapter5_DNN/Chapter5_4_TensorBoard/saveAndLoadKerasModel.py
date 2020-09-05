@@ -1,16 +1,13 @@
 import os
 
 import numpy as np
-import matplotlib.pyplot as plt
-
-import tensorflow as tf
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
+from tensorflow.keras.utils import to_categorical
 
 from plotting import *
 
@@ -73,8 +70,8 @@ model.compile(
     optimizer=optimizer,
     metrics=["accuracy"])
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=(x_test, y_test))

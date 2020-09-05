@@ -1,12 +1,10 @@
 import numpy as np
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.datasets import cifar10
-from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
+
 
 class CIFAR10:
     def __init__(self):

@@ -2,15 +2,14 @@ import os
 import time
 
 import numpy as np
-
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.utils import to_categorical
 
 from plotting import *
 
@@ -86,15 +85,15 @@ tb_callback = TensorBoard(
 
 classes_list = [i for i in range(num_classes)]
 cm_callback = ConfusionMatrix(
-    model, 
-    x_test, 
-    y_test, 
-    classes_list=classes_list, 
+    model,
+    x_test,
+    y_test,
+    classes_list=classes_list,
     log_dir=model_log_dir)
 
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=(x_test, y_test),

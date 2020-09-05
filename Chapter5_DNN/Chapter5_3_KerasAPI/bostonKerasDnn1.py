@@ -1,8 +1,4 @@
-import os
-
 import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras.layers import *
@@ -10,6 +6,7 @@ from tensorflow.keras.activations import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.initializers import *
+
 
 # Dataset
 (x_train, y_train), (x_test, y_test) = boston_housing.load_data()
@@ -31,6 +28,7 @@ hidden_layer_size = 50
 nodes = [num_targets, hidden_layer_size, num_targets] # input, hidden, output
 epochs = 2200
 
+
 def r_squared(y_true, y_pred):
     numerator = tf.math.reduce_sum(tf.math.square(tf.math.subtract(y_true, y_pred)))
     y_true_mean = tf.math.reduce_mean(y_true)
@@ -38,6 +36,7 @@ def r_squared(y_true, y_pred):
     r2 = tf.math.subtract(1.0, tf.math.divide(numerator, denominator))
     r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
     return r2_clipped
+
 
 init_w = RandomUniform(minval=-1.0, maxval=1.0)
 init_b = Constant(value=0.0)

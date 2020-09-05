@@ -1,10 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 def get_dataset():
-    x = np.array([[0,0], [1,0], [0,1], [1,1]])
+    x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
     y = np.array([0, 1, 1, 1])
     return x, y
+
 
 class Perceptron():
     def __init__(self, epochs, lr):
@@ -15,7 +16,7 @@ class Perceptron():
     def train(self, x, y):
         N, dim = x.shape # 4x2
         # Init model
-        self.w = np.random.uniform(-1, 1, (dim,1)) # Gleichverteilung [-1, 1]: 2 Weights
+        self.w = np.random.uniform(-1, 1, (dim, 1)) # Gleichverteilung [-1, 1]: 2 Weights
         print(self.w)
         # Training
         error = 0.0
@@ -54,6 +55,7 @@ class Perceptron():
         input_signal = np.dot(self.w.T, x)
         output_signal = self.activation(input_signal)
         return output_signal
+
 
 x, y = get_dataset()
 

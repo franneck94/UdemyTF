@@ -3,17 +3,14 @@ import os
 import numpy as np
 np.random.seed(3)
 
-from sklearn.model_selection import train_test_split
-
 import tensorflow as tf
-import keras.backend as K
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import *
+from sklearn.model_selection import train_test_split
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
 
 # Save Path
 log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/computation/")
@@ -42,7 +39,7 @@ model.compile(
     metrics=["mse"])
 
 tb = TensorBoard(
-    log_dir=log_dir, 
+    log_dir=log_dir,
     embeddings_freq=0,
     write_graph=True)
 
@@ -56,10 +53,11 @@ model.fit(
     callbacks=[tb])
 
 model.layers[0].set_weights([np.array([[-0.250], [1.000]]), np.array([0.100])])
-model.layers[2].set_weights([np.array([[1.250]]), np.array([0.125])]) 
+model.layers[2].set_weights([np.array([[1.250]]), np.array([0.125])])
 
 ##################
 loss_object = tf.keras.losses.MeanSquaredError()
+
 
 def get_gradients(x_test, y_test, model):
     with tf.GradientTape() as tape:
@@ -67,6 +65,7 @@ def get_gradients(x_test, y_test, model):
         loss_value = loss_object(y_test, y_pred)
     grads = tape.gradient(loss_value, model.trainable_variables)
     return [(grad, weight) for (grad, weight) in zip(grads, model.trainable_variables)]
+
 
 x_test = np.array([[2, 2]])
 y_test = np.array([[2]])

@@ -1,13 +1,10 @@
-import os
-
 import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 
-from plotting import *
+from plotting import display_convergence_error, display_convergence_acc
+
 
 # Dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -36,6 +33,7 @@ x_test = x_test.reshape(test_size, num_features)
 nodes = [num_features, 800, 400, num_classes] # input, hidden, output
 epochs = 50
 
+
 class Model:
     def __init__(self):
         # Weights (Matrices)
@@ -53,10 +51,10 @@ class Model:
         self.loss_fn = tf.losses.CategoricalCrossentropy()
         self.metric_fn = tf.metrics.CategoricalAccuracy()
         self.current_loss_val = None
-        
+
     def get_variables(self):
         return {var.name: var.numpy() for var in self.variables}
-    
+
     def get_num_trainable_parameters(self, nodes):
         num_weights = 0
         num_biases = 0
@@ -64,7 +62,7 @@ class Model:
         for idx, layer_num_nodes in enumerate(nodes[1:]):
             if idx == 0:
                 print("Input to Hidden Layer:")
-            elif idx == len(nodes)-1:
+            elif idx == len(nodes) - 1:
                 print("Hidden to Output Layer:")
             else:
                 print("Hidden to Hidden Layer:")
@@ -77,7 +75,7 @@ class Model:
             last_layer_num_nodes = layer_num_nodes
         trainable_parameters = num_weights + num_biases
         print("Overall Trainable Parameters: ", trainable_parameters)
-        
+
     def predict(self, x):
         input_layer = x
         hidden_layer1 = tf.math.add(tf.linalg.matmul(input_layer, self.W1), self.b1)
@@ -87,27 +85,27 @@ class Model:
         output_layer = tf.math.add(tf.linalg.matmul(hidden_layer2_act, self.W3), self.b3)
         output_layer_act = tf.nn.softmax(output_layer)
         return output_layer_act
-    
+
     def loss(self, y_true, y_pred):
         loss_val = self.loss_fn(y_true, y_pred)
         self.current_loss_val = loss_val.numpy()
         return loss_val
-    
+
     def update_variables(self, x_train, y_train):
         with tf.GradientTape() as tape:
             y_pred = self.predict(x_train)
             loss = self.loss(y_train, y_pred)
         gradients = tape.gradient(loss, self.variables)
-        self.optimizer.apply_gradients(zip(gradients, self.variables)) 
+        self.optimizer.apply_gradients(zip(gradients, self.variables))
         return loss
-    
+
     def compute_metrics(self, x, y):
         y_pred = self.predict(x)
         self.metric_fn.update_state(y, y_pred)
         metric_val = self.metric_fn.result()
         self.metric_fn.reset_states()
         return metric_val
-    
+
     def fit(self, x_train, y_train, x_test, y_test, epochs=10):
         # create empty lists to save the loss and metric values
         train_losses, train_metrics = [], []
@@ -125,21 +123,22 @@ class Model:
             test_losses.append(test_loss)
             test_metrics.append(test_metric)
             # Print metrics
-            print("Epoch: ", epoch+1, " of ", epochs,
-                    " - Train Loss: ", round(train_loss, 4),
-                    " - Train Metric: ", round(train_metric, 4),
-                    " - Test Loss: ", round(test_loss, 4),
-                    " - Test Metric: ", round(test_metric, 4))
+            print("Epoch: ", epoch + 1, " of ", epochs,
+                  " - Train Loss: ", round(train_loss, 4),
+                  " - Train Metric: ", round(train_metric, 4),
+                  " - Test Loss: ", round(test_loss, 4),
+                  " - Test Metric: ", round(test_metric, 4))
         # Visualization of the loss and metric values
         display_convergence_error(train_losses, test_losses)
         display_convergence_acc(train_metrics, test_metrics)
-        
+
     def evaluate(self, x, y):
         loss = self.loss(self.predict(x), y).numpy()
         metric = self.compute_metrics(x, y).numpy()
         print("Loss: ", round(loss, 4), " Metric: ", round(metric, 4))
-             
+
+
 model = Model()
 model.get_num_trainable_parameters(nodes)
-#model.fit(x_train, y_train, x_test, y_test, epochs=epochs)
-#model.evaluate(x_test, y_test)
+# model.fit(x_train, y_train, x_test, y_test, epochs=epochs)
+# model.evaluate(x_test, y_test)

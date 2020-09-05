@@ -1,14 +1,15 @@
 import os
 
-from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
+from tensorflow.keras.callbacks import *
+from tensorflow.keras.initializers import *
+from tensorflow.keras.layers import *
 from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
 
-from plotting import *
 from mnistDataValidation import *
+from plotting import *
+
 
 mnist = MNIST()
 mnist.data_augmentation(augment_size=5000)
@@ -82,14 +83,14 @@ model.compile(
     optimizer=optimizer,
     metrics=["accuracy"])
 model.fit(
-    x=x_train, 
-    y=y_train, 
+    x=x_train,
+    y=y_train,
     epochs=epochs,
     batch_size=batch_size,
     callbacks=[tb_callback])
 
 score = model.evaluate(
-    x_test, 
-    y_test, 
+    x_test,
+    y_test,
     verbose=0)
 print("Score: ", score)

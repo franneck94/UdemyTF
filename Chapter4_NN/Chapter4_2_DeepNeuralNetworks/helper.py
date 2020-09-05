@@ -5,26 +5,31 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib import cm
 
 # Rosenbrock Funktion
+
+
 def f(x0, x1):
     return 100 * (x0**2 - x1)**2 + (x0 - 1)**2
+
 
 def f_prime_x0(x0, x1):
     return 2 * (200 * x0 * (x0**2 - x1) + x0 - 1)
 
+
 def f_prime_x1(x0, x1):
     return -200 * (x0**2 - x1)
+
 
 def plot_rosenbrock(x_start, gradient_steps=None):
     fig = plt.figure(figsize=(12, 8))
     ax = Axes3D(fig)
 
     s = 0.3
-    X = np.arange(-2, 2.+s, s)
-    Y = np.arange(-2, 3.+s, s)
-        
-    #Create the mesh grid(s) for all X/Y combos.
+    X = np.arange(-2, 2. + s, s)
+    Y = np.arange(-2, 3. + s, s)
+
+    # Create the mesh grid(s) for all X/Y combos.
     X, Y = np.meshgrid(X, Y)
-    #Rosenbrock function w/ two parameters using numpy Arrays
+    # Rosenbrock function w/ two parameters using numpy Arrays
     Z = f(X, Y)
 
     surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, linewidth=0, alpha=0.8, cmap=cm.coolwarm)
@@ -39,7 +44,7 @@ def plot_rosenbrock(x_start, gradient_steps=None):
     if gradient_steps:
         for (x0, x1) in gradient_steps:
             ax.scatter(x0, x1, f(x0, x1) + eps, color="green", marker="o", s=50)
-    
+
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
