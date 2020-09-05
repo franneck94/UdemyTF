@@ -1,11 +1,14 @@
-data/
 logs/
 models/
 .vscode/
-settings.json
-launch.json
-tasks.json
-.benchmarks/
+*.pptx
+*.txt
+*.png
+*.
+Chapter1_Introduction/
+Chapter12_Outlook/
+**/lectures/
+**/**/lectures/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
