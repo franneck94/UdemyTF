@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 
+
 class CALIHOUSING:
     def __init__(self):
         self.dataset = fetch_california_housing()
@@ -28,11 +29,12 @@ class CALIHOUSING:
         self.num_features = self.x_train.shape[1]
         self.num_targets = self.y_train.shape[1]
         # Data rescaling
-        #scaler = StandardScaler()
-        #scaler = MinMaxScaler()
-        #scaler.fit(self.x_train)
-        #self.x_train = scaler.transform(self.x_train)
-        #self.x_test = scaler.transform(self.x_test)
+        # scaler = StandardScaler()
+        # scaler = MinMaxScaler()
+        # scaler.fit(self.x_train)
+        # self.x_train = scaler.transform(self.x_train)
+        # self.x_test = scaler.transform(self.x_test)
+
 
 if __name__ == "__main__":
     cali_data = CALIHOUSING()
@@ -50,6 +52,6 @@ if __name__ == "__main__":
     # df.hist(bins=30, figsize=(20,15))
     # plt.show()
 
-    df.plot(kind="scatter", x="Longitude", y="Latitude", alpha=0.4, 
-            figsize=(10,7), c="y", cmap=plt.get_cmap("jet"), colorbar=True)
+    df.plot(kind="scatter", x="Longitude", y="Latitude", alpha=0.4,
+            figsize=(10, 7), c="y", cmap=plt.get_cmap("jet"), colorbar=True)
     plt.show()

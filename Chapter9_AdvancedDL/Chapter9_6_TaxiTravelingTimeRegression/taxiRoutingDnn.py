@@ -1,10 +1,6 @@
 import os
 
-import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
-from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
 from tensorflow.keras.models import *
@@ -14,7 +10,8 @@ from tensorflow.keras.initializers import *
 from plotting import *
 from taxiRoutingData import *
 
-excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/data/taxiDataset.xlsx")
+
+excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
 taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
 x_train, y_train = taxi_data.x_train, taxi_data.y_train
 x_test, y_test = taxi_data.x_test, taxi_data.y_test

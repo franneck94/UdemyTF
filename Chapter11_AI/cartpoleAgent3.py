@@ -59,7 +59,7 @@ class Agent:
 
                     if total_reward > best_total_reward:
                         best_total_reward = total_reward
-                        self.model.save_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/dqn.h5")
+                        self.model.save_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/dqn.h5")
 
                     print("Episode: ", episode + 1, " Total Reward: ", total_reward, " Epsilon:", self.epsilon)
                     break
@@ -93,7 +93,7 @@ class Agent:
         self.model.train(states, q_values)
 
     def play(self, num_episodes, render=True):
-        self.model.load_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/dqn.h5")
+        self.model.load_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/dqn.h5")
         for episode in range(num_episodes):
             state = self.env.reset()
             state = np.reshape(state, (1, state.shape[0]))

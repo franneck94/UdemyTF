@@ -17,7 +17,7 @@ def sigmoid_fn(x):
 
 
 def tanh_fn(x):
-    return np.tanh_fn(x)
+    return np.tanh(x)
 
 
 class SimpleRNNInference:

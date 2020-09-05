@@ -36,12 +36,12 @@ x_train = x_train.reshape(train_size, num_features)
 x_test = x_test.reshape(test_size, num_features)
 
 # Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/")
+dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 mnist_model_path = os.path.join(dir_path, "mnist_model.h5")
 # Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/")
+log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 log_dir_model3 = os.path.join(log_dir, "model3")

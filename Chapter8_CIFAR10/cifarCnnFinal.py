@@ -28,12 +28,12 @@ x_test, y_test = cifar.get_test_set()
 num_classes = cifar.num_classes
 
 # Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/")
+dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 cifar_model_path = os.path.join(dir_path, "cifar_model.h5")
 # Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/")
+log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 

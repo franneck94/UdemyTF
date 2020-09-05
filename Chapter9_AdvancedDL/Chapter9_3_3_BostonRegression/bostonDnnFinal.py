@@ -1,5 +1,5 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
 random.seed(0)
@@ -20,6 +20,7 @@ from tensorflow.keras.callbacks import *
 from plotting import *
 from bostonData import *
 
+
 data = BOSTON()
 data.data_preprocessing(preprocess_mode="MinMax")
 x_train_splitted, x_val, y_train_splitted, y_val = data.get_splitted_train_validation_set()
@@ -28,14 +29,15 @@ x_test, y_test = data.get_test_set()
 num_targets = data.num_targets
 
 # Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/")
+dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 data_model_path = os.path.join(dir_path, "data_model.h5")
 # Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/")
+log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
+
 
 def r_squared(y_true, y_pred):
     numerator = tf.math.reduce_sum(tf.math.square(tf.math.subtract(y_true, y_pred)))
@@ -46,8 +48,10 @@ def r_squared(y_true, y_pred):
     return r2_clipped
 
 # Define the DNN
-def model_fn(optimizer, learning_rate, 
-             dense_layer_size1, dense_layer_size2, 
+
+
+def model_fn(optimizer, learning_rate,
+             dense_layer_size1, dense_layer_size2,
              activation_str, dropout_rate, use_bn):
     # Input
     input_house = Input(shape=x_train.shape[1:])
@@ -85,6 +89,7 @@ def model_fn(optimizer, learning_rate,
     model.summary()
     return model
 
+
 # Global params
 epochs = 2000
 batch_size = 256
@@ -104,6 +109,7 @@ params = {
 
 rand_model = model_fn(**params)
 
+
 def schedule_fn(epoch):
     lr = 1e-3
     if epoch < 5:
@@ -114,12 +120,14 @@ def schedule_fn(epoch):
         lr = 1e-4
     return lr
 
+
 def schedule_fn2(epoch):
     threshold = 500
     if epoch < threshold:
         return 1e-3
     else:
         return 1e-3 * np.exp(0.005 * (threshold - epoch))
+
 
 # Model 1: schedule_fn1
 # Model 2: schedule_fn2
@@ -129,17 +137,18 @@ lrs_callback = LearningRateScheduler(
 
 # Model 3: factor=0.95
 plateau_callback = ReduceLROnPlateau(
-    monitor='val_accuracy', 
+    monitor='val_loss',
     factor=0.98,
     patience=50,
     verbose=1,
     min_lr=1e-5)
 
 es_callback = EarlyStopping(
-    monitor='val_accuracy',
+    monitor='val_loss',
     patience=200,
     verbose=1,
     restore_best_weights=True)
+
 
 class LRTensorBoard(TensorBoard):
     def __init__(self, log_dir, **kwargs):
@@ -149,22 +158,23 @@ class LRTensorBoard(TensorBoard):
         logs.update({'lr': self.model.optimizer.lr})
         super().on_epoch_end(epoch, logs)
 
+
 model_log_dir = os.path.join(log_dir, "modelBostonFinal6")
 tb_callback = LRTensorBoard(
     log_dir=model_log_dir)
 
 rand_model.fit(
-    x=x_train, 
-    y=y_train, 
-    verbose=1, 
-    batch_size=batch_size, 
-    epochs=epochs, 
+    x=x_train,
+    y=y_train,
+    verbose=1,
+    batch_size=batch_size,
+    epochs=epochs,
     callbacks=[tb_callback, lrs_callback, es_callback],
     validation_data=(x_test, y_test))
 
 score = rand_model.evaluate(
-    x_test, 
-    y_test, 
-    verbose=0, 
+    x_test,
+    y_test,
+    verbose=0,
     batch_size=batch_size)
 print("Test performance: ", score)

@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
@@ -43,14 +42,14 @@ class TAXIROUTING:
         self.num_targets = self.y_train.shape[1]
         # Data rescaling
         scaler = StandardScaler()
-        #scaler = MinMaxScaler()
+        # scaler = MinMaxScaler()
         scaler.fit(self.x_train)
         self.x_train = scaler.transform(self.x_train)
         self.x_test = scaler.transform(self.x_test)
 
 
 if __name__ == "__main__":
-    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/data/taxiDataset.xlsx")
+    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
     taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
 
     df = pd.DataFrame(data=taxi_data.x, columns=taxi_data.feature_names)

@@ -1,9 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 from sklearn.linear_model import LinearRegression
 
 from bostonData import *
+
 
 boston = BOSTON()
 x_train, y_train = boston.x_train, boston.y_train

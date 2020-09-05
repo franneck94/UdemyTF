@@ -1,9 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 from sklearn.linear_model import LinearRegression
 
 from caliHousingData import *
+
 
 cali_data = CALIHOUSING()
 x_train, y_train = cali_data.x_train, cali_data.y_train

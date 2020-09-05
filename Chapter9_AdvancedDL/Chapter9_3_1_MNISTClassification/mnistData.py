@@ -8,6 +8,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
+
 class MNIST:
     def __init__(self):
         # Load the data set

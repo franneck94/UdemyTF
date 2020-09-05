@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 
 from tensorflow.keras.datasets import boston_housing
 
+
 class BOSTON:
     def __init__(self):
         # Load the data set

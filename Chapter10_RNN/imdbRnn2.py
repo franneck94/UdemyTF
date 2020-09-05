@@ -7,6 +7,7 @@ from tensorflow.keras.optimizers import *
 
 from imdbData2 import *
 
+
 # Load MNIST dataset
 num_words = 10000
 skip_top = 100

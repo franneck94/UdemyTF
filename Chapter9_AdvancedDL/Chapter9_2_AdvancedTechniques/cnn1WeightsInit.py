@@ -1,5 +1,5 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
 random.seed(0)
@@ -26,17 +26,19 @@ x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
 
 # Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/models/")
+dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 data_model_path = os.path.join(dir_path, "data_model.h5")
 # Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/")
+log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
 # Define the DNN
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2, 
+
+
+def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
              kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size,
              kernel_initializer, bias_initializer):
     # Input
@@ -81,6 +83,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
         metrics=["accuracy"])
     return model
 
+
 # Global params
 epochs = 20
 batch_size = 256
@@ -98,23 +101,23 @@ dense_layer_size = 512
 kernel_initializer = 'GlorotUniform'
 bias_initializer = 'zeros'
 
-rand_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2, 
+rand_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
                       kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size,
                       kernel_initializer, bias_initializer)
 model_log_dir = os.path.join(log_dir, "modelCatsDogsVarianceScaling")
 tb_callback = TensorBoard(
     log_dir=model_log_dir)
 rand_model.fit(
-    x=x_train_splitted, 
-    y=y_train_splitted, 
-    verbose=1, 
-    batch_size=batch_size, 
-    epochs=epochs, 
+    x=x_train_splitted,
+    y=y_train_splitted,
+    verbose=1,
+    batch_size=batch_size,
+    epochs=epochs,
     callbacks=[tb_callback],
     validation_data=(x_val, y_val))
 score = rand_model.evaluate(
-    x_test, 
-    y_test, 
-    verbose=0, 
+    x_test,
+    y_test,
+    verbose=0,
     batch_size=batch_size)
 print("Test performance: ", score)

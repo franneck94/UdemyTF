@@ -13,7 +13,7 @@ from tensorflow.keras.models import *
 from tensorflow.keras.optimizers import *
 
 # Save Path
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTensorflowKurs/logs/computation/")
+log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/computation/")
 
 x = np.array([[i, i] for i in range(100)], dtype=np.float32)
 y = np.array([i for i in range(100)], dtype=np.float32).reshape(-1, 1)
