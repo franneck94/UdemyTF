@@ -1,12 +1,7 @@
 import os
 
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import (Activation,
-                                     Conv2D,
-                                     Dense,
-                                     Flatten,
-                                     Input,
-                                     MaxPool2D)
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
@@ -16,7 +11,12 @@ from mnistDataValidation import MNIST
 mnist = MNIST()
 mnist.data_augmentation(augment_size=5000)
 mnist.data_preprocessing(preprocess_mode="MinMax")
-x_train_splitted, x_val, y_train_splitted, y_val = mnist.get_splitted_train_validation_set()
+(
+    x_train_splitted,
+    x_val,
+    y_train_splitted,
+    y_val,
+) = mnist.get_splitted_train_validation_set()
 x_train, y_train = mnist.get_train_set()
 x_test, y_test = mnist.get_test_set()
 num_classes = mnist.num_classes
@@ -77,22 +77,10 @@ model = Model(inputs=[input_img], outputs=[y_pred])
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
-tb_callback = TensorBoard(
-    log_dir=model_log_dir)
+tb_callback = TensorBoard(log_dir=model_log_dir)
 
-model.compile(
-    loss="categorical_crossentropy",
-    optimizer=optimizer,
-    metrics=["accuracy"])
-model.fit(
-    x=x_train,
-    y=y_train,
-    epochs=epochs,
-    batch_size=batch_size,
-    callbacks=[tb_callback])
+model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+model.fit(x=x_train, y=y_train, epochs=epochs, batch_size=batch_size, callbacks=[tb_callback])
 
-score = model.evaluate(
-    x_test,
-    y_test,
-    verbose=0)
+score = model.evaluate(x_test, y_test, verbose=0)
 print("Score: ", score)

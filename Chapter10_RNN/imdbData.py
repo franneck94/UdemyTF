@@ -21,8 +21,8 @@ class IMDBData:
         self.index_to_word = {val: key for key, val in self.word_index.items()}
         # Load dataset
         (self.x_train, self.y_train), (self.x_test, self.y_test) = imdb.load_data(
-            num_words=self.num_words,
-            skip_top=self.skip_top)
+            num_words=self.num_words, skip_top=self.skip_top
+        )
         print(self.x_train[0])
         print(self.y_train[0])
 

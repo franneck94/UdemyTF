@@ -40,8 +40,7 @@ def display_digit_and_predictions(image, label, pred, pred_one_hot):
 
 
 def display_convergence_error(train_losses, valid_losses):
-    """Display the convergence of the errors.
-    """
+    """Display the convergence of the errors."""
     if len(valid_losses) > 0:
         plt.plot(len(train_losses), train_losses, color="red")
         plt.plot(len(valid_losses), valid_losses, color="blue")
@@ -55,8 +54,7 @@ def display_convergence_error(train_losses, valid_losses):
 
 
 def display_convergence_acc(train_accs, valid_accs):
-    """Display the convergence of the accs
-    """
+    """Display the convergence of the accs"""
     if len(valid_accs) > 0:
         plt.plot(len(train_accs), train_accs, color="red")
         plt.plot(len(valid_accs), valid_accs, color="blue")
@@ -70,8 +68,7 @@ def display_convergence_acc(train_accs, valid_accs):
 
 
 def plot_confusion_matrix(y_pred, y_true, classes_list):
-    """Compute and create a plt.figure for the confusion matrix.
-    """
+    """Compute and create a plt.figure for the confusion matrix."""
     fig = plt.figure(figsize=(8, 8))
     cm = confusion_matrix(y_pred, y_true)
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
@@ -85,9 +82,13 @@ def plot_confusion_matrix(y_pred, y_true, classes_list):
     thresh = cm.max() / 2.0
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
-            plt.text(j, i, cm[i, j],
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
+            plt.text(
+                j,
+                i,
+                cm[i, j],
+                horizontalalignment="center",
+                color="white" if cm[i, j] > thresh else "black",
+            )
 
     plt.tight_layout()
     plt.ylabel('True label')
@@ -106,7 +107,16 @@ def plot_to_image(fig):
 
 
 class ImageCallback(tf.keras.callbacks.Callback):
-    def __init__(self, model, x_test, y_test, log_dir="./", classes_list=None, figure_fn=None, figure_title=None):
+    def __init__(
+        self,
+        model,
+        x_test,
+        y_test,
+        log_dir="./",
+        classes_list=None,
+        figure_fn=None,
+        figure_title=None,
+    ):
         self.model = model
         self.x_test = x_test
         self.y_test = y_test
@@ -139,8 +149,15 @@ class ConfusionMatrix(ImageCallback):
     def __init__(self, model, x_test, y_test, classes_list, log_dir):
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
-        super().__init__(model, x_test, y_test, log_dir=log_dir, classes_list=classes_list,
-                         figure_fn=self.figure_fn, figure_title=self.figure_title)
+        super().__init__(
+            model,
+            x_test,
+            y_test,
+            log_dir=log_dir,
+            classes_list=classes_list,
+            figure_fn=self.figure_fn,
+            figure_title=self.figure_title,
+        )
 
     def on_epoch_end(self, epoch, logs=None):
         super().on_epoch_end(epoch, logs)

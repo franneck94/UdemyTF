@@ -1,10 +1,13 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 from tensorflow.keras.callbacks import TensorBoard
@@ -32,11 +35,18 @@ log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
-# Define the DNN
 
-
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-             kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size):
+def model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+):
     # Input
     input_img = Input(shape=x_train.shape[1:])
     # Conv Block 1
@@ -67,10 +77,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -89,8 +96,17 @@ filter_block3 = 7
 kernel_size_block3 = 64
 dense_layer_size = 512
 
-grid_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-                      kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size)
+grid_model = model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+)
 model_log_dir = os.path.join(log_dir, "modelBestGrid")
 tb_callback = TensorBoard(log_dir=model_log_dir)
 grid_model.fit(
@@ -100,12 +116,9 @@ grid_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback],
-    validation_data=(x_test, y_test))
-score = grid_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+    validation_data=(x_test, y_test),
+)
+score = grid_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance best grid model: ", score)
 
 # Best random model
@@ -119,8 +132,17 @@ filter_block3 = 54
 kernel_size_block3 = 4
 dense_layer_size = 844
 
-rand_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-                      kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size)
+rand_model = model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+)
 model_log_dir = os.path.join(log_dir, "modelBestRand")
 tb_callback = TensorBoard(log_dir=model_log_dir)
 rand_model.fit(
@@ -130,12 +152,9 @@ rand_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback],
-    validation_data=(x_test, y_test))
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+    validation_data=(x_test, y_test),
+)
+score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance best rand model: ", score)
 
 # Huge model
@@ -149,11 +168,19 @@ filter_block3 = 128
 kernel_size_block3 = 3
 dense_layer_size = 2048
 
-rand_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-                      kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size)
+rand_model = model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+)
 model_log_dir = os.path.join(log_dir, "modelHuge")
-tb_callback = TensorBoard(
-    log_dir=model_log_dir)
+tb_callback = TensorBoard(log_dir=model_log_dir)
 rand_model.fit(
     x=x_train,
     y=y_train,
@@ -161,10 +188,7 @@ rand_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback],
-    validation_data=(x_test, y_test))
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+    validation_data=(x_test, y_test),
+)
+score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance best rand model: ", score)

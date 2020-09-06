@@ -10,7 +10,10 @@ from tensorflow.keras.datasets import boston_housing
 class BOSTON:
     def __init__(self):
         # Load the data set
-        (self.x_train, self.y_train), (self.x_test, self.y_test) = boston_housing.load_data()
+        (self.x_train, self.y_train), (
+            self.x_test,
+            self.y_test,
+        ) = boston_housing.load_data()
         self.x_train_ = None
         self.x_val = None
         self.y_train_ = None
@@ -25,7 +28,7 @@ class BOSTON:
         self.test_size = self.x_test.shape[0]
         self.train_splitted_size = 0
         self.val_size = 0
-        self.num_targets = 1 # Constant for the data set
+        self.num_targets = 1  # Constant for the data set
         self.num_features = self.x_train.shape[1]
         # Addtional class attributes
         self.scaler = None
@@ -37,8 +40,9 @@ class BOSTON:
         return self.x_test, self.y_test
 
     def get_splitted_train_validation_set(self, validation_size=0.33):
-        self.x_train_, self.x_val, self.y_train_, self.y_val =\
-            train_test_split(self.x_train, self.y_train, test_size=validation_size)
+        self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
+            self.x_train, self.y_train, test_size=validation_size
+        )
         self.val_size = self.x_val.shape[0]
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val

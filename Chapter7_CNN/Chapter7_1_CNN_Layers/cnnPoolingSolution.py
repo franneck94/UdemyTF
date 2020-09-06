@@ -13,7 +13,7 @@ image = image.reshape((28, 28))
 # Max-Pooling Funktion definieren und auf ein Bild aus dem
 # MNIST Dataset anwenden
 def get_kernel_values(i, j, image):
-    kernel_values = image[i:i + 2, j:j + 2]
+    kernel_values = image[i : i + 2, j : j + 2]
     return kernel_values
 
 

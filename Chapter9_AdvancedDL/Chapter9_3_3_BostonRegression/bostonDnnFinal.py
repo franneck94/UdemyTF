@@ -1,13 +1,17 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 import tensorflow as tf
+
 tf.random.set_seed(0)
 
 from tensorflow.keras.layers import *
@@ -23,7 +27,12 @@ from bostonData import *
 
 data = BOSTON()
 data.data_preprocessing(preprocess_mode="MinMax")
-x_train_splitted, x_val, y_train_splitted, y_val = data.get_splitted_train_validation_set()
+(
+    x_train_splitted,
+    x_val,
+    y_train_splitted,
+    y_val,
+) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_targets = data.num_targets
@@ -47,12 +56,16 @@ def r_squared(y_true, y_pred):
     r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
     return r2_clipped
 
-# Define the DNN
 
-
-def model_fn(optimizer, learning_rate,
-             dense_layer_size1, dense_layer_size2,
-             activation_str, dropout_rate, use_bn):
+def model_fn(
+    optimizer,
+    learning_rate,
+    dense_layer_size1,
+    dense_layer_size2,
+    activation_str,
+    dropout_rate,
+    use_bn,
+):
     # Input
     input_house = Input(shape=x_train.shape[1:])
     # Dense Layer 1
@@ -82,10 +95,7 @@ def model_fn(optimizer, learning_rate,
     # Build the model
     model = Model(inputs=[input_house], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(
-        loss="mse",
-        optimizer=opt,
-        metrics=[r_squared])
+    model.compile(loss="mse", optimizer=opt, metrics=[r_squared])
     model.summary()
     return model
 
@@ -131,23 +141,12 @@ def schedule_fn2(epoch):
 
 # Model 1: schedule_fn1
 # Model 2: schedule_fn2
-lrs_callback = LearningRateScheduler(
-    schedule=schedule_fn2,
-    verbose=1)
+lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
 
 # Model 3: factor=0.95
-plateau_callback = ReduceLROnPlateau(
-    monitor='val_loss',
-    factor=0.98,
-    patience=50,
-    verbose=1,
-    min_lr=1e-5)
+plateau_callback = ReduceLROnPlateau(monitor='val_loss', factor=0.98, patience=50, verbose=1, min_lr=1e-5)
 
-es_callback = EarlyStopping(
-    monitor='val_loss',
-    patience=200,
-    verbose=1,
-    restore_best_weights=True)
+es_callback = EarlyStopping(monitor='val_loss', patience=200, verbose=1, restore_best_weights=True)
 
 
 class LRTensorBoard(TensorBoard):
@@ -160,8 +159,7 @@ class LRTensorBoard(TensorBoard):
 
 
 model_log_dir = os.path.join(log_dir, "modelBostonFinal6")
-tb_callback = LRTensorBoard(
-    log_dir=model_log_dir)
+tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
 rand_model.fit(
     x=x_train,
@@ -170,11 +168,8 @@ rand_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback, lrs_callback, es_callback],
-    validation_data=(x_test, y_test))
+    validation_data=(x_test, y_test),
+)
 
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance: ", score)

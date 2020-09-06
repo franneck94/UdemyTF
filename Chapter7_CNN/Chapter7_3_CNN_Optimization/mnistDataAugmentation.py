@@ -44,15 +44,17 @@ class MNIST:
             width_shift_range=0.05,
             height_shift_range=0.05,
             fill_mode='constant',
-            cval=0.0)
+            cval=0.0,
+        )
         # Fit the data generator
         image_generator.fit(self.x_train, augment=True)
         # Get random train images for the data augmentation
         rand_idxs = np.random.randint(self.train_size, size=augment_size)
         x_augmented = self.x_train[rand_idxs].copy()
         y_augmented = self.y_train[rand_idxs].copy()
-        x_augmented = image_generator.flow(x_augmented, np.zeros(augment_size),
-                                           batch_size=augment_size, shuffle=False).next()[0]
+        x_augmented = image_generator.flow(
+            x_augmented, np.zeros(augment_size), batch_size=augment_size, shuffle=False
+        ).next()[0]
         # Append the augmented images to the train set
         self.x_train = np.concatenate((self.x_train, x_augmented))
         self.y_train = np.concatenate((self.y_train, y_augmented))

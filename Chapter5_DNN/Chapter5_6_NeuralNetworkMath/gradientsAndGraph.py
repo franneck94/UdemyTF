@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+
 np.random.seed(3)
 
 import tensorflow as tf
@@ -32,15 +33,9 @@ model.summary()
 lr = 1e-2
 optimizer = Adam(lr=lr)
 
-model.compile(
-    loss="mse",
-    optimizer=optimizer,
-    metrics=["mse"])
+model.compile(loss="mse", optimizer=optimizer, metrics=["mse"])
 
-tb = TensorBoard(
-    log_dir=log_dir,
-    embeddings_freq=0,
-    write_graph=True)
+tb = TensorBoard(log_dir=log_dir, embeddings_freq=0, write_graph=True)
 
 model.fit(
     x=x_train,
@@ -49,7 +44,8 @@ model.fit(
     batch_size=1,
     epochs=0,
     validation_data=(x_test, y_test),
-    callbacks=[tb])
+    callbacks=[tb],
+)
 
 model.layers[0].set_weights([np.array([[-0.250], [1.000]]), np.array([0.100])])
 model.layers[2].set_weights([np.array([[1.250]]), np.array([0.125])])

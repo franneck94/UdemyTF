@@ -30,16 +30,25 @@ x_train = x_train.reshape(train_size, num_features)
 x_test = x_test.reshape(test_size, num_features)
 
 # Model variables
-nodes = [num_features, 800, 400, num_classes] # input, hidden, output
+nodes = [num_features, 800, 400, num_classes]  # input, hidden, output
 epochs = 50
 
 
 class Model:
     def __init__(self):
         # Weights (Matrices)
-        self.W1 = tf.Variable(tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.01), name="W1")
-        self.W2 = tf.Variable(tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.01), name="W2")
-        self.W3 = tf.Variable(tf.random.truncated_normal(shape=[nodes[2], nodes[3]], stddev=0.01), name="W3")
+        self.W1 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.01),
+            name="W1",
+        )
+        self.W2 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.01),
+            name="W2",
+        )
+        self.W3 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[2], nodes[3]], stddev=0.01),
+            name="W3",
+        )
         # Biases (Vectors)
         self.b1 = tf.Variable(tf.constant(0.0, shape=[nodes[1]]), name="b1")
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")
@@ -123,11 +132,20 @@ class Model:
             test_losses.append(test_loss)
             test_metrics.append(test_metric)
             # Print metrics
-            print("Epoch: ", epoch + 1, " of ", epochs,
-                  " - Train Loss: ", round(train_loss, 4),
-                  " - Train Metric: ", round(train_metric, 4),
-                  " - Test Loss: ", round(test_loss, 4),
-                  " - Test Metric: ", round(test_metric, 4))
+            print(
+                "Epoch: ",
+                epoch + 1,
+                " of ",
+                epochs,
+                " - Train Loss: ",
+                round(train_loss, 4),
+                " - Train Metric: ",
+                round(train_metric, 4),
+                " - Test Loss: ",
+                round(test_loss, 4),
+                " - Test Metric: ",
+                round(test_metric, 4),
+            )
         # Visualization of the loss and metric values
         display_convergence_error(train_losses, test_losses)
         display_convergence_acc(train_metrics, test_metrics)

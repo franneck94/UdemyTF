@@ -19,7 +19,7 @@ classes = 2
 target = 1
 # Model variables
 hidden_layer_size = 2
-nodes = [features, hidden_layer_size, target] # input, hidden, output
+nodes = [features, hidden_layer_size, target]  # input, hidden, output
 train_size = x_train.shape[0]
 test_size = x_test.shape[0]
 epochs = 10

@@ -1,10 +1,13 @@
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 import tensorflow as tf
+
 tf.random.set_seed(0)
 
 from tensorflow.keras.activations import *
@@ -26,18 +29,18 @@ class LSTMInference:
         self.lstm_layer = lstm_layer
         self.W, self.U, self.b = self.lstm_layer.get_weights()
         self.units = self.b.shape[0] // 4
-        self.W_i = self.W[:, :self.units]
-        self.W_f = self.W[:, self.units: self.units * 2]
-        self.W_c = self.W[:, self.units * 2: self.units * 3]
-        self.W_o = self.W[:, self.units * 3:]
-        self.U_i = self.U[:, :self.units]
-        self.U_f = self.U[:, self.units: self.units * 2]
-        self.U_c = self.U[:, self.units * 2: self.units * 3]
-        self.U_o = self.U[:, self.units * 3:]
+        self.W_i = self.W[:, : self.units]
+        self.W_f = self.W[:, self.units : self.units * 2]
+        self.W_c = self.W[:, self.units * 2 : self.units * 3]
+        self.W_o = self.W[:, self.units * 3 :]
+        self.U_i = self.U[:, : self.units]
+        self.U_f = self.U[:, self.units : self.units * 2]
+        self.U_c = self.U[:, self.units * 2 : self.units * 3]
+        self.U_o = self.U[:, self.units * 3 :]
         self.b_i = self.b[: self.units]
-        self.b_f = self.b[self.units: self.units * 2]
-        self.b_c = self.b[self.units * 2: self.units * 3]
-        self.b_o = self.b[self.units * 3:]
+        self.b_f = self.b[self.units : self.units * 2]
+        self.b_c = self.b[self.units * 2 : self.units * 3]
+        self.b_o = self.b[self.units * 3 :]
 
     def __call__(self, x):
         # output shape (num_timesteps, units)
@@ -50,7 +53,7 @@ class LSTMInference:
         h_t = np.zeros((1, self.units))
         c_t = np.zeros((1, self.units))
         for t, x_t in enumerate(x):
-            x_t = x_t.reshape(1, -1) # (2) => (1, 2)
+            x_t = x_t.reshape(1, -1)  # (2) => (1, 2)
             c_t, h_t = self.forward_step(x_t, c_t, h_t)
             if self.return_sequences:
                 self.h[t] = h_t
@@ -94,9 +97,9 @@ model.compile(loss="mse", optimizer="Adam")
 # model.summary()
 
 rnn = LSTMInference(lstm_layer=model.layers[0], return_sequences=return_sequences)
-output_rnn_own = rnn(x[0]) # 10.5
+output_rnn_own = rnn(x[0])  # 10.5
 print(output_rnn_own)
 print("\n\n")
 output_rnn_tf = model.predict(x[[0]])
-print(output_rnn_tf) # 10.5
+print(output_rnn_tf)  # 10.5
 assert np.all(np.isclose(output_rnn_own - output_rnn_tf, 0.0, atol=1e-06))

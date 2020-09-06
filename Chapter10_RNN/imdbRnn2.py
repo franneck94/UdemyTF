@@ -29,15 +29,9 @@ def create_model():
     x = Dense(units=num_classes)(x)
     output_pred = Activation("softmax")(x)
 
-    optimizer = Adam(
-        lr=1e-3)
-    model = Model(
-        inputs=input_text,
-        outputs=output_pred)
-    model.compile(
-        loss="binary_crossentropy",
-        optimizer=optimizer,
-        metrics=["accuracy"])
+    optimizer = Adam(lr=1e-3)
+    model = Model(inputs=input_text, outputs=output_pred)
+    model.compile(loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"])
     model.summary()
     return model
 
@@ -49,12 +43,9 @@ model.fit(
     verbose=1,
     batch_size=batch_size,
     epochs=epochs,
-    validation_data=(x_test, y_test))
+    validation_data=(x_test, y_test),
+)
 
 # Test the DNN
-score = model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+score = model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance: ", score)

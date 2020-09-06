@@ -9,17 +9,21 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
 def preprocessing_fn():
-    return tf.keras.Sequential([
-        tf.keras.layers.experimental.preprocessing.Resizing(IMG_SIZE, IMG_SIZE),
-        tf.keras.layers.experimental.preprocessing.Rescaling(1.0 / 127.5, offset=-1)
-    ])
+    return tf.keras.Sequential(
+        [
+            tf.keras.layers.experimental.preprocessing.Resizing(IMG_SIZE, IMG_SIZE),
+            tf.keras.layers.experimental.preprocessing.Rescaling(1.0 / 127.5, offset=-1),
+        ]
+    )
 
 
 def data_augmentation_fn():
-    return tf.keras.Sequential([
-        tf.keras.layers.experimental.preprocessing.RandomRotation(0.05),
-        tf.keras.layers.experimental.preprocessing.RandomZoom(0.05)
-    ])
+    return tf.keras.Sequential(
+        [
+            tf.keras.layers.experimental.preprocessing.RandomRotation(0.05),
+            tf.keras.layers.experimental.preprocessing.RandomZoom(0.05),
+        ]
+    )
 
 
 def prepare(dataset, shuffle=False, augment=False):
@@ -36,7 +40,10 @@ def prepare(dataset, shuffle=False, augment=False):
     # Use data augmentation only on the training set
     if augment:
         data_augmentation = data_augmentation_fn()
-        dataset = dataset.map(lambda x, y: (data_augmentation(x, training=True), y), num_parallel_calls=AUTOTUNE)
+        dataset = dataset.map(
+            lambda x, y: (data_augmentation(x, training=True), y),
+            num_parallel_calls=AUTOTUNE,
+        )
 
     # Use buffered prefecting on all datasets
     return dataset.prefetch(buffer_size=AUTOTUNE)
@@ -46,7 +53,8 @@ def get_dataset():
     train_dataset, validation_dataset, test_dataset = tfds.load(
         "cats_vs_dogs",
         split=["train[:60%]", "train[60%:80%]", "train[80%:]"],
-        as_supervised=True)
+        as_supervised=True,
+    )
 
     train_dataset = prepare(train_dataset, shuffle=True, augment=True)
     validation_dataset = prepare(validation_dataset)

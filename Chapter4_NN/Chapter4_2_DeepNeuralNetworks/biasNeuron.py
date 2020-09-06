@@ -1,7 +1,8 @@
 import os
 
-import matplotlib.pyplot as plt
 import numpy as np
+
+import matplotlib.pyplot as plt
 
 
 IMG_PATH = os.path.dirname(os.path.abspath(__file__))

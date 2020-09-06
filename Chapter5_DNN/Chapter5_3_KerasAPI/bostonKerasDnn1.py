@@ -23,7 +23,7 @@ test_size = x_test.shape[0]
 
 # Model variables
 hidden_layer_size = 50
-nodes = [num_targets, hidden_layer_size, num_targets] # input, hidden, output
+nodes = [num_targets, hidden_layer_size, num_targets]  # input, hidden, output
 epochs = 2200
 
 
@@ -41,7 +41,14 @@ init_b = Constant(value=0.0)
 
 # Define the DNN
 model = Sequential()
-model.add(Dense(units=16, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,)))
+model.add(
+    Dense(
+        units=16,
+        kernel_initializer=init_w,
+        bias_initializer=init_b,
+        input_shape=(num_features,),
+    )
+)
 model.add(Activation("relu"))
 model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
 model.summary()

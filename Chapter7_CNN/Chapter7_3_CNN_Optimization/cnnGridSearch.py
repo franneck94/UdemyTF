@@ -1,12 +1,7 @@
 import os
 
 from sklearn.model_selection import GridSearchCV, ParameterGrid
-from tensorflow.keras.layers import (Activation,
-                                     Conv2D,
-                                     Dense,
-                                     Flatten,
-                                     Input,
-                                     MaxPool2D)
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
@@ -65,10 +60,7 @@ def model_fn(optimizer, learning_rate):
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
 
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -86,18 +78,9 @@ grid = ParameterGrid(param_grid)
 for comb in grid:
     print(comb)
 
-keras_clf = KerasClassifier(
-    build_fn=model_fn,
-    epochs=epochs,
-    batch_size=batch_size,
-    verbose=0)
+keras_clf = KerasClassifier(build_fn=model_fn, epochs=epochs, batch_size=batch_size, verbose=0)
 
-grid_cv = GridSearchCV(
-    estimator=keras_clf,
-    param_grid=param_grid,
-    n_jobs=1,
-    verbose=0,
-    cv=3)
+grid_cv = GridSearchCV(estimator=keras_clf, param_grid=param_grid, n_jobs=1, verbose=0, cv=3)
 
 grid_result = grid_cv.fit(x_train, y_train)
 

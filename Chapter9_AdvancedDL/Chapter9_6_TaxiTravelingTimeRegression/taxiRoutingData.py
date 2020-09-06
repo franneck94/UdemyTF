@@ -12,13 +12,33 @@ from sklearn.preprocessing import StandardScaler
 class TAXIROUTING:
     def __init__(self, excel_file_path):
         # Load the excel file
-        self.column_names = ["Uhrzeit", "Straße Start", "Nr Start", "Stadt Start", "Lat Start",
-                             "Lon Start", "Straße Ziel", "Nr Ziel", "Stadt Ziel", "Lat Ziel",
-                             "Lon Ziel", "OSRM Dauer", "OSRM Distanz", "y"]
+        self.column_names = [
+            "Uhrzeit",
+            "Straße Start",
+            "Nr Start",
+            "Stadt Start",
+            "Lat Start",
+            "Lon Start",
+            "Straße Ziel",
+            "Nr Ziel",
+            "Stadt Ziel",
+            "Lat Ziel",
+            "Lon Ziel",
+            "OSRM Dauer",
+            "OSRM Distanz",
+            "y",
+        ]
         self.df = pd.read_excel(open(excel_file_path, "rb"))
         self.df = pd.DataFrame(data=self.df, columns=self.column_names)
-        self.feature_names = ["Uhrzeit", "Lat Start", "Lon Start", "Lat Ziel",
-                              "Lon Ziel", "OSRM Dauer", "OSRM Distanz"]
+        self.feature_names = [
+            "Uhrzeit",
+            "Lat Start",
+            "Lon Start",
+            "Lat Ziel",
+            "Lon Ziel",
+            "OSRM Dauer",
+            "OSRM Distanz",
+        ]
         self.x = self.df.loc[:, self.feature_names]
         self.y = self.df["y"]
         self.x = self.x.to_numpy()

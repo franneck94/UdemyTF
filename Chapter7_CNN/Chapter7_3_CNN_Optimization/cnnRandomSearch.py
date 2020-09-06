@@ -8,12 +8,7 @@ import numpy as np
 np.random.seed(0)
 
 from sklearn.model_selection import RandomizedSearchCV
-from tensorflow.keras.layers import (Activation,
-                                     Conv2D,
-                                     Dense,
-                                     Flatten,
-                                     Input,
-                                     MaxPool2D)
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
@@ -72,10 +67,7 @@ def model_fn(optimizer, learning_rate):
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
 
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -89,11 +81,7 @@ param_distributions = {
     "learning_rate": lr_candidates,
 }
 
-keras_clf = KerasClassifier(
-    build_fn=model_fn,
-    epochs=epochs,
-    batch_size=batch_size,
-    verbose=0)
+keras_clf = KerasClassifier(build_fn=model_fn, epochs=epochs, batch_size=batch_size, verbose=0)
 
 rand_cv = RandomizedSearchCV(
     estimator=keras_clf,
@@ -101,7 +89,8 @@ rand_cv = RandomizedSearchCV(
     n_iter=4,
     n_jobs=1,
     verbose=0,
-    cv=3)
+    cv=3,
+)
 
 rand_result = rand_cv.fit(x_train, y_train)
 

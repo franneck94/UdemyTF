@@ -2,11 +2,7 @@ import os
 
 import numpy as np
 from tensorflow.keras.datasets import mnist
-from tensorflow.keras.layers import (Activation,
-                                     Conv2D,
-                                     Dense,
-                                     Flatten,
-                                     MaxPool2D)
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, MaxPool2D
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
@@ -76,20 +72,15 @@ model.add(Activation("softmax"))
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
-model.compile(
-    loss="categorical_crossentropy",
-    optimizer=optimizer,
-    metrics=["accuracy"])
+model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 
 model.fit(
     x=x_train,
     y=y_train,
     epochs=epochs,
     batch_size=batch_size,
-    validation_data=(x_test, y_test))
+    validation_data=(x_test, y_test),
+)
 
-score = model.evaluate(
-    x_test,
-    y_test,
-    verbose=0)
+score = model.evaluate(x_test, y_test, verbose=0)
 print("Score: ", score)

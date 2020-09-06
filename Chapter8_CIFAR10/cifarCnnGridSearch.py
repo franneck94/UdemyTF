@@ -1,11 +1,14 @@
 import os
 import shutil
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 from sklearn.model_selection import ParameterGrid
@@ -20,7 +23,12 @@ from cifar10Data import CIFAR10
 cifar = CIFAR10()
 cifar.data_augmentation(augment_size=5000)
 cifar.data_preprocessing(preprocess_mode="MinMax")
-x_train_splitted, x_val, y_train_splitted, y_val = cifar.get_splitted_train_validation_set()
+(
+    x_train_splitted,
+    x_val,
+    y_train_splitted,
+    y_val,
+) = cifar.get_splitted_train_validation_set()
 x_train, y_train = cifar.get_train_set()
 x_test, y_test = cifar.get_test_set()
 num_classes = cifar.num_classes
@@ -36,8 +44,17 @@ if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
 
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-             kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size):
+def model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+):
     # Input
     input_img = Input(shape=x_train.shape[1:])
     # Conv Block 1
@@ -68,10 +85,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -96,13 +110,10 @@ param_grid = {
     "kernel_size_block2": kernel_sizes_block2,
     "filter_block3": filters_block3,
     "kernel_size_block3": kernel_sizes_block3,
-    "dense_layer_size": dense_layer_sizes
+    "dense_layer_size": dense_layer_sizes,
 }
 
-results = {"best_score": -np.inf,
-           "best_params": {},
-           "test_scores": [],
-           "params": []}
+results = {"best_score": -np.inf, "best_params": {}, "test_scores": [], "params": []}
 grid = ParameterGrid(param_grid)
 
 print("Parameter combinations in total: %d" % len(grid))
@@ -114,8 +125,7 @@ for idx, comb in enumerate(grid):
     if os.path.exists(model_log_dir):
         shutil.rmtree(model_log_dir)
         os.mkdir(model_log_dir)
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir)
+    tb_callback = TensorBoard(log_dir=model_log_dir)
 
     curr_model.fit(
         x=x_train_splitted,
@@ -124,7 +134,8 @@ for idx, comb in enumerate(grid):
         batch_size=batch_size,
         validation_data=(x_val, y_val),
         callbacks=[tb_callback],
-        verbose=0)
+        verbose=0,
+    )
 
     results["test_scores"].append(curr_model.evaluate(x_val, y_val, verbose=0)[1])
     results["params"].append(comb)

@@ -7,21 +7,21 @@ def get_dataset():
     return x, y
 
 
-class Perceptron():
+class Perceptron:
     def __init__(self, epochs, lr):
         self.epochs = epochs
         self.w = []
         self.lr = lr
 
     def train(self, x, y):
-        N, dim = x.shape # 4x2
+        N, dim = x.shape  # 4x2
         # Init model
-        self.w = np.random.uniform(-1, 1, (dim, 1)) # Gleichverteilung [-1, 1]: 2 Weights
+        self.w = np.random.uniform(-1, 1, (dim, 1))  # Gleichverteilung [-1, 1]: 2 Weights
         print(self.w)
         # Training
         error = 0.0
         for epoch in range(self.epochs):
-            choice = np.random.choice(N) # Pick random sample from dataset
+            choice = np.random.choice(N)  # Pick random sample from dataset
             x_i = x[choice]
             y_i = y[choice]
             y_hat = self.predict(x_i)
@@ -44,7 +44,7 @@ class Perceptron():
 
     # Hier soll der Treshold verändert werden.
     def activation(self, signal):
-        if signal > 0: # Das ist der Threshold
+        if signal > 0:  # Das ist der Threshold
             return 1
         else:
             return 0

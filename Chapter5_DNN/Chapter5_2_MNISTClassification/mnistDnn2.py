@@ -29,15 +29,21 @@ x_test = x_test.reshape(test_size, num_features)
 
 # Model variables
 hidden_layer_size = 50
-nodes = [num_features, hidden_layer_size, num_classes] # input, hidden, output
+nodes = [num_features, hidden_layer_size, num_classes]  # input, hidden, output
 epochs = 10
 
 
 class Model:
     def __init__(self):
         # Weights (Matrices)
-        self.W1 = tf.Variable(tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.1), name="W1")
-        self.W2 = tf.Variable(tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.1), name="W2")
+        self.W1 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.1),
+            name="W1",
+        )
+        self.W2 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.1),
+            name="W2",
+        )
         # Biases (Vectors)
         self.b1 = tf.Variable(tf.constant(0.0, shape=[nodes[1]]), name="b1")
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")
@@ -85,9 +91,16 @@ class Model:
         for epoch in range(epochs):
             train_loss = self.update_variables(x_train, y_train).numpy()
             train_metric = self.compute_metrics(x_train, y_train).numpy()
-            print("Epoch: ", epoch + 1, " of ", epochs,
-                  " - Train Loss: ", round(train_loss, 4),
-                  " - Train Metric: ", round(train_metric, 4))
+            print(
+                "Epoch: ",
+                epoch + 1,
+                " of ",
+                epochs,
+                " - Train Loss: ",
+                round(train_loss, 4),
+                " - Train Metric: ",
+                round(train_metric, 4),
+            )
         # print("Weights at the end: ", self.get_variables())
 
     def evaluate(self, x, y):

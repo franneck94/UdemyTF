@@ -19,12 +19,12 @@ x = x.reshape(-1, 1)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
 
 regr = LinearRegression()
-regr.fit(x_train, y_train) # Training
+regr.fit(x_train, y_train)  # Training
 y_pred = regr.predict(x_test)
 
-print("R2: ", regr.score(x_test, y_test)) # Testing
-print("MAE: ", mae(y_test, y_pred)) # Testing
-print("MSE: ", mse(y_test, y_pred)) # Testing
+print("R2: ", regr.score(x_test, y_test))  # Testing
+print("MAE: ", mae(y_test, y_pred))  # Testing
+print("MSE: ", mse(y_test, y_pred))  # Testing
 
 plt.scatter(x, y)
 plt.plot(x_test, y_pred)

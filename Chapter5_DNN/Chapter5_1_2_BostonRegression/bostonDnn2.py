@@ -20,7 +20,7 @@ test_size = x_test.shape[0]
 
 # Model variables
 hidden_layer_size = 20
-nodes = [features, hidden_layer_size, target] # input, hidden, output
+nodes = [features, hidden_layer_size, target]  # input, hidden, output
 epochs = 100
 
 
@@ -36,8 +36,14 @@ def r_squared(y_true, y_pred):
 class Model:
     def __init__(self):
         # Weights (Matrices)
-        self.W1 = tf.Variable(tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.1), name="W1")
-        self.W2 = tf.Variable(tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.1), name="W2")
+        self.W1 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.1),
+            name="W1",
+        )
+        self.W2 = tf.Variable(
+            tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.1),
+            name="W2",
+        )
         # Biases (Vectors)
         self.b1 = tf.Variable(tf.constant(0.0, shape=[nodes[1]]), name="b1")
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")
@@ -80,9 +86,16 @@ class Model:
             train_loss = self.update_variables(x_train, y_train).numpy()
             train_r2 = self.compute_metrics(x_train, y_train).numpy()
             if epoch % 10 == 0:
-                print("Epoch: ", epoch + 1, " of ", epochs,
-                      " - Train Loss: ", round(train_loss, 4),
-                      " - Train R2: ", round(train_r2, 4))
+                print(
+                    "Epoch: ",
+                    epoch + 1,
+                    " of ",
+                    epochs,
+                    " - Train Loss: ",
+                    round(train_loss, 4),
+                    " - Train R2: ",
+                    round(train_r2, 4),
+                )
         # print("Weights at the end: ", self.get_variables())
 
     def evaluate(self, x, y):

@@ -49,7 +49,14 @@ batch_size = 256
 # Define the DNN
 model = Sequential()
 
-model.add(Dense(units=500, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features, )))
+model.add(
+    Dense(
+        units=500,
+        kernel_initializer=init_w,
+        bias_initializer=init_b,
+        input_shape=(num_features,),
+    )
+)
 model.add(Activation("relu"))
 
 model.add(Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b))
@@ -58,21 +65,25 @@ model.add(Activation("relu"))
 model.add(Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
 model.add(Activation("relu"))
 
-model.add(Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b,))
+model.add(
+    Dense(
+        units=num_classes,
+        kernel_initializer=init_w,
+        bias_initializer=init_b,
+    )
+)
 model.add(Activation("softmax"))
 
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
-model.compile(
-    loss="mse",
-    optimizer=optimizer,
-    metrics=["accuracy"])
+model.compile(loss="mse", optimizer=optimizer, metrics=["accuracy"])
 model.fit(
     x=x_train,
     y=y_train,
     epochs=epochs,
     batch_size=batch_size,
-    validation_data=(x_test, y_test))
+    validation_data=(x_test, y_test),
+)
 score = model.evaluate(x_test, y_test, verbose=0)
 print("Score: ", score)
 

@@ -21,13 +21,11 @@ class IMDBData:
         self.index_to_word = {val: key for key, val in self.word_index.items()}
         # Load dataset
         (self.x_train, self.y_train), (self.x_test, self.y_test) = imdb.load_data(
-            num_words=self.num_words,
-            skip_top=self.skip_top)
+            num_words=self.num_words, skip_top=self.skip_top
+        )
         # Save texts
-        self.x_train_text = np.array(
-            [[self.index_to_word[index] for index in review] for review in self.x_train])
-        self.x_test_text = np.array(
-            [[self.index_to_word[index] for index in review] for review in self.x_test])
+        self.x_train_text = np.array([[self.index_to_word[index] for index in review] for review in self.x_train])
+        self.x_test_text = np.array([[self.index_to_word[index] for index in review] for review in self.x_test])
         # Pad sequences
         self.x_train = sequence.pad_sequences(self.x_train, maxlen=self.maxlen)
         self.x_test = sequence.pad_sequences(self.x_test, maxlen=self.maxlen)

@@ -21,7 +21,7 @@ def conv2D(image, kernel):
 
     for i in range(rows - k_size):
         for j in range(cols - k_size):
-            conv_image[i][j] = np.sum(kernel * image[i:i + k_size, j:j + k_size])
+            conv_image[i][j] = np.sum(kernel * image[i : i + k_size, j : j + k_size])
 
     return conv_image
 

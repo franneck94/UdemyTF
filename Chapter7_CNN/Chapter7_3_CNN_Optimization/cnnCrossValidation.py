@@ -2,12 +2,7 @@ import os
 
 import numpy as np
 from sklearn.model_selection import cross_val_score
-from tensorflow.keras.layers import (Activation,
-                                     Conv2D,
-                                     Dense,
-                                     Flatten,
-                                     Input,
-                                     MaxPool2D)
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
@@ -74,25 +69,13 @@ def model_fn():
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
 
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=optimizer,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
     return model
 
 
-keras_clf = KerasClassifier(
-    build_fn=model_fn,
-    epochs=epochs,
-    batch_size=batch_size,
-    verbose=0)
+keras_clf = KerasClassifier(build_fn=model_fn, epochs=epochs, batch_size=batch_size, verbose=0)
 
-scores = cross_val_score(
-    estimator=keras_clf,
-    X=x_train,
-    y=y_train,
-    cv=3,
-    n_jobs=1)
+scores = cross_val_score(estimator=keras_clf, X=x_train, y=y_train, cv=3, n_jobs=1)
 
 print("Score list: ", scores)
 print("Mean Acc: %0.6f (+/- %0.6f)" % (np.mean(scores), np.std(scores) * 2))

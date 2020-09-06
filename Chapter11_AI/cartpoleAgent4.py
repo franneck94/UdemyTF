@@ -61,7 +61,14 @@ class Agent:
                         best_total_reward = total_reward
                         self.model.save_model("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/dqn.h5")
 
-                    print("Episode: ", episode + 1, " Total Reward: ", total_reward, " Epsilon:", self.epsilon)
+                    print(
+                        "Episode: ",
+                        episode + 1,
+                        " Total Reward: ",
+                        total_reward,
+                        " Epsilon:",
+                        self.epsilon,
+                    )
                     break
 
     def remember(self, state, action, reward, next_state, done):

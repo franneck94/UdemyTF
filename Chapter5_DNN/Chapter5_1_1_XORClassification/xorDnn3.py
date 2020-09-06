@@ -19,7 +19,7 @@ classes = 2
 target = 1
 # Model variables
 hidden_layer_size = 2
-nodes = [features, hidden_layer_size, target] # input, hidden, output
+nodes = [features, hidden_layer_size, target]  # input, hidden, output
 train_size = x_train.shape[0]
 test_size = x_test.shape[0]
 epochs = 10
@@ -53,7 +53,7 @@ class Model:
         return output_layer_act
 
     def loss(self, y_true, y_pred):
-        loss_fn = tf.math.reduce_mean(tf.math.square(y_pred - y_true)) # 1/N * Sum( (y_true - y_pred)^2)
+        loss_fn = tf.math.reduce_mean(tf.math.square(y_pred - y_true))  # 1/N * Sum( (y_true - y_pred)^2)
         self.current_loss_val = loss_fn.numpy()
         return loss_fn
 

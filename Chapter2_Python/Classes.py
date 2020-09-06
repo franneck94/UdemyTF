@@ -1,5 +1,5 @@
 class Car:
-    def __init__(self, name, year, hp): # self (this in C++/Java)
+    def __init__(self, name, year, hp):  # self (this in C++/Java)
         self.name = name
         self.year = year
         self.hp = hp

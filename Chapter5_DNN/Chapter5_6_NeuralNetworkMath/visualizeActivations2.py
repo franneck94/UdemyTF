@@ -6,7 +6,7 @@ from tensorflow.keras.optimizers import Adam
 
 
 def f(x):
-    return x**2 + x + 10
+    return x ** 2 + x + 10
 
 
 x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
@@ -21,9 +21,9 @@ def relu(x):
 
 
 model = Sequential()
-model.add(Dense(12)) # Input zu Hidden
-model.add(Activation("relu")) # ReLU vom Hidden
-model.add(Dense(1)) # Vom Hidden zum Output
+model.add(Dense(12))  # Input zu Hidden
+model.add(Activation("relu"))  # ReLU vom Hidden
+model.add(Dense(1))  # Vom Hidden zum Output
 model.compile(optimizer=Adam(lr=5e-2), loss="mse")
 model.fit(x, y, epochs=20)
 

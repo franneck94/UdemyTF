@@ -13,7 +13,8 @@ def model_fn():
         weights='imagenet',
         input_shape=IMG_SHAPE,
         include_top=False,
-        classes=NUM_CLASSES)
+        classes=NUM_CLASSES,
+    )
     base_model.trainable = False
 
     inputs = tf.keras.Input(shape=IMG_SHAPE)
@@ -25,9 +26,11 @@ def model_fn():
 
 
 model = model_fn()
-model.compile(optimizer=tf.keras.optimizers.Adam(1e-5),
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-              metrics=[tf.keras.metrics.BinaryAccuracy()])
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(1e-5),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    metrics=[tf.keras.metrics.BinaryAccuracy()],
+)
 model.summary()
 
 train_dataset, validation_dataset, test_dataset = get_dataset()

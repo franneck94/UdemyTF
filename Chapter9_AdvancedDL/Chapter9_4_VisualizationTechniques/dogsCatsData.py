@@ -17,6 +17,7 @@ IMG_WIDTH = 64
 IMG_HEIGHT = 64
 IMG_DEPTH = 3
 
+
 def extract_cats_vs_dogs():
     cats_dir = os.path.join(FILE_DIR, "cat")
     dogs_dir = os.path.join(FILE_DIR, "dog")
@@ -34,7 +35,7 @@ def extract_cats_vs_dogs():
     num_cats = len(os.listdir(cats_dir))
     num_dogs = len(os.listdir(dogs_dir))
     num_images = num_cats + num_dogs
-    
+
     x = np.zeros(shape=(num_images, IMG_WIDTH, IMG_HEIGHT, IMG_DEPTH), dtype=np.float32)
     y = np.zeros(shape=(num_images), dtype=np.int8)
 
@@ -72,6 +73,7 @@ def extract_cats_vs_dogs():
     np.save(os.path.join(FILE_DIR, "x.npy"), x)
     np.save(os.path.join(FILE_DIR, "y.npy"), y)
 
+
 def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
     file_x = os.path.join(FILE_DIR, "x.npy")
     file_y = os.path.join(FILE_DIR, "y.npy")
@@ -84,12 +86,14 @@ def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
     return (x_train, y_train), (x_test, y_test)
 
+
 class DOGSCATS:
     def __init__(self, test_size=0.33, extracting_images=False):
         # Load the data set
         # Class 0: Cat, Class 1: Dog
         (self.x_train, self.y_train), (self.x_test, self.y_test) = load_cats_vs_dogs(
-            test_size=test_size, extracting_images=extracting_images)
+            test_size=test_size, extracting_images=extracting_images
+        )
         self.x_train_ = None
         self.x_val = None
         self.y_train_ = None
@@ -107,7 +111,7 @@ class DOGSCATS:
         self.width = self.x_train.shape[1]
         self.height = self.x_train.shape[2]
         self.depth = self.x_train.shape[3]
-        self.num_classes = 2 # Constant for the data set
+        self.num_classes = 2  # Constant for the data set
         self.num_features = self.width * self.height * self.depth
         # Reshape the y data to one hot encoding
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
@@ -122,8 +126,9 @@ class DOGSCATS:
         return self.x_test, self.y_test
 
     def get_splitted_train_validation_set(self, validation_size=0.33):
-        self.x_train_, self.x_val, self.y_train_, self.y_val =\
-            train_test_split(self.x_train, self.y_train, test_size=validation_size)
+        self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
+            self.x_train, self.y_train, test_size=validation_size
+        )
         self.val_size = self.x_val.shape[0]
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val
@@ -136,15 +141,17 @@ class DOGSCATS:
             width_shift_range=0.05,
             height_shift_range=0.05,
             fill_mode='constant',
-            cval=0.0)
+            cval=0.0,
+        )
         # Fit the data generator
         image_generator.fit(self.x_train, augment=True)
         # Get random train images for the data augmentation
         rand_idxs = np.random.randint(self.train_size, size=augment_size)
         x_augmented = self.x_train[rand_idxs].copy()
         y_augmented = self.y_train[rand_idxs].copy()
-        x_augmented = image_generator.flow(x_augmented, np.zeros(augment_size),
-                                           batch_size=augment_size, shuffle=False).next()[0]
+        x_augmented = image_generator.flow(
+            x_augmented, np.zeros(augment_size), batch_size=augment_size, shuffle=False
+        ).next()[0]
         # Append the augmented images to the train set
         self.x_train = np.concatenate((self.x_train, x_augmented))
         self.y_train = np.concatenate((self.y_train, y_augmented))
@@ -170,7 +177,5 @@ class DOGSCATS:
         self.x_train = self.scaler.transform(self.x_train)
         self.x_test = self.scaler.transform(self.x_test)
         # Reshaping the xdata back to the input shape
-        self.x_train = self.x_train.reshape(
-            (self.train_size, self.width, self.height, self.depth))
-        self.x_test = self.x_test.reshape(
-            (self.test_size, self.width, self.height, self.depth))
+        self.x_train = self.x_train.reshape((self.train_size, self.width, self.height, self.depth))
+        self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))

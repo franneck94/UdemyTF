@@ -21,28 +21,24 @@ def create_model():
 
     # Define the DNN
     model = tensorflow.keras.models.Sequential()
-    model.add(tensorflow.keras.layers.Dense(
-        units=500, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,)))
-    model.add(tensorflow.keras.layers.Activation(
-        "relu"))
-    model.add(tensorflow.keras.layers.Dense(
-        units=300, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation(
-        "relu"))
-    model.add(tensorflow.keras.layers.Dense(
-        units=100, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation(
-        "relu"))
-    model.add(tensorflow.keras.layers.Dense(
-        units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation(
-        "softmax"))
+    model.add(
+        tensorflow.keras.layers.Dense(
+            units=500,
+            kernel_initializer=init_w,
+            bias_initializer=init_b,
+            input_shape=(num_features,),
+        )
+    )
+    model.add(tensorflow.keras.layers.Activation("relu"))
+    model.add(tensorflow.keras.layers.Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tensorflow.keras.layers.Activation("relu"))
+    model.add(tensorflow.keras.layers.Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tensorflow.keras.layers.Activation("relu"))
+    model.add(tensorflow.keras.layers.Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tensorflow.keras.layers.Activation("softmax"))
 
     # Compile and train (fit) the model, afterwards evaluate the model
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=optimizer,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
     return model
 
 
@@ -89,7 +85,8 @@ def nn_train():
         y=y_train,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_test, y_test))
+        validation_data=(x_test, y_test),
+    )
 
     model.save_weights(MODEL_PATH)
 

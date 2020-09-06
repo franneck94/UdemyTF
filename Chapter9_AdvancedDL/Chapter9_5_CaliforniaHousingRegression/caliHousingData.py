@@ -52,6 +52,14 @@ if __name__ == "__main__":
     # df.hist(bins=30, figsize=(20,15))
     # plt.show()
 
-    df.plot(kind="scatter", x="Longitude", y="Latitude", alpha=0.4,
-            figsize=(10, 7), c="y", cmap=plt.get_cmap("jet"), colorbar=True)
+    df.plot(
+        kind="scatter",
+        x="Longitude",
+        y="Latitude",
+        alpha=0.4,
+        figsize=(10, 7),
+        c="y",
+        cmap=plt.get_cmap("jet"),
+        colorbar=True,
+    )
     plt.show()

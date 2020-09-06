@@ -1,29 +1,46 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 import tensorflow as tf
+
 tf.random.set_seed(0)
 
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.layers import (
+    Activation,
+    BatchNormalization,
+    Conv2D,
+    Dense,
+    Dropout,
+    Flatten,
+    Input,
+    LeakyReLU,
+    MaxPool2D,
+)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import TensorBoard
 
-from plotting import *
-from dogsCatsData import *
+from dogsCatsData import DOGSCATS
+
 
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)
 data.data_preprocessing(preprocess_mode="MinMax")
-x_train_splitted, x_val, y_train_splitted, y_val = data.get_splitted_train_validation_set()
+(
+    x_train_splitted,
+    x_val,
+    y_train_splitted,
+    y_val,
+) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
@@ -38,20 +55,33 @@ log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
-# Define the DNN
 
-
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-             kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size,
-             kernel_initializer, bias_initializer, activation_str, dropout_rate, use_bn):
+def model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+    kernel_initializer,
+    bias_initializer,
+    activation_str,
+    dropout_rate,
+    use_bn,
+):
     # Input
     input_img = Input(shape=x_train.shape[1:])
     # Conv Block 1
-    x = Conv2D(filters=filter_block1,
-               kernel_size=kernel_size_block1,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(input_img)
+    x = Conv2D(
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(input_img)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -60,11 +90,13 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
-    x = Conv2D(filters=filter_block1,
-               kernel_size=kernel_size_block1,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
+    x = Conv2D(
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -76,11 +108,13 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     x = MaxPool2D()(x)
 
     # Conv Block 2
-    x = Conv2D(filters=filter_block2,
-               kernel_size=kernel_size_block2,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
+    x = Conv2D(
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -89,40 +123,13 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
-    x = Conv2D(filters=filter_block2,
-               kernel_size=kernel_size_block2,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
-    if use_bn:
-        x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
-    x = MaxPool2D()(x)
-
-    # Conv Block 3
-    x = Conv2D(filters=filter_block3,
-               kernel_size=kernel_size_block3,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
-    if use_bn:
-        x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
-    x = Conv2D(filters=filter_block3,
-               kernel_size=kernel_size_block3,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
+    x = Conv2D(
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -134,11 +141,13 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     x = MaxPool2D()(x)
 
     # Conv Block 3
-    x = Conv2D(filters=filter_block3,
-               kernel_size=kernel_size_block3,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
+    x = Conv2D(
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -147,11 +156,46 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
-    x = Conv2D(filters=filter_block3,
-               kernel_size=kernel_size_block3,
-               padding='same',
-               kernel_initializer=kernel_initializer,
-               bias_initializer=bias_initializer)(x)
+    x = Conv2D(
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
+    if use_bn:
+        x = BatchNormalization()(x)
+    if dropout_rate > 0.0:
+        x = Dropout(rate=dropout_rate)(x)
+    if activation_str == "LeakyReLU":
+        x = LeakyReLU()(x)
+    else:
+        x = Activation(activation_str)(x)
+    x = MaxPool2D()(x)
+
+    # Conv Block 3
+    x = Conv2D(
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
+    if use_bn:
+        x = BatchNormalization()(x)
+    if dropout_rate > 0.0:
+        x = Dropout(rate=dropout_rate)(x)
+    if activation_str == "LeakyReLU":
+        x = LeakyReLU()(x)
+    else:
+        x = Activation(activation_str)(x)
+    x = Conv2D(
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding='same',
+        kernel_initializer=kernel_initializer,
+        bias_initializer=bias_initializer,
+    )(x)
     if use_bn:
         x = BatchNormalization()(x)
     if dropout_rate > 0.0:
@@ -175,10 +219,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -210,8 +251,7 @@ params = {
 rand_model = model_fn(**params)
 
 model_log_dir = os.path.join(log_dir, "modelBN")
-tb_callback = TensorBoard(
-    log_dir=model_log_dir)
+tb_callback = TensorBoard(log_dir=model_log_dir)
 
 rand_model.fit(
     x=x_train_splitted,
@@ -220,11 +260,8 @@ rand_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback],
-    validation_data=(x_val, y_val))
+    validation_data=(x_val, y_val),
+)
 
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance: ", score)

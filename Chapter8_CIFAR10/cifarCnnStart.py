@@ -1,8 +1,10 @@
 import os
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 from tensorflow.keras.layers import Activation, Dense, Input
@@ -40,8 +42,5 @@ def model_fn():
 
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer="adam",
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
     return model

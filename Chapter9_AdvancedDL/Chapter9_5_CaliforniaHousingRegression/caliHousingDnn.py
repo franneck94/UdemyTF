@@ -33,7 +33,7 @@ batch_size = 256
 
 # Define the DNN
 model = Sequential()
-model.add(Dense(units=16, input_shape=(num_features, )))
+model.add(Dense(units=16, input_shape=(num_features,)))
 model.add(Activation("relu"))
 model.add(Dense(units=64))
 model.add(Activation("relu"))
@@ -43,15 +43,13 @@ model.add(Dense(units=num_targets))
 model.summary()
 
 # Compile and train (fit) the model, afterwards evaluate the model
-model.compile(
-    loss="mse",
-    optimizer=optimizer,
-    metrics=[r_squared])
+model.compile(loss="mse", optimizer=optimizer, metrics=[r_squared])
 model.fit(
     x=x_train,
     y=y_train,
     epochs=epochs,
     batch_size=batch_size,
-    validation_data=(x_test, y_test))
+    validation_data=(x_test, y_test),
+)
 score = model.evaluate(x_test, y_test, verbose=0)
 print("Score: ", score)

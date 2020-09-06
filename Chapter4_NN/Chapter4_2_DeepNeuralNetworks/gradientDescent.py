@@ -13,7 +13,7 @@ print("X_start = ", x_start)
 print("Y_start = ", y_start)
 plot_rosenbrock(x_start)
 
-learning_rate = 0.005 # [0.001, 0.00001]
+learning_rate = 0.005  # [0.001, 0.00001]
 num_iterations = 1000
 
 gradient_steps = []

@@ -10,5 +10,5 @@ num_features = cali_data.num_features
 num_targets = cali_data.num_targets
 
 regr = LinearRegression()
-regr.fit(x_train, y_train) # Training
-print(regr.score(x_test, y_test)) # Testing
+regr.fit(x_train, y_train)  # Training
+print(regr.score(x_test, y_test))  # Testing

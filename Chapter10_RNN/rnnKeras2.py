@@ -1,10 +1,13 @@
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
 import tensorflow as tf
+
 tf.random.set_seed(0)
 
 from tensorflow.keras.activations import *
@@ -62,9 +65,9 @@ model.compile(loss="mse", optimizer="Adam")
 # model.summary()
 
 rnn = SimpleRNNInference(rnn_layer=model.layers[0], return_sequences=return_sequences)
-output_rnn_own = rnn(x[0]) # 10.5
+output_rnn_own = rnn(x[0])  # 10.5
 print(output_rnn_own)
 print("\n\n")
 output_rnn_tf = model.predict(x[[0]])
-print(output_rnn_tf) # 10.5
+print(output_rnn_tf)  # 10.5
 assert np.all(np.isclose(output_rnn_own - output_rnn_tf, 0.0))

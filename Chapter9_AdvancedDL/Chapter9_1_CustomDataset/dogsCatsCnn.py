@@ -1,26 +1,32 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 random.seed(0)
 
 import numpy as np
+
 np.random.seed(0)
 
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 
-from plotting import *
-from dogsCatsData import *
+from dogsCatsData import DOGSCATS
+
 
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)
 data.data_preprocessing(preprocess_mode="MinMax")
-x_train_splitted, x_val, y_train_splitted, y_val = data.get_splitted_train_validation_set()
+(
+    x_train_splitted,
+    x_val,
+    y_train_splitted,
+    y_val,
+) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
@@ -35,11 +41,18 @@ log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
-# Define the DNN
 
-
-def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-             kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size):
+def model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+):
     # Input
     input_img = Input(shape=x_train.shape[1:])
     # Conv Block 1
@@ -70,10 +83,7 @@ def model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(
-        loss="categorical_crossentropy",
-        optimizer=opt,
-        metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
     return model
 
 
@@ -91,11 +101,19 @@ filter_block3 = 128
 kernel_size_block3 = 3
 dense_layer_size = 512
 
-rand_model = model_fn(optimizer, learning_rate, filter_block1, kernel_size_block1, filter_block2,
-                      kernel_size_block2, filter_block3, kernel_size_block3, dense_layer_size)
+rand_model = model_fn(
+    optimizer,
+    learning_rate,
+    filter_block1,
+    kernel_size_block1,
+    filter_block2,
+    kernel_size_block2,
+    filter_block3,
+    kernel_size_block3,
+    dense_layer_size,
+)
 model_log_dir = os.path.join(log_dir, "modelCatsDogsStart")
-tb_callback = TensorBoard(
-    log_dir=model_log_dir)
+tb_callback = TensorBoard(log_dir=model_log_dir)
 rand_model.fit(
     x=x_train_splitted,
     y=y_train_splitted,
@@ -103,10 +121,7 @@ rand_model.fit(
     batch_size=batch_size,
     epochs=epochs,
     callbacks=[tb_callback],
-    validation_data=(x_val, y_val))
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
+    validation_data=(x_val, y_val),
+)
+score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
 print("Test performance: ", score)

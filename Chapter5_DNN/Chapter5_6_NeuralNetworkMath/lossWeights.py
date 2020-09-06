@@ -7,17 +7,17 @@ from tensorflow.keras.optimizers import RMSprop
 
 
 def f(x):
-    return x**2 + x + 10
+    return x ** 2 + x + 10
 
 
 x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
 y = f(x)
 
 model = Sequential()
-model.add(Dense(12)) # Input zu Hidden
-model.add(Activation("relu")) # ReLU vom Hidden
-model.add(Dense(1)) # Vom Hidden zum Output
-model.compile(optimizer=RMSprop(lr=1e-2), loss="mse") # 1e-3 <=> 0.001
+model.add(Dense(12))  # Input zu Hidden
+model.add(Activation("relu"))  # ReLU vom Hidden
+model.add(Dense(1))  # Vom Hidden zum Output
+model.compile(optimizer=RMSprop(lr=1e-2), loss="mse")  # 1e-3 <=> 0.001
 model.fit(x, y, epochs=20)
 y_pred = model.predict(x).flatten()
 W, b = model.layers[0].get_weights()

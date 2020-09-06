@@ -8,7 +8,7 @@ def generate_data_or():
 
 
 def to_one_hot(y, num_classes):
-    y_one_hot = np.zeros(shape=(len(y), num_classes)) # 4x2
+    y_one_hot = np.zeros(shape=(len(y), num_classes))  # 4x2
     for i, y_i in enumerate(y):
         y_oh = np.zeros(shape=num_classes)
         y_oh[y_i] = 1
