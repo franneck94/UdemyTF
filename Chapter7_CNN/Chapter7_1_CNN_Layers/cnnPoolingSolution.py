@@ -10,14 +10,19 @@ image = x_train[0]
 image = image.reshape((28, 28))
 
 
-# Max-Pooling Funktion definieren und auf ein Bild aus dem
-# MNIST Dataset anwenden
 def get_kernel_values(i, j, image):
-    kernel_values = image[i : i + 2, j : j + 2]
+    '''Max-Pooling Funktion definieren und auf ein Bild aus dem
+    MNIST Dataset anwenden.
+    '''
+    kernel_values = image[i: i + 2, j: j + 2]
     return kernel_values
 
 
 def max_pooling(image):
+    '''Max-Pooling Funktion definieren und auf ein Bild aus dem
+    MNIST Dataset anwenden.
+    2x2, max
+    '''
     # Setup output image as ndarray
     new_rows = image.shape[0] // 2
     new_cols = image.shape[1] // 2

@@ -1,19 +1,20 @@
 import os
 import random
 
-random.seed(0)
-
 import numpy as np
-
-np.random.seed(0)
-
 from sklearn.model_selection import RandomizedSearchCV
+import tensorflow as tf
 from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
 from mnistDataValidation import MNIST
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 mnist = MNIST()

@@ -11,12 +11,11 @@ image = image.reshape((28, 28))
 
 kernel = np.random.uniform(low=0.0, high=1.0, size=(2, 2))
 
-# Conv Funktion definieren und anschließend plotten
-
 
 def conv2D(image, kernel):
+    '''Conv Funktion definieren und anschließend plotten.'''
     rows, cols = image.shape  # 28x28
-    k_size, k_size = kernel.shape  # 2x2
+    k_size, _ = kernel.shape  # 2x2
     conv_image = np.zeros(shape=(rows, cols), dtype=np.float32)  # 28x28
 
     for i in range(rows - k_size):

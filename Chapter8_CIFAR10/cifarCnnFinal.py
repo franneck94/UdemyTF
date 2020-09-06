@@ -1,21 +1,19 @@
 import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 import random
 
-random.seed(0)
-
 import numpy as np
-
-np.random.seed(0)
-
+import tensorflow as tf
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from cifar10Data import CIFAR10
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 cifar = CIFAR10()

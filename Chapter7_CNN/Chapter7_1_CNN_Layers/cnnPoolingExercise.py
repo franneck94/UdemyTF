@@ -10,10 +10,11 @@ image = x_train[0]
 image = image.reshape((28, 28))
 
 
-# Max-Pooling Funktion definieren und auf ein Bild aus dem
-# MNIST Dataset anwenden.
-# 2x2, max
 def max_pooling(image):
+    '''Max-Pooling Funktion definieren und auf ein Bild aus dem
+    MNIST Dataset anwenden.
+    2x2, max
+    '''
     return image
 
 

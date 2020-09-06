@@ -1,23 +1,8 @@
 import os
-
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 import random
 
-
-random.seed(0)
-
 import numpy as np
-
-
-np.random.seed(0)
-
 import tensorflow as tf
-
-
-tf.random.set_seed(0)
-
 from tensorflow.keras.callbacks import (
     EarlyStopping,
     LearningRateScheduler,
@@ -40,6 +25,11 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from mnistData import MNIST
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 data = MNIST()

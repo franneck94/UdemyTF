@@ -50,8 +50,12 @@ model.add(
     )
 )
 model.add(Activation("relu"))
-model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
-model.summary()
+model.add(
+    Dense(
+        units=num_targets,
+        kernel_initializer=init_w,
+        bias_initializer=init_b
+    )
+)
 
-model.fit(x_train, y_train, epochs=epochs)
-model.evaluate(x_test, y_test)
+model.summary()

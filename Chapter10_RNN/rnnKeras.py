@@ -1,17 +1,15 @@
 import random
 
-random.seed(0)
-
 import numpy as np
-
-np.random.seed(0)
-
 import tensorflow as tf
-
-tf.random.set_seed(0)
 
 from tensorflow.keras.layers import SimpleRNN
 from tensorflow.keras.models import Sequential
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 def sigmoid_fn(x):

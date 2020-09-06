@@ -1,16 +1,17 @@
 import os
 import random
 
-random.seed(0)
-
 import numpy as np
-
-np.random.seed(0)
-
+import tensorflow as tf
 from tensorflow.keras.layers import Activation, Dense, Input
 from tensorflow.keras.models import Model
 
 from cifar10Data import CIFAR10
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 cifar = CIFAR10()

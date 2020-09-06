@@ -1,19 +1,9 @@
 import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 import random
 
-random.seed(0)
-
+import matplotlib.pyplot as plt
 import numpy as np
-
-np.random.seed(0)
-
 import tensorflow as tf
-
-tf.random.set_seed(0)
-
 from tensorflow.keras.layers import (
     Activation,
     BatchNormalization,
@@ -34,8 +24,12 @@ from tensorflow.keras.callbacks import (
     ReduceLROnPlateau,
 )
 
-from plotting import plt
 from dogsCatsData import DOGSCATS
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 data = DOGSCATS()

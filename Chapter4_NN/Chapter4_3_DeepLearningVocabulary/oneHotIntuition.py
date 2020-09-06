@@ -14,3 +14,7 @@ def to_one_hot(y, num_classes):
         y_oh[y_i] = 1
         y_one_hot[i] = y_oh
     return y_one_hot
+
+
+if __name__ == "__main__":
+    pass

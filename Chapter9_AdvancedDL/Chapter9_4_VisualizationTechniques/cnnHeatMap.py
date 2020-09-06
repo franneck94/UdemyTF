@@ -1,19 +1,8 @@
 import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 import random
 
-random.seed(0)
-
 import numpy as np
-
-np.random.seed(0)
-
 import tensorflow as tf
-
-tf.random.set_seed(0)
-
 from tensorflow.keras.layers import (
     Activation,
     BatchNormalization,
@@ -31,6 +20,12 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 from dogsCatsData import DOGSCATS
+
+
+random.seed(0)
+np.random.seed(0)
+tf.random.set_seed(0)
+
 
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)
