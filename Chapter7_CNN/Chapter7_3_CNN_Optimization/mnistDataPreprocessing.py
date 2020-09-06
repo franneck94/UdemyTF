@@ -43,9 +43,9 @@ class MNIST:
 
 
 if __name__ == "__main__":
-    mnist = MNIST()
+    data = MNIST()
 
-    x_train, y_train = mnist.get_train_set()
+    x_train, y_train = data.get_train_set()
     print(np.max(x_train))
     print(np.min(x_train))
     print(np.mean(x_train))

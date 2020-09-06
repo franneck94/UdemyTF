@@ -177,5 +177,6 @@ class DOGSCATS:
         self.x_train = self.x_train.reshape((self.train_size, self.width, self.height, self.depth))
         self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))
 
+
 if  __name__ == "__main__":
     extract_cats_vs_dogs()
