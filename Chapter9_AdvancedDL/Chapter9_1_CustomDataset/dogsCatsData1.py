@@ -20,7 +20,7 @@ def load_cats_vs_dogs():
 class DOGSCATS:
     def __init__(self):
         # Load the data set
-        (self.x_train, self.y_train), (self.x_test, self.y_test) = load_cats_vs_dogs()
+        # (self.x_train, self.y_train), (self.x_test, self.y_test) = load_cats_vs_dogs()
         self.x_train_ = None
         self.x_val = None
         self.y_train_ = None
@@ -108,5 +108,5 @@ class DOGSCATS:
         self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))
 
 
-if  __name__ == "__main__":
+if __name__ == "__main__":
     extract_cats_vs_dogs()
