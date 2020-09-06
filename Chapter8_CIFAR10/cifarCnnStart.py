@@ -1,21 +1,15 @@
 import os
 import random
-
 random.seed(0)
 
 import numpy as np
-
 np.random.seed(0)
 
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.layers import Activation, Dense, Input
+from tensorflow.keras.models import Model
 
-from cifar10Data import *
-from plotting import *
+from cifar10Data import CIFAR10
+
 
 cifar = CIFAR10()
 cifar.data_augmentation(augment_size=5000)

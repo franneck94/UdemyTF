@@ -2,6 +2,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
 
+
 # Dataset
 (x_train, y_train), (x_test, y_test) = boston_housing.load_data()
 x_train = x_train.astype(np.float32)

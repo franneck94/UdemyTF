@@ -1,16 +1,17 @@
 import os
 
 from sklearn.model_selection import GridSearchCV, ParameterGrid
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.layers import (Activation,
+                                     Conv2D,
+                                     Dense,
+                                     Flatten,
+                                     Input,
+                                     MaxPool2D)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-from mnistDataValidation import *
-from plotting import *
+from mnistDataValidation import MNIST
 
 
 mnist = MNIST()

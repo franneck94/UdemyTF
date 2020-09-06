@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_squared_error
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import RMSprop
 
 
 def f(x):

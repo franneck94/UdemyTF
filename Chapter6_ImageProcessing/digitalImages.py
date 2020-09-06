@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+
 # Schwarz Weiß Bilder (1d)
 bild = np.array([0, 1, 1, 1, 1, 1, 0, 0, 0, ], dtype=np.uint8)
 print("\nB/W (1D):\n", bild)

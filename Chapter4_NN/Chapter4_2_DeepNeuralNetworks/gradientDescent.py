@@ -2,6 +2,7 @@ import numpy as np
 
 from helper import f, f_prime_x0, f_prime_x1, plot_rosenbrock
 
+
 x0 = np.random.uniform(-2, 2)
 x1 = np.random.uniform(-2, 2)
 x_start = (x0, x1)

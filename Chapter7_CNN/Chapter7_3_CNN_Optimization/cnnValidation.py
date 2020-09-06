@@ -1,14 +1,16 @@
 import os
 
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import (Activation,
+                                     Conv2D,
+                                     Dense,
+                                     Flatten,
+                                     Input,
+                                     MaxPool2D)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 
-from mnistDataValidation import *
-from plotting import *
+from mnistDataValidation import MNIST
 
 
 mnist = MNIST()

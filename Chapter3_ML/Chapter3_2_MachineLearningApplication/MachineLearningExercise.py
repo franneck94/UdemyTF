@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 from helper import regression_data
+
 
 x, y = regression_data()
 x = x.reshape(-1, 1)

@@ -1,11 +1,9 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
+from tensorflow.keras.initializers import Constant, RandomUniform
+from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
 
 
 # Dataset
@@ -48,5 +46,5 @@ model.add(Activation("relu"))
 model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
 model.summary()
 
-# model.fit(x_train, y_train, epochs=epochs)
-# model.evaluate(x_test, y_test)
+model.fit(x_train, y_train, epochs=epochs)
+model.evaluate(x_test, y_test)

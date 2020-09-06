@@ -5,12 +5,11 @@ np.random.seed(3)
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
+
 
 # Save Path
 log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/computation/")

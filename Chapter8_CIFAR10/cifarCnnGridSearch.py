@@ -1,26 +1,21 @@
 import os
 import shutil
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
-
 random.seed(0)
 
 import numpy as np
-
 np.random.seed(0)
 
 from sklearn.model_selection import ParameterGrid
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam, RMSprop
 
-from cifar10Data import *
-from plotting import *
+from cifar10Data import CIFAR10
+
 
 cifar = CIFAR10()
 cifar.data_augmentation(augment_size=5000)

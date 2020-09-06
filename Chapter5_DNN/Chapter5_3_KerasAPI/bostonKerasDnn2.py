@@ -1,14 +1,10 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-
-from plotting import *
-
+from tensorflow.keras.initializers import Constant, RandomUniform
+from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 
 # Dataset
 (x_train, y_train), (x_test, y_test) = boston_housing.load_data()

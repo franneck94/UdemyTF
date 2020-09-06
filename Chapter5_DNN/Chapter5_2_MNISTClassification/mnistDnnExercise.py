@@ -5,6 +5,7 @@ from tensorflow.keras.utils import to_categorical
 
 from plotting import display_convergence_error, display_convergence_acc
 
+
 # Dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 

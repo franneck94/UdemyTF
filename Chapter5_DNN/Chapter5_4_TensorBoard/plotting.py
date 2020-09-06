@@ -23,6 +23,8 @@ def display_digit(image, label=None, pred_label=None):
 
 
 def display_digit_and_predictions(image, label, pred, pred_one_hot):
+    """Display the Digit and the Prediction from the image.
+    """
     if image.shape == (784,):
         image = image.reshape((28, 28))
     _, axs = plt.subplots(1, 2)
@@ -96,6 +98,8 @@ def plot_confusion_matrix(y_pred, y_true, classes_list):
 
 
 def plot_to_image(fig):
+    """Matplotlib plot to image.
+    """
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
     plt.close(fig)
@@ -106,6 +110,8 @@ def plot_to_image(fig):
 
 
 class ImageCallback(tf.keras.callbacks.Callback):
+    """Image Callback.
+    """
     def __init__(self, model, x_test, y_test, log_dir="./", classes_list=None, figure_fn=None, figure_title=None):
         super().__init__()
         self.model = model
