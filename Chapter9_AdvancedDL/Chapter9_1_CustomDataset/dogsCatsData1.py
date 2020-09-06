@@ -108,5 +108,5 @@ class DOGSCATS:
         self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))
 
 
-if __name__ == "__main__":
-    pass
+if  __name__ == "__main__":
+    extract_cats_vs_dogs()
