@@ -4,6 +4,7 @@ models/
 *.pptx
 *.txt
 *.png
+!requirements.txt
 
 Chapter1_Introduction/
 Chapter12_Outlook/
