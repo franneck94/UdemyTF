@@ -4,7 +4,7 @@ import random
 import gym
 import numpy as np
 
-from cartpoleDqn3 import *
+from cartpoleDqn3 import DQN
 
 
 class Agent:

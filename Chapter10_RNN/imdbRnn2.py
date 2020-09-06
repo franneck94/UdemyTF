@@ -1,11 +1,8 @@
-from tensorflow.keras.activations import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.layers import Activation, Dense, Embedding, Input, LSTM
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 
-from imdbData2 import *
+from imdbData2 import IMDBData
 
 
 # Load MNIST dataset

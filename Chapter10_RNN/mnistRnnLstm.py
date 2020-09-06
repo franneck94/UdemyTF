@@ -1,10 +1,8 @@
 import numpy as np
-from tensorflow.keras.activations import *
 from tensorflow.keras.datasets import mnist
-from tensorflow.keras.initializers import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
+from tensorflow.keras.layers import Activation, Dense, LSTM
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 # Dataset

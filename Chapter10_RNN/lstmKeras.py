@@ -10,9 +10,8 @@ import tensorflow as tf
 
 tf.random.set_seed(0)
 
-from tensorflow.keras.activations import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.models import Sequential
 
 
 def sigmoid_fn(x):
@@ -30,17 +29,17 @@ class LSTMInference:
         self.W, self.U, self.b = self.lstm_layer.get_weights()
         self.units = self.b.shape[0] // 4
         self.W_i = self.W[:, : self.units]
-        self.W_f = self.W[:, self.units : self.units * 2]
-        self.W_c = self.W[:, self.units * 2 : self.units * 3]
-        self.W_o = self.W[:, self.units * 3 :]
+        self.W_f = self.W[:, self.units: self.units * 2]
+        self.W_c = self.W[:, self.units * 2: self.units * 3]
+        self.W_o = self.W[:, self.units * 3:]
         self.U_i = self.U[:, : self.units]
-        self.U_f = self.U[:, self.units : self.units * 2]
-        self.U_c = self.U[:, self.units * 2 : self.units * 3]
-        self.U_o = self.U[:, self.units * 3 :]
+        self.U_f = self.U[:, self.units: self.units * 2]
+        self.U_c = self.U[:, self.units * 2: self.units * 3]
+        self.U_o = self.U[:, self.units * 3:]
         self.b_i = self.b[: self.units]
-        self.b_f = self.b[self.units : self.units * 2]
-        self.b_c = self.b[self.units * 2 : self.units * 3]
-        self.b_o = self.b[self.units * 3 :]
+        self.b_f = self.b[self.units: self.units * 2]
+        self.b_c = self.b[self.units * 2: self.units * 3]
+        self.b_o = self.b[self.units * 3:]
 
     def __call__(self, x):
         # output shape (num_timesteps, units)

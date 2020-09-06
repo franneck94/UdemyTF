@@ -10,9 +10,8 @@ import tensorflow as tf
 
 tf.random.set_seed(0)
 
-from tensorflow.keras.activations import *
-from tensorflow.keras.layers import *
-from tensorflow.keras.models import *
+from tensorflow.keras.layers import SimpleRNN
+from tensorflow.keras.models import Sequential
 
 
 def sigmoid_fn(x):

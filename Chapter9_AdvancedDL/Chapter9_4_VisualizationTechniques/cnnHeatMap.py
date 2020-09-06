@@ -14,15 +14,23 @@ import tensorflow as tf
 
 tf.random.set_seed(0)
 
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.layers import (
+    Activation,
+    BatchNormalization,
+    Conv2D,
+    Dense,
+    Dropout,
+    Flatten,
+    GlobalAveragePooling2D,
+    Input,
+    LeakyReLU,
+    MaxPool2D,
+)
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-from plotting import *
-from dogsCatsData import *
+from dogsCatsData import DOGSCATS
 
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)

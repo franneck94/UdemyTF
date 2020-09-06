@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from helper import *
+from helper import regression_data
 
 
 x, y = regression_data()

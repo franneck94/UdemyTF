@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from caliHousingData import *
+from caliHousingData import CALIHOUSING
 
 
 cali_data = CALIHOUSING()

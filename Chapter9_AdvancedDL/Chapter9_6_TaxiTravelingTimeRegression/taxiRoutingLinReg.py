@@ -2,7 +2,7 @@ import os
 
 from sklearn.linear_model import LinearRegression
 
-from taxiRoutingData import *
+from taxiRoutingData import TAXIROUTING
 
 
 excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")

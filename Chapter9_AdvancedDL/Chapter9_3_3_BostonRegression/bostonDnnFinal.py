@@ -1,28 +1,29 @@
 import os
 
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import random
+
 
 random.seed(0)
 
 import numpy as np
 
+
 np.random.seed(0)
 
 import tensorflow as tf
 
+
 tf.random.set_seed(0)
 
-from tensorflow.keras.layers import *
-from tensorflow.keras.activations import *
-from tensorflow.keras.models import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.initializers import *
-from tensorflow.keras.callbacks import *
+from tensorflow.keras.callbacks import EarlyStopping, LearningRateScheduler, ReduceLROnPlateau, TensorBoard
+from tensorflow.keras.layers import Activation, BatchNormalization, Dense, Dropout, Input, LeakyReLU
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 
-from plotting import *
-from bostonData import *
+from bostonData import BOSTON
 
 
 data = BOSTON()

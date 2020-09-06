@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from bostonData import *
+from bostonData import BOSTON
 
 
 boston = BOSTON()
