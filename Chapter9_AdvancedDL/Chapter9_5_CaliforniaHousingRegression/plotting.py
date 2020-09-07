@@ -4,12 +4,22 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+import tensorflow.keras.backend as K
 from sklearn.metrics import confusion_matrix
 
 
-def display_digit(image, label=None, pred_label=None):
-    """Display the Digit from the image.
-    If the Label and PredLabel is given, display it too.
+def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.ndarray = None) -> None:
+    """Display the MNIST image.
+    If the *label* and *label* is given, these are also displayed.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        MNIST image.
+    label : np.ndarray, optional
+        One-hot encoded true label, by default None
+    pred_label : np.ndarray, optional
+        One-hot encoded prediction, by default None
     """
     if image.shape == (784,):
         image = image.reshape((28, 28))
@@ -22,7 +32,20 @@ def display_digit(image, label=None, pred_label=None):
     plt.show()
 
 
-def display_digit_and_predictions(image, label, pred, pred_one_hot):
+def display_digit_and_predictions(image: np.ndarray, label: int, pred: int, pred_one_hot: np.ndarray) -> None:
+    """Display the MNIST image and the predicted class as a title.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        MNIST image.
+    label : int
+        True class number.
+    pred : int
+        Predicted class number.
+    pred_one_hot : np.ndarray
+        One-hot encoded prediction.
+    """
     if image.shape == (784,):
         image = image.reshape((28, 28))
     _, axs = plt.subplots(1, 2)
@@ -39,8 +62,16 @@ def display_digit_and_predictions(image, label, pred, pred_one_hot):
     plt.show()
 
 
-def display_convergence_error(train_losses, valid_losses):
-    """Display the convergence of the errors."""
+def display_convergence_error(train_losses: list, valid_losses: list) -> None:
+    """Display the convergence of the errors.
+
+    Parameters
+    ----------
+    train_losses : list
+        Train losses of the epochs.
+    valid_losses : list
+        Validation losses of the epochs
+    """
     if len(valid_losses) > 0:
         plt.plot(len(train_losses), train_losses, color="red")
         plt.plot(len(valid_losses), valid_losses, color="blue")
@@ -53,8 +84,16 @@ def display_convergence_error(train_losses, valid_losses):
     plt.show()
 
 
-def display_convergence_acc(train_accs, valid_accs):
-    """Display the convergence of the accs"""
+def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
+    """Display the convergence of the accs.
+
+    Parameters
+    ----------
+    train_accs : list
+        Train accuracies of the epochs.
+    valid_accs : list
+        Validation accuracies of the epochs.
+    """
     if len(valid_accs) > 0:
         plt.plot(len(train_accs), train_accs, color="red")
         plt.plot(len(valid_accs), valid_accs, color="blue")
@@ -67,10 +106,25 @@ def display_convergence_acc(train_accs, valid_accs):
     plt.show()
 
 
-def plot_confusion_matrix(y_pred, y_true, classes_list):
-    """Compute and create a plt.figure for the confusion matrix."""
+def plot_confusion_matrix(y_pred: np.ndarray, y_true: np.ndarray, classes_list: list) -> plt.figure:
+    """Compute and create a plt.figure for the confusion matrix.
+
+    Parameters
+    ----------
+    y_pred : np.ndarray
+        Predicted classes.
+    y_true : np.ndarray
+        True classes.
+    classes_list : list
+        List of class names.
+
+    Returns
+    -------
+    plt.figure
+        Figure of the confusion matrix.
+    """
     fig = plt.figure(figsize=(8, 8))
-    cm = confusion_matrix(y_pred, y_true)
+    cm = confusion_matrix(y_true, y_pred)
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     plt.title('Confusion matrix')
     plt.colorbar()
@@ -96,17 +150,31 @@ def plot_confusion_matrix(y_pred, y_true, classes_list):
     return fig
 
 
-def plot_to_image(fig):
+def plot_to_image(fig: plt.figure) -> tf.Tensor:
+    """Plt plot/figure to tensorflow image.
+
+    Parameters
+    ----------
+    fig : plt.figure
+        Plt plot/figure.
+
+    Returns
+    -------
+    tf.Tensor
+        Tensorflow image object.
+    """
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
     plt.close(fig)
     buffer.seek(0)
-    image = tf.image.decode_png(buffer.getvalue(), channels=4)
+    image = tf.io.decode_png(buffer.getvalue(), channels=4)
     image = tf.expand_dims(image, 0)
     return image
 
 
 class ImageCallback(tf.keras.callbacks.Callback):
+    """Custom tensorboard callback, to store images."""
+
     def __init__(
         self,
         model,
@@ -146,6 +214,8 @@ class ImageCallback(tf.keras.callbacks.Callback):
 
 
 class ConfusionMatrix(ImageCallback):
+    """Custom tensorbard callback, to store the confusion matrix figure."""
+
     def __init__(self, model, x_test, y_test, classes_list, log_dir):
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
@@ -161,3 +231,75 @@ class ConfusionMatrix(ImageCallback):
 
     def on_epoch_end(self, epoch, logs=None):
         super().on_epoch_end(epoch, logs)
+
+
+def get_occlusion(img: np.ndarray, label: np.ndarray, box_size: int,
+                  step_size: int, model: tf.keras.models.Model) -> None:
+    """Occlusion map of the image classifier.
+
+    Parameters
+    ----------
+    img : np.ndarray
+        Image.
+    label : np.ndarray
+        One-hot encoded label.
+    box_size : int
+        Size of the occlusion box.
+    step_size : int
+        Step size of the occlusion box move.
+    model : tf.keras.models.Model
+        Classifier object.
+    """
+    rows, cols, depth = img.shape
+    occulsion_map = np.full(shape=(rows, cols), fill_value=1.0)
+    box = np.full(shape=(box_size, box_size, depth), fill_value=0.0)
+    true_class_idx = np.argmax(label)
+
+    for i in range(0, rows - box_size + 1, step_size):
+        for j in range(0, cols - box_size + 1, step_size):
+            img_with_box = img.copy()
+            img_with_box[i: i + box_size, j: j + box_size] = box
+            y_pred = model.predict(img_with_box.reshape((1, rows, cols, depth)))[0]
+            prob_right_class = y_pred[true_class_idx]
+            occulsion_map[i: i + step_size, j: j + step_size] = np.full(
+                shape=(step_size, step_size), fill_value=prob_right_class
+            )
+
+    _, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(16, 6))
+    cmap = "Spectral"
+    ax1.imshow(img)
+    heatmap = ax2.imshow(occulsion_map, cmap=cmap)
+    _ = plt.colorbar(heatmap)
+    plt.show()
+
+
+def get_heatmap(img: np.ndarray, model: tf.keras.models.Model) -> None:
+    """Heatpmap of the image classifier.
+
+    Parameters
+    ----------
+    img : np.ndarray
+        Image.
+    model : tf.keras.models.Model
+        Classifier object.
+    """
+    rows, cols, depth = img.shape
+    heatmap_layers = [layer for layer in model.layers if "heatmap" in layer.name]
+
+    for layer_index, heatmap_layer in enumerate(heatmap_layers):
+        heatmap_output = K.function([model.layers[0].input], [heatmap_layer.output])
+        heatmap_output = heatmap_output([img.reshape(1, rows, cols, depth)])[0]
+
+        heatmap = np.squeeze(heatmap_output, axis=0)
+        heatmap = np.transpose(heatmap, axes=(2, 0, 1))
+        num_subplots = 16
+        subplot_shape = (4, 4)
+        plt.figure(num=1, figsize=(10, 10))
+
+        for filter_index, heatmap_filter in enumerate(heatmap[:num_subplots]):
+            plt.subplot(subplot_shape[0], subplot_shape[1], filter_index + 1)
+            plt.title("Filter: " + str(filter_index + 1) + " of Layer: " + str(layer_index))
+            plt.imshow(heatmap_filter)
+
+        plt.tight_layout()
+        plt.show()

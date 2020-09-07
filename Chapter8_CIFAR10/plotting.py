@@ -7,9 +7,18 @@ import tensorflow as tf
 from sklearn.metrics import confusion_matrix
 
 
-def display_digit(image, label=None, pred_label=None):
-    """Display the Digit from the image.
-    If the Label and PredLabel is given, display it too.
+def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.ndarray = None) -> None:
+    """Display the MNIST image.
+    If the *label* and *label* is given, these are also displayed.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        MNIST image.
+    label : np.ndarray, optional
+        One-hot encoded true label, by default None
+    pred_label : np.ndarray, optional
+        One-hot encoded prediction, by default None
     """
     if image.shape == (784,):
         image = image.reshape((28, 28))
@@ -22,7 +31,20 @@ def display_digit(image, label=None, pred_label=None):
     plt.show()
 
 
-def display_digit_and_predictions(image, label, pred, pred_one_hot):
+def display_digit_and_predictions(image: np.ndarray, label: int, pred: int, pred_one_hot: np.ndarray) -> None:
+    """Display the MNIST image and the predicted class as a title.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        MNIST image.
+    label : int
+        True class number.
+    pred : int
+        Predicted class number.
+    pred_one_hot : np.ndarray
+        One-hot encoded prediction.
+    """
     if image.shape == (784,):
         image = image.reshape((28, 28))
     _, axs = plt.subplots(1, 2)
@@ -39,8 +61,16 @@ def display_digit_and_predictions(image, label, pred, pred_one_hot):
     plt.show()
 
 
-def display_convergence_error(train_losses, valid_losses):
-    """Display the convergence of the errors."""
+def display_convergence_error(train_losses: list, valid_losses: list) -> None:
+    """Display the convergence of the errors.
+
+    Parameters
+    ----------
+    train_losses : list
+        Train losses of the epochs.
+    valid_losses : list
+        Validation losses of the epochs
+    """
     if len(valid_losses) > 0:
         plt.plot(len(train_losses), train_losses, color="red")
         plt.plot(len(valid_losses), valid_losses, color="blue")
@@ -53,8 +83,16 @@ def display_convergence_error(train_losses, valid_losses):
     plt.show()
 
 
-def display_convergence_acc(train_accs, valid_accs):
-    """Display the convergence of the accs"""
+def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
+    """Display the convergence of the accs.
+
+    Parameters
+    ----------
+    train_accs : list
+        Train accuracies of the epochs.
+    valid_accs : list
+        Validation accuracies of the epochs.
+    """
     if len(valid_accs) > 0:
         plt.plot(len(train_accs), train_accs, color="red")
         plt.plot(len(valid_accs), valid_accs, color="blue")
@@ -67,10 +105,25 @@ def display_convergence_acc(train_accs, valid_accs):
     plt.show()
 
 
-def plot_confusion_matrix(y_pred, y_true, classes_list):
-    """Compute and create a plt.figure for the confusion matrix."""
+def plot_confusion_matrix(y_pred: np.ndarray, y_true: np.ndarray, classes_list: list) -> plt.figure:
+    """Compute and create a plt.figure for the confusion matrix.
+
+    Parameters
+    ----------
+    y_pred : np.ndarray
+        Predicted classes.
+    y_true : np.ndarray
+        True classes.
+    classes_list : list
+        List of class names.
+
+    Returns
+    -------
+    plt.figure
+        Figure of the confusion matrix.
+    """
     fig = plt.figure(figsize=(8, 8))
-    cm = confusion_matrix(y_pred, y_true)
+    cm = confusion_matrix(y_true, y_pred)
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     plt.title('Confusion matrix')
     plt.colorbar()
@@ -96,17 +149,31 @@ def plot_confusion_matrix(y_pred, y_true, classes_list):
     return fig
 
 
-def plot_to_image(fig):
+def plot_to_image(fig: plt.figure) -> tf.Tensor:
+    """Plt plot/figure to tensorflow image.
+
+    Parameters
+    ----------
+    fig : plt.figure
+        Plt plot/figure.
+
+    Returns
+    -------
+    tf.Tensor
+        Tensorflow image object.
+    """
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
     plt.close(fig)
     buffer.seek(0)
-    image = tf.image.decode_png(buffer.getvalue(), channels=4)
+    image = tf.io.decode_png(buffer.getvalue(), channels=4)
     image = tf.expand_dims(image, 0)
     return image
 
 
 class ImageCallback(tf.keras.callbacks.Callback):
+    """Custom tensorboard callback, to store images."""
+
     def __init__(
         self,
         model,
@@ -146,6 +213,8 @@ class ImageCallback(tf.keras.callbacks.Callback):
 
 
 class ConfusionMatrix(ImageCallback):
+    """Custom tensorbard callback, to store the confusion matrix figure."""
+
     def __init__(self, model, x_test, y_test, classes_list, log_dir):
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
