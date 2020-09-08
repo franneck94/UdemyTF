@@ -30,7 +30,6 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)
 data.data_preprocessing(preprocess_mode="MinMax")

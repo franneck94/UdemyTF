@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 
-import tensorflow.keras
+import tensorflow as tf
 
 
 FILE_PATH = os.path.abspath(__file__)
@@ -14,28 +14,22 @@ def create_model():
     # Model params
     num_features = 784
     num_classes = 10
-    init_w = tensorflow.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.01)
-    init_b = tensorflow.keras.initializers.Constant(value=0.0)
+    init_w = tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.01)
+    init_b = tf.keras.initializers.Constant(value=0.0)
     lr = 0.001
-    optimizer = tensorflow.keras.optimizers.Adam(lr=lr)
+    optimizer = tf.keras.optimizers.Adam(lr=lr)
 
     # Define the DNN
-    model = tensorflow.keras.models.Sequential()
-    model.add(
-        tensorflow.keras.layers.Dense(
-            units=500,
-            kernel_initializer=init_w,
-            bias_initializer=init_b,
-            input_shape=(num_features,),
-        )
-    )
-    model.add(tensorflow.keras.layers.Activation("relu"))
-    model.add(tensorflow.keras.layers.Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation("relu"))
-    model.add(tensorflow.keras.layers.Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation("relu"))
-    model.add(tensorflow.keras.layers.Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
-    model.add(tensorflow.keras.layers.Activation("softmax"))
+    model = tf.keras.models.Sequential()
+    model.add(tf.keras.layers.Dense(units=500, kernel_initializer=init_w,
+                                    bias_initializer=init_b, input_shape=(num_features,)))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(tf.keras.layers.Activation("softmax"))
 
     # Compile and train (fit) the model, afterwards evaluate the model
     model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
@@ -53,7 +47,7 @@ def nn_predict(model, image=None):
 
 def nn_train():
     # Dataset
-    (x_train, y_train), (x_test, y_test) = tensorflow.keras.datasets.mnist.load_data()
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
     # Cast to np.float32
     x_train = x_train.astype(np.float32)
@@ -68,8 +62,8 @@ def nn_train():
     num_classes = 10
 
     # Compute the categorical classes
-    y_train = tensorflow.keras.utils.to_categorical(y_train, num_classes=num_classes)
-    y_test = tensorflow.keras.utils.to_categorical(y_test, num_classes=num_classes)
+    y_train = tf.keras.utils.to_categorical(y_train, num_classes=num_classes)
+    y_test = tf.keras.utils.to_categorical(y_test, num_classes=num_classes)
 
     # Reshape the input data
     x_train = x_train.reshape(train_size, num_features)

@@ -1,9 +1,6 @@
 import numpy as np
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.datasets import boston_housing
 
 

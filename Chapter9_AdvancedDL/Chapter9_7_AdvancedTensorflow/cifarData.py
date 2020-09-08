@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
+
 BATCH_SIZE = 32
 IMG_SIZE = 32
 IMG_DEPTH = 3

@@ -1,6 +1,7 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
+
 BATCH_SIZE = 32
 IMG_SIZE = 160
 IMG_DEPTH = 3

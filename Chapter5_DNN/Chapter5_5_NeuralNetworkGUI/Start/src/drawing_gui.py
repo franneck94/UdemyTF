@@ -63,7 +63,7 @@ class Painter(QtWidgets.QWidget):
     LastPos = Point(0, 0)
 
     def __init__(self, parent):
-        super(Painter, self).__init__()
+        super().__init__()
         self.ParentLink = parent
         self.MouseLoc = Point(0, 0)
         self.LastPos = Point(0, 0)
@@ -115,7 +115,7 @@ class CreateUI(base, form):
 
     def __init__(self):
         # Set up main window and widgets
-        super(base, self).__init__()
+        super().__init__()
         self.setupUi(self)
         self.setObjectName('Rig Helper')
         self.PaintPanel = Painter(self)
@@ -146,11 +146,7 @@ class CreateUI(base, form):
 
     # Predict Button
     def PredictNumber(self):
-        image = get_image(self.DrawingFrame)
-        pred = nn_predict(self.model, image=image)
-        pred_image_path = os.path.join(IMAGE_PATH, str(pred) + ".png")
-        self.pixmap = QtGui.QPixmap(pred_image_path)
-        self.label.setPixmap(self.pixmap)
+        raise NotImplementedError # TODO
 
 
 def main_gui():

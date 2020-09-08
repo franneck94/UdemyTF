@@ -1,7 +1,14 @@
 import os
 
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
+from tensorflow.keras.layers import (
+    Activation,
+    Conv2D,
+    Dense,
+    Flatten,
+    Input,
+    MaxPool2D
+)
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 

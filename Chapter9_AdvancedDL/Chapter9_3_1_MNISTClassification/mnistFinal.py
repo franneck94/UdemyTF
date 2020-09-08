@@ -31,7 +31,6 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-
 data = MNIST()
 data.data_augmentation(augment_size=10000)
 data.data_preprocessing(preprocess_mode="MinMax")

@@ -1,8 +1,16 @@
-from tensorflow.keras.layers import Activation, Dense, Input, SimpleRNN
+from tensorflow.keras.layers import (
+    LSTM,
+    Activation,
+    Dense,
+    Embedding,
+    Input,
+    SimpleRNN
+)
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from imdbData2 import IMDBData
+
 
 # Load MNIST dataset
 num_words = 10000

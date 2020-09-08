@@ -3,7 +3,10 @@ import random
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.callbacks import (
+    EarlyStopping,
+    ReduceLROnPlateau
+)
 from tensorflow.keras.layers import (
     Activation,
     BatchNormalization,
@@ -19,14 +22,13 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from dogsCatsData import DOGSCATS
 from plotting import get_heatmap
+from dogsCatsData import DOGSCATS
 
 
 random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
-
 
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)

@@ -1,4 +1,11 @@
-from tensorflow.keras.layers import Activation, Dense, Embedding, Input, LSTM
+from tensorflow.keras.layers import (
+    LSTM,
+    Activation,
+    Dense,
+    Embedding,
+    Input,
+    SimpleRNN
+)
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 

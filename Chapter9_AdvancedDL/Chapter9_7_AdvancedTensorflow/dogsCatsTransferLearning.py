@@ -2,6 +2,7 @@ import tensorflow as tf
 
 from dogsCatsData import get_dataset
 
+
 IMG_SIZE = 160
 IMG_DEPTH = 3
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)

@@ -2,6 +2,7 @@ import tensorflow as tf
 
 from cifarData import get_dataset
 
+
 IMG_SIZE = 32
 IMG_DEPTH = 3
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)

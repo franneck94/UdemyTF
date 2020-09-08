@@ -3,7 +3,12 @@ import random
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.callbacks import EarlyStopping, LearningRateScheduler, ReduceLROnPlateau, TensorBoard
+from tensorflow.keras.callbacks import (
+    EarlyStopping,
+    LearningRateScheduler,
+    ReduceLROnPlateau,
+    TensorBoard
+)
 from tensorflow.keras.layers import (
     Activation,
     BatchNormalization,
@@ -14,7 +19,7 @@ from tensorflow.keras.layers import (
     GlobalAveragePooling2D,
     Input,
     LeakyReLU,
-    MaxPool2D,
+    MaxPool2D
 )
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
@@ -25,7 +30,6 @@ from cifar10Data import CIFAR10
 random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
-
 
 data = CIFAR10()
 data.data_augmentation(augment_size=5000)

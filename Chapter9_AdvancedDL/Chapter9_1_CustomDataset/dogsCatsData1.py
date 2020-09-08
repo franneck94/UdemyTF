@@ -10,11 +10,11 @@ from tensorflow.keras.utils import to_categorical
 
 
 def extract_cats_vs_dogs():
-    pass
+    raise NotImplementedError
 
 
 def load_cats_vs_dogs():
-    pass
+    raise NotImplementedError
 
 
 class DOGSCATS:

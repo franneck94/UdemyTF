@@ -1,16 +1,13 @@
 import os
 
-import numpy as np
-
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-
 import cv2
+import numpy as np
 from skimage import transform
-
-from tensorflow.keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import to_categorical
+
 
 FILE_DIR = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats")
 IMG_WIDTH = 64

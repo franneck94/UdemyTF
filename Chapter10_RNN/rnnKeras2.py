@@ -6,6 +6,7 @@ import tensorflow as tf
 from tensorflow.keras.layers import SimpleRNN
 from tensorflow.keras.models import Sequential
 
+
 random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)

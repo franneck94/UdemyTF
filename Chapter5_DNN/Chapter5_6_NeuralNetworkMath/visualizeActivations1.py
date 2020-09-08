@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 
 
 def relu(x):

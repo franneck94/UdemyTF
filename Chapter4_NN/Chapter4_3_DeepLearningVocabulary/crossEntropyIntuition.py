@@ -49,6 +49,5 @@ if __name__ == "__main__":
     y_pred = softmax(y_pred)
     print(y_pred)
 
-
     loss = cross_entropy(y, y_pred)
     print(loss)

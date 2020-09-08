@@ -1,9 +1,18 @@
 import os
+import time
 
+import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.datasets import mnist
-from tensorflow.keras.layers import Activation, Conv2D, Dense, Flatten, MaxPool2D
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import (
+    Activation,
+    Conv2D,
+    Dense,
+    Flatten,
+    Input,
+    MaxPool2D
+)
+from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 

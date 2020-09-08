@@ -72,7 +72,7 @@ def extract_cats_vs_dogs():
 
 
 def load_cats_vs_dogs():
-    pass
+    raise NotImplementedError
 
 
 class DOGSCATS:

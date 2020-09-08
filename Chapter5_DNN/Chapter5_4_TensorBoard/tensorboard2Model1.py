@@ -1,4 +1,5 @@
 import os
+import time
 
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
@@ -8,6 +9,8 @@ from tensorflow.keras.layers import Activation, Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
+
+from plotting import ConfusionMatrix
 
 
 # Dataset

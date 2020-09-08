@@ -27,7 +27,6 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-
 data = BOSTON()
 data.data_preprocessing(preprocess_mode="MinMax")
 (
