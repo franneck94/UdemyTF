@@ -1,8 +1,9 @@
-import numpy as np
-
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib import cm
-from matplotlib.ticker import FormatStrFormatter, LinearLocator
+from matplotlib.ticker import FormatStrFormatter
+from matplotlib.ticker import LinearLocator
+
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 

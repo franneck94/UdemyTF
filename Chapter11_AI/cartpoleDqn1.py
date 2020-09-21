@@ -1,4 +1,6 @@
-from tensorflow.keras.layers import Activation, Dense, Input
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 

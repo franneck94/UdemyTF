@@ -2,12 +2,14 @@ import os
 
 import numpy as np
 
+
 np.random.seed(3)
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 

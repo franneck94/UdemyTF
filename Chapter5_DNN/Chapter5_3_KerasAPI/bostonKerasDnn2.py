@@ -1,8 +1,10 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
-from tensorflow.keras.initializers import Constant, RandomUniform
-from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.initializers import Constant
+from tensorflow.keras.initializers import RandomUniform
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 

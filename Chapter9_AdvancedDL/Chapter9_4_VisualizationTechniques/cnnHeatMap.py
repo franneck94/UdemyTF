@@ -3,27 +3,23 @@ import random
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.callbacks import (
-    EarlyStopping,
-    ReduceLROnPlateau
-)
-from tensorflow.keras.layers import (
-    Activation,
-    BatchNormalization,
-    Conv2D,
-    Dense,
-    Dropout,
-    Flatten,
-    GlobalAveragePooling2D,
-    Input,
-    LeakyReLU,
-    MaxPool2D
-)
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import LeakyReLU
+from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from plotting import get_heatmap
 from dogsCatsData import DOGSCATS
+from plotting import get_heatmap
 
 
 random.seed(0)

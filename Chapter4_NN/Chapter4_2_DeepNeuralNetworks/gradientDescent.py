@@ -1,6 +1,9 @@
 import numpy as np
 
-from helper import f, f_prime_x0, f_prime_x1, plot_rosenbrock
+from helper import f
+from helper import f_prime_x0
+from helper import f_prime_x1
+from helper import plot_rosenbrock
 
 
 x0 = np.random.uniform(-2, 2)

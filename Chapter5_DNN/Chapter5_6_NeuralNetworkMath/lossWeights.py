@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_squared_error
-from tensorflow.keras.layers import Activation, Dense
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import RMSprop
 

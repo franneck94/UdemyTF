@@ -1,5 +1,6 @@
 import numpy as np
 
+
 noten_py_list = [100, 89, 44, 78, 45, 24, 18]
 noten_np_array = np.array(noten_py_list, dtype=np.int8)
 

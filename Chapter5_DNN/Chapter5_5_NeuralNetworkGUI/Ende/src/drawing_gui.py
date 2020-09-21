@@ -1,10 +1,14 @@
 import os
 import sys
 
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-
-from dnn import create_model, nn_predict
+from dnn import create_model
+from dnn import nn_predict
 from preprocessing import get_image
+from PyQt5 import QtCore
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
+from PyQt5 import uic
+
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_PATH = os.path.dirname(os.path.dirname(FILE_PATH))
@@ -16,8 +20,9 @@ MODEL_PATH = os.path.join(PROJECT_PATH, "ressources", "weights", "dnn_mnist.h5")
 gui_model = os.path.join(GUI_PATH, 'GUI.ui')
 form, base = uic.loadUiType(gui_model)
 
-# Point class for shapes
+
 class Point:
+    """Point class for shapes."""
     x, y = 0, 0
 
     def __init__(self, nx=0, ny=0):

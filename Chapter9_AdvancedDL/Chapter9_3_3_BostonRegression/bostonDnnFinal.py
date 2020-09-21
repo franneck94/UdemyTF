@@ -3,20 +3,16 @@ import random
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.callbacks import (
-    EarlyStopping,
-    LearningRateScheduler,
-    ReduceLROnPlateau,
-    TensorBoard
-)
-from tensorflow.keras.layers import (
-    Activation,
-    BatchNormalization,
-    Dense,
-    Dropout,
-    Input,
-    LeakyReLU
-)
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import LearningRateScheduler
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 

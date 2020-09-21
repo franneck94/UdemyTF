@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 noten_jan = [56, 64, 78, 100]
 noten_ben = [86, 94, 98, 90]
 

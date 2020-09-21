@@ -1,8 +1,9 @@
 import collections
 import random
 
-import gym
 import numpy as np
+
+import gym
 
 
 class Agent:

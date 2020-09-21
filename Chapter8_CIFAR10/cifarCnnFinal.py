@@ -4,14 +4,12 @@ import random
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import (
-    Activation,
-    Conv2D,
-    Dense,
-    Flatten,
-    Input,
-    MaxPool2D
-)
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 

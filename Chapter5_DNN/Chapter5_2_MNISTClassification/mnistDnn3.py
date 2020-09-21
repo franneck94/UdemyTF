@@ -3,7 +3,8 @@ import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 
-from plotting import display_convergence_error, display_convergence_acc
+from plotting import display_convergence_acc
+from plotting import display_convergence_error
 
 
 # Dataset

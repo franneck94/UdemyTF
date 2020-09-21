@@ -1,6 +1,8 @@
 import numpy as np
 from tensorflow.keras.datasets import mnist
-from tensorflow.keras.layers import LSTM, Activation, Dense
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
