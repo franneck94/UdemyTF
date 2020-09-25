@@ -1,5 +1,5 @@
 # Libraries
-tensorflow==2.3
+tensorflow==2.3.1
 scikit-learn==0.23.2
 seaborn==0.10.1
 scipy==1.4.1
