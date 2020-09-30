@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix
 
 def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.ndarray = None) -> None:
     """Display the MNIST image.
-    If the *label* and *label* is given, these are also displayed.
+    If the `label` and `pred_label` is given, these are also displayed.
 
     Parameters
     ----------
@@ -68,11 +68,11 @@ def display_convergence_error(train_losses: list, valid_losses: list) -> None:
         Validation losses of the epochs
     """
     if len(valid_losses) > 0:
-        plt.plot(len(train_losses), train_losses, color="red")
-        plt.plot(len(valid_losses), valid_losses, color="blue")
+        plt.plot(range(len(train_losses)), train_losses, color="red")
+        plt.plot(range(len(valid_losses)), valid_losses, color="blue")
         plt.legend(["Train", "Valid"])
     else:
-        plt.plot(len(train_losses), train_losses, color="red")
+        plt.plot(range(len(train_losses)), train_losses, color="red")
         plt.legend(["Train"])
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
@@ -90,11 +90,11 @@ def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
         Validation accuracies of the epochs.
     """
     if len(valid_accs) > 0:
-        plt.plot(len(train_accs), train_accs, color="red")
-        plt.plot(len(valid_accs), valid_accs, color="blue")
+        plt.plot(range(len(train_accs)), train_accs, color="red")
+        plt.plot(range(len(valid_accs)), valid_accs, color="blue")
         plt.legend(["Train", "Valid"])
     else:
-        plt.plot(len(train_accs), train_accs, color="red")
+        plt.plot(range(len(train_accs)), train_accs, color="red")
         plt.legend(["Train"])
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')

@@ -4,13 +4,12 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-import tensorflow.keras.backend as K
 from sklearn.metrics import confusion_matrix
 
 
 def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.ndarray = None) -> None:
     """Display the MNIST image.
-    If the *label* and *label* is given, these are also displayed.
+    If the `label` and `pred_label` is given, these are also displayed.
 
     Parameters
     ----------
@@ -73,11 +72,11 @@ def display_convergence_error(train_losses: list, valid_losses: list) -> None:
         Validation losses of the epochs
     """
     if len(valid_losses) > 0:
-        plt.plot(len(train_losses), train_losses, color="red")
-        plt.plot(len(valid_losses), valid_losses, color="blue")
+        plt.plot(range(len(train_losses)), train_losses, color="red")
+        plt.plot(range(len(valid_losses)), valid_losses, color="blue")
         plt.legend(["Train", "Valid"])
     else:
-        plt.plot(len(train_losses), train_losses, color="red")
+        plt.plot(range(len(train_losses)), train_losses, color="red")
         plt.legend(["Train"])
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
@@ -95,11 +94,11 @@ def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
         Validation accuracies of the epochs.
     """
     if len(valid_accs) > 0:
-        plt.plot(len(train_accs), train_accs, color="red")
-        plt.plot(len(valid_accs), valid_accs, color="blue")
+        plt.plot(range(len(train_accs)), train_accs, color="red")
+        plt.plot(range(len(valid_accs)), valid_accs, color="blue")
         plt.legend(["Train", "Valid"])
     else:
-        plt.plot(len(train_accs), train_accs, color="red")
+        plt.plot(range(len(train_accs)), train_accs, color="red")
         plt.legend(["Train"])
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
@@ -231,75 +230,3 @@ class ConfusionMatrix(ImageCallback):
 
     def on_epoch_end(self, epoch, logs=None):
         super().on_epoch_end(epoch, logs)
-
-
-def get_occlusion(img: np.ndarray, label: np.ndarray, box_size: int,
-                  step_size: int, model: tf.keras.models.Model) -> None:
-    """Occlusion map of the image classifier.
-
-    Parameters
-    ----------
-    img : np.ndarray
-        Image.
-    label : np.ndarray
-        One-hot encoded label.
-    box_size : int
-        Size of the occlusion box.
-    step_size : int
-        Step size of the occlusion box move.
-    model : tf.keras.models.Model
-        Classifier object.
-    """
-    rows, cols, depth = img.shape
-    occulsion_map = np.full(shape=(rows, cols), fill_value=1.0)
-    box = np.full(shape=(box_size, box_size, depth), fill_value=0.0)
-    true_class_idx = np.argmax(label)
-
-    for i in range(0, rows - box_size + 1, step_size):
-        for j in range(0, cols - box_size + 1, step_size):
-            img_with_box = img.copy()
-            img_with_box[i: i + box_size, j: j + box_size] = box
-            y_pred = model.predict(img_with_box.reshape((1, rows, cols, depth)))[0]
-            prob_right_class = y_pred[true_class_idx]
-            occulsion_map[i: i + step_size, j: j + step_size] = np.full(
-                shape=(step_size, step_size), fill_value=prob_right_class
-            )
-
-    _, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(16, 6))
-    cmap = "Spectral"
-    ax1.imshow(img)
-    heatmap = ax2.imshow(occulsion_map, cmap=cmap)
-    _ = plt.colorbar(heatmap)
-    plt.show()
-
-
-def get_heatmap(img: np.ndarray, model: tf.keras.models.Model) -> None:
-    """Heatpmap of the image classifier.
-
-    Parameters
-    ----------
-    img : np.ndarray
-        Image.
-    model : tf.keras.models.Model
-        Classifier object.
-    """
-    rows, cols, depth = img.shape
-    heatmap_layers = [layer for layer in model.layers if "heatmap" in layer.name]
-
-    for layer_index, heatmap_layer in enumerate(heatmap_layers):
-        heatmap_output = K.function([model.layers[0].input], [heatmap_layer.output])
-        heatmap_output = heatmap_output([img.reshape(1, rows, cols, depth)])[0]
-
-        heatmap = np.squeeze(heatmap_output, axis=0)
-        heatmap = np.transpose(heatmap, axes=(2, 0, 1))
-        num_subplots = 16
-        subplot_shape = (4, 4)
-        plt.figure(num=1, figsize=(10, 10))
-
-        for filter_index, heatmap_filter in enumerate(heatmap[:num_subplots]):
-            plt.subplot(subplot_shape[0], subplot_shape[1], filter_index + 1)
-            plt.title("Filter: " + str(filter_index + 1) + " of Layer: " + str(layer_index))
-            plt.imshow(heatmap_filter)
-
-        plt.tight_layout()
-        plt.show()
