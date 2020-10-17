@@ -1,48 +1,101 @@
-import numpy as np
+from typing import Tuple
+
 import tensorflow as tf
 
 
 BATCH_SIZE = 32
 IMG_SIZE = 32
 IMG_DEPTH = 3
-IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
+NUM_CLASSES = 10
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
-def preprocessing_fn():
-    return tf.keras.Sequential(
-        [
-            tf.keras.layers.experimental.preprocessing.Resizing(IMG_SIZE, IMG_SIZE),
-            tf.keras.layers.experimental.preprocessing.Rescaling(1.0 / 127.5, offset=-1),
-        ]
+def build_preprocessing() -> tf.keras.Sequential:
+    """Build the preprocessing model, to resize and rescale the images.
+
+    Returns
+    -------
+    tf.keras.Sequential
+        The preprocessing model
+    """
+    model = tf.keras.Sequential()
+    model.add(
+        tf.keras.layers.experimental.preprocessing.Resizing(
+            height=IMG_SIZE,
+            width=IMG_SIZE
+        )
     )
-
-
-def data_augmentation_fn():
-    return tf.keras.Sequential(
-        [
-            tf.keras.layers.experimental.preprocessing.RandomRotation(0.05),
-            tf.keras.layers.experimental.preprocessing.RandomZoom(0.05),
-        ]
+    model.add(
+        tf.keras.layers.experimental.preprocessing.Rescaling(
+            scale=1.0 / 127.5,
+            offset=-1.0
+        )
     )
+    return model
 
 
-def prepare(dataset, shuffle=False, augment=False):
+def build_data_augmentation() -> tf.keras.Sequential:
+    """Build the data augmentation model, to random rotate and rescale the images.
+
+    Returns
+    -------
+    tf.keras.Sequential
+        The preprocessing model
+    """
+    model = tf.keras.Sequential()
+    model.add(
+        tf.keras.layers.experimental.preprocessing.RandomRotation(
+            factor=0.05
+        )
+    )
+    model.add(
+        tf.keras.layers.experimental.preprocessing.RandomZoom(
+            height_factor=0.05,
+            width_factor=0.05
+        )
+    )
+    return model
+
+
+def prepare(
+    dataset: tf.data.Dataset,
+    shuffle: bool = False,
+    augment: bool = False
+) -> tf.data.Dataset:
+    """Prepare the dataset object with preprocessing and data augmentation.
+
+    Parameters
+    ----------
+    dataset : tf.data.Dataset
+        The dataset object
+    shuffle : bool, optional
+        Whether to shuffle the dataset, by default False
+    augment : bool, optional
+        Whether to augment the train dataset, by default False
+
+    Returns
+    -------
+    tf.data.Dataset
+        The prepared dataset
+    """
     # Resize and rescale all datasets
-    preprocessing = preprocessing_fn()
-    dataset = dataset.map(lambda x, y: (preprocessing(x), y), num_parallel_calls=AUTOTUNE)
+    preprocessing_model = build_preprocessing()
+    dataset = dataset.map(
+        map_func=lambda x, y: (preprocessing_model(x), y),
+        num_parallel_calls=AUTOTUNE
+    )
 
     if shuffle:
         dataset = dataset.shuffle(buffer_size=1000)
 
     # Batch all datasets
-    dataset = dataset.batch(BATCH_SIZE)
+    dataset = dataset.batch(batch_size=BATCH_SIZE)
 
     # Use data augmentation only on the training set
     if augment:
-        data_augmentation = data_augmentation_fn()
+        data_augmentation = build_data_augmentation()
         dataset = dataset.map(
-            lambda x, y: (data_augmentation(x, training=True), y),
+            map_func=lambda x, y: (data_augmentation(x), y),
             num_parallel_calls=AUTOTUNE,
         )
 
@@ -50,16 +103,34 @@ def prepare(dataset, shuffle=False, augment=False):
     return dataset.prefetch(buffer_size=AUTOTUNE)
 
 
-def get_dataset():
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    x_train = x_train / np.float32(255.0)
-    x_test = x_test / np.float32(255.0)
-    y_train = y_train.astype(np.int32)
-    y_test = y_test.astype(np.int32)
+def get_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
+    """Generate the train, validation and test set
 
-    train_dataset = tf.data.Dataset.from_tensor_slices((x_train[:-10000], y_train[:-10000]))
-    validation_dataset = tf.data.Dataset.from_tensor_slices((x_train[-10000:], y_train[-10000:]))
-    test_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+    Returns
+    -------
+    Tuple
+        (train_dataset, validation_dataset, test_dataset)
+    """
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    y_train = tf.keras.utils.to_categorical(
+        y=y_train,
+        num_classes=NUM_CLASSES
+    )
+    y_test = tf.keras.utils.to_categorical(
+        y=y_test,
+        num_classes=NUM_CLASSES
+    )
+
+    validation_size = 10_000
+    train_dataset = tf.data.Dataset.from_tensor_slices(
+        tensors=(x_train[:-validation_size], y_train[:-validation_size])
+    )
+    validation_dataset = tf.data.Dataset.from_tensor_slices(
+        tensors=(x_train[-validation_size:], y_train[-validation_size:])
+    )
+    test_dataset = tf.data.Dataset.from_tensor_slices(
+        tensors=(x_test, y_test)
+    )
 
     train_dataset = prepare(train_dataset, shuffle=True, augment=True)
     validation_dataset = prepare(validation_dataset)
