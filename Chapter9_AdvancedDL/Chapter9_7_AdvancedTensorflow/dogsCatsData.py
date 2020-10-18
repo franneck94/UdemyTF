@@ -49,25 +49,25 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.0625  # 10 pixels
+            factor=0.0625  # 10 pixel
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomZoom(
-            height_factor=0.0625,  # 10 pixels
-            width_factor=0.0625  # 10 pixels
+            height_factor=0.0625,  # 10 pixel
+            width_factor=0.0625  # 10 pixel
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.0625,  # 10 pixels
-            width_factor=0.0625  # 10 pixels
+            height_factor=0.0625,  # 10 pixel
+            width_factor=0.0625  # 10 pixel
         )
     )
     return model
 
 
-def prepare(
+def prepare_dataset(
     dataset: tf.data.Dataset,
     shuffle: bool = False,
     augment: bool = False
@@ -88,7 +88,6 @@ def prepare(
     tf.data.Dataset
         The prepared dataset
     """
-    # Resize and rescale all datasets
     preprocessing_model = build_preprocessing()
     dataset = dataset.map(
         map_func=lambda x, y: (preprocessing_model(x), y),
@@ -96,20 +95,17 @@ def prepare(
     )
 
     if shuffle:
-        dataset = dataset.shuffle(buffer_size=1000)
+        dataset = dataset.shuffle(buffer_size=1_000)
 
-    # Batch all datasets
     dataset = dataset.batch(batch_size=BATCH_SIZE)
 
-    # Use data augmentation only on the training set
     if augment:
-        data_augmentation = build_data_augmentation()
+        data_augmentation_model = build_data_augmentation()
         dataset = dataset.map(
-            map_func=lambda x, y: (data_augmentation(x), y),
-            num_parallel_calls=AUTOTUNE,
+            map_func=lambda x, y: (data_augmentation_model(x), y),
+            num_parallel_calls=AUTOTUNE
         )
 
-    # Use buffered prefecting on all datasets
     return dataset.prefetch(buffer_size=AUTOTUNE)
 
 
@@ -124,12 +120,12 @@ def get_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
     train_dataset, validation_dataset, test_dataset = tfds.load(
         name="cats_vs_dogs",
         split=["train[:60%]", "train[60%:80%]", "train[80%:]"],
-        as_supervised=True,
+        as_supervised=True
     )
 
-    train_dataset = prepare(train_dataset, shuffle=True, augment=True)
-    validation_dataset = prepare(validation_dataset)
-    test_dataset = prepare(test_dataset)
+    train_dataset = prepare_dataset(train_dataset, shuffle=True, augment=True)
+    validation_dataset = prepare_dataset(validation_dataset)
+    test_dataset = prepare_dataset(test_dataset)
 
     return train_dataset, validation_dataset, test_dataset
 

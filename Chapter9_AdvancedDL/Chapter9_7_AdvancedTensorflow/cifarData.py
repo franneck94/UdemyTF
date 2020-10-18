@@ -65,7 +65,7 @@ def build_data_augmentation() -> tf.keras.Sequential:
     return model
 
 
-def prepare(
+def prepare_Dataset(
     dataset: tf.data.Dataset,
     shuffle: bool = False,
     augment: bool = False
@@ -86,7 +86,6 @@ def prepare(
     tf.data.Dataset
         The prepared dataset
     """
-    # Resize and rescale all datasets
     preprocessing_model = build_preprocessing()
     dataset = dataset.map(
         map_func=lambda x, y: (preprocessing_model(x), y),
@@ -94,20 +93,17 @@ def prepare(
     )
 
     if shuffle:
-        dataset = dataset.shuffle(buffer_size=1000)
+        dataset = dataset.shuffle(buffer_size=1_000)
 
-    # Batch all datasets
     dataset = dataset.batch(batch_size=BATCH_SIZE)
 
-    # Use data augmentation only on the training set
     if augment:
-        data_augmentation = build_data_augmentation()
+        data_augmentation_model = build_data_augmentation()
         dataset = dataset.map(
-            map_func=lambda x, y: (data_augmentation(x), y),
-            num_parallel_calls=AUTOTUNE,
+            map_func=lambda x, y: (data_augmentation_model(x), y),
+            num_parallel_calls=AUTOTUNE
         )
 
-    # Use buffered prefecting on all datasets
     return dataset.prefetch(buffer_size=AUTOTUNE)
 
 
@@ -140,9 +136,9 @@ def get_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
         tensors=(x_test, y_test)
     )
 
-    train_dataset = prepare(train_dataset, shuffle=True, augment=True)
-    validation_dataset = prepare(validation_dataset)
-    test_dataset = prepare(test_dataset)
+    train_dataset = prepare_Dataset(train_dataset, shuffle=True, augment=True)
+    validation_dataset = prepare_Dataset(validation_dataset)
+    test_dataset = prepare_Dataset(test_dataset)
 
     return train_dataset, validation_dataset, test_dataset
 
