@@ -25,12 +25,7 @@ tf.random.set_seed(0)
 
 data = BOSTON()
 data.data_preprocessing(preprocess_mode="MinMax")
-(
-    x_train_splitted,
-    x_val,
-    y_train_splitted,
-    y_val,
-) = data.get_splitted_train_validation_set()
+(x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_targets = data.num_targets

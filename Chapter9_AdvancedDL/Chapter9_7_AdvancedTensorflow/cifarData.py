@@ -3,8 +3,8 @@ from typing import Tuple
 import tensorflow as tf
 
 
-BATCH_SIZE = 32
-IMG_SIZE = 32
+BATCH_SIZE = 128
+IMG_SIZE = 160
 IMG_DEPTH = 3
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
 NUM_CLASSES = 10
@@ -12,7 +12,7 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
 def build_preprocessing() -> tf.keras.Sequential:
-    """Build the preprocessing model, to rescale the images.
+    """Build the preprocessing model, to resize and rescale the images.
 
     Returns
     -------
@@ -20,6 +20,12 @@ def build_preprocessing() -> tf.keras.Sequential:
         The preprocessing model
     """
     model = tf.keras.Sequential()
+    model.add(
+        tf.keras.layers.experimental.preprocessing.Resizing(
+            height=IMG_SIZE,
+            width=IMG_SIZE
+        )
+    )
     model.add(
         tf.keras.layers.experimental.preprocessing.Rescaling(
             scale=1.0 / 127.5,
@@ -41,19 +47,19 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.0625  # 2 pixels
+            factor=0.0625  # 10 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomZoom(
-            height_factor=0.0625,  # 2 pixels
-            width_factor=0.0625  # 2 pixels
+            height_factor=0.0625,  # 10 pixels
+            width_factor=0.0625  # 10 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.0625,  # 2 pixels
-            width_factor=0.0625  # 2 pixels
+            height_factor=0.0625,  # 10 pixels
+            width_factor=0.0625  # 10 pixels
         )
     )
     return model

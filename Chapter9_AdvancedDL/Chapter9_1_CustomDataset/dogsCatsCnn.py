@@ -23,12 +23,7 @@ tf.random.set_seed(0)
 data = DOGSCATS()
 data.data_augmentation(augment_size=5000)
 data.data_preprocessing(preprocess_mode="MinMax")
-(
-    x_train_splitted,
-    x_val,
-    y_train_splitted,
-    y_val,
-) = data.get_splitted_train_validation_set()
+(x_train_splitted, x_val, y_train_splitted, y_val) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
@@ -85,7 +80,11 @@ def model_fn(
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"]
+    )
     return model
 
 
@@ -125,5 +124,10 @@ rand_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_val, y_val),
 )
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = rand_model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

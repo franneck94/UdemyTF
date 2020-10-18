@@ -6,7 +6,7 @@ import tensorflow_datasets as tfds
 
 
 BATCH_SIZE = 32
-IMG_SIZE = 120
+IMG_SIZE = 160
 IMG_DEPTH = 3
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
 NUM_OUTPUTS = 1
@@ -49,19 +49,19 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.05  # 6 pixels
+            factor=0.0625  # 10 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomZoom(
-            height_factor=0.05,  # 6 pixels
-            width_factor=0.05  # 6 pixels
+            height_factor=0.0625,  # 10 pixels
+            width_factor=0.0625  # 10 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomTranslation(
-            height_factor=0.05,  # 6 pixels
-            width_factor=0.05  # 6 pixels
+            height_factor=0.0625,  # 10 pixels
+            width_factor=0.0625  # 10 pixels
         )
     )
     return model

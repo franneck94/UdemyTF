@@ -19,8 +19,12 @@ def model_fn() -> tf.keras.Model:
         input_shape=IMG_SHAPE,
         classes=NUM_OUTPUTS,
     )
-    base_model.summary()
-    base_model.trainable = False
+    # base_model.summary()
+    # base_model.trainable = False
+    print(f"Number of layers in the base model: {len(base_model.layers)}")
+    fine_tune_at = len(base_model.layers) - 10
+    for layer in base_model.layers[:fine_tune_at]:
+        layer.trainable = False
     inputs = tf.keras.Input(shape=IMG_SHAPE)
     x = base_model(inputs, training=False)
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
@@ -47,10 +51,11 @@ def train_model(model: tf.keras.Model) -> None:
     )
     model.summary()
     train_dataset, validation_dataset, test_dataset = get_dataset()
-    model.fit(train_dataset, epochs=40, validation_data=validation_dataset)
+    model.fit(train_dataset, epochs=20, validation_data=validation_dataset)
     model.evaluate(test_dataset)
 
 
 if __name__ == "__main__":
+    # Own model had accuracy of 0.925 on test set
     model = model_fn()
     train_model(model)

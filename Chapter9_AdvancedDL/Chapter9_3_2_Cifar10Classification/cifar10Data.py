@@ -31,8 +31,14 @@ class CIFAR10:
         self.num_classes = 10  # Constant for the data set
         self.num_features = self.width * self.height * self.depth
         # Reshape the y data to one hot encoding
-        self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
-        self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
+        self.y_train = to_categorical(
+            y=self.y_train,
+            num_classes=self.num_classes
+        )
+        self.y_test = to_categorical(
+            y=self.y_test,
+            num_classes=self.num_classes
+        )
         # Addtional class attributes
         self.scaler = None
 
@@ -67,14 +73,21 @@ class CIFAR10:
         x_augmented = self.x_train[rand_idxs].copy()
         y_augmented = self.y_train[rand_idxs].copy()
         x_augmented = image_generator.flow(
-            x_augmented, np.zeros(augment_size), batch_size=augment_size, shuffle=False
+            x=x_augmented,
+            y=np.zeros(augment_size),
+            batch_size=augment_size,
+            shuffle=False
         ).next()[0]
         # Append the augmented images to the train set
-        self.x_train = np.concatenate((self.x_train, x_augmented))
-        self.y_train = np.concatenate((self.y_train, y_augmented))
+        self.x_train = np.concatenate(arrays=(self.x_train, x_augmented))
+        self.y_train = np.concatenate(arrays=(self.y_train, y_augmented))
         self.train_size = self.x_train.shape[0]
 
-    def data_preprocessing(self, preprocess_mode="standard", preprocess_params=None):
+    def data_preprocessing(
+        self,
+        preprocess_mode="standard",
+        preprocess_params=None
+    ):
         # Preprocess the data
         if preprocess_mode == "standard":
             if preprocess_params:
@@ -94,5 +107,9 @@ class CIFAR10:
         self.x_train = self.scaler.transform(self.x_train)
         self.x_test = self.scaler.transform(self.x_test)
         # Reshaping the xdata back to the input shape
-        self.x_train = self.x_train.reshape((self.train_size, self.width, self.height, self.depth))
-        self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))
+        self.x_train = self.x_train.reshape(
+            (self.train_size, self.width, self.height, self.depth)
+        )
+        self.x_test = self.x_test.reshape(
+            (self.test_size, self.width, self.height, self.depth)
+        )

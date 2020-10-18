@@ -30,23 +30,22 @@ tf.random.set_seed(0)
 data = CIFAR10()
 data.data_augmentation(augment_size=5000)
 data.data_preprocessing(preprocess_mode="MinMax")
-(
-    x_train_splitted,
-    x_val,
-    y_train_splitted,
-    y_val,
-) = data.get_splitted_train_validation_set()
+(x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
 
 # Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
+dir_path = os.path.abspath(
+    "C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/"
+)
 if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 data_model_path = os.path.join(dir_path, "data_model.h5")
 # Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+log_dir = os.path.abspath(
+    "C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/"
+)
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
@@ -218,9 +217,16 @@ def model_fn(
     y_pred = Activation("softmax")(x)
 
     # Build the model
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=input_img,
+        outputs=y_pred
+    )
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"]
+    )
     model.summary()
     return model
 
@@ -239,7 +245,8 @@ params = {
     "filter_block3": 128,
     "kernel_size_block3": 3,
     "dense_layer_size": 1024,
-    # GlorotUniform, GlorotNormal, RandomNormal, RandomUniform, VarianceScaling
+    # GlorotUniform, GlorotNormal, RandomNormal,
+    # RandomUniform, VarianceScaling
     "kernel_initializer": 'GlorotUniform',
     "bias_initializer": 'zeros',
     # relu, elu, LeakyReLU
@@ -277,12 +284,26 @@ def schedule_fn2(epoch):
 
 # Model 1: schedule_fn1
 # Model 2: schedule_fn2
-lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+lrs_callback = LearningRateScheduler(
+    schedule=schedule_fn2,
+    verbose=1
+)
 
 # Model 3: factor=0.95
-plateau_callback = ReduceLROnPlateau(monitor='val_accuracy', factor=0.95, patience=1, verbose=1, min_lr=1e-5)
+plateau_callback = ReduceLROnPlateau(
+    monitor='val_accuracy',
+    factor=0.95,
+    patience=1,
+    verbose=1,
+    min_lr=1e-5
+)
 
-es_callback = EarlyStopping(monitor='val_accuracy', patience=15, verbose=1, restore_best_weights=True)
+es_callback = EarlyStopping(
+    monitor='val_accuracy',
+    patience=15,
+    verbose=1,
+    restore_best_weights=True
+)
 
 
 class LRTensorBoard(TensorBoard):
@@ -307,5 +328,10 @@ rand_model.fit(
     validation_data=(x_test, y_test),
 )
 
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = rand_model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

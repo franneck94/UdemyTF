@@ -79,7 +79,11 @@ def model_fn(
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"]
+    )
     return model
 
 
