@@ -6,8 +6,10 @@ import tensorflow_datasets as tfds
 
 
 BATCH_SIZE = 32
-IMG_SIZE = 160
+IMG_SIZE = 120
 IMG_DEPTH = 3
+IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
+NUM_OUTPUTS = 1
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
@@ -36,7 +38,8 @@ def build_preprocessing() -> tf.keras.Sequential:
 
 
 def build_data_augmentation() -> tf.keras.Sequential:
-    """Build the data augmentation model, to random rotate and rescale the images.
+    """Build the data augmentation model, to random rotate,
+    zoom and translate the images.
 
     Returns
     -------
@@ -46,13 +49,19 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.05
+            factor=0.05  # 6 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomZoom(
-            height_factor=0.05,
-            width_factor=0.05
+            height_factor=0.05,  # 6 pixels
+            width_factor=0.05  # 6 pixels
+        )
+    )
+    model.add(
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.05,  # 6 pixels
+            width_factor=0.05  # 6 pixels
         )
     )
     return model

@@ -6,12 +6,13 @@ import tensorflow as tf
 BATCH_SIZE = 32
 IMG_SIZE = 32
 IMG_DEPTH = 3
+IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
 NUM_CLASSES = 10
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
 def build_preprocessing() -> tf.keras.Sequential:
-    """Build the preprocessing model, to resize and rescale the images.
+    """Build the preprocessing model, to rescale the images.
 
     Returns
     -------
@@ -19,12 +20,6 @@ def build_preprocessing() -> tf.keras.Sequential:
         The preprocessing model
     """
     model = tf.keras.Sequential()
-    model.add(
-        tf.keras.layers.experimental.preprocessing.Resizing(
-            height=IMG_SIZE,
-            width=IMG_SIZE
-        )
-    )
     model.add(
         tf.keras.layers.experimental.preprocessing.Rescaling(
             scale=1.0 / 127.5,
@@ -35,7 +30,8 @@ def build_preprocessing() -> tf.keras.Sequential:
 
 
 def build_data_augmentation() -> tf.keras.Sequential:
-    """Build the data augmentation model, to random rotate and rescale the images.
+    """Build the data augmentation model, to random rotate,
+    zoom and translate the images.
 
     Returns
     -------
@@ -45,13 +41,19 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.05
+            factor=0.0625  # 2 pixels
         )
     )
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomZoom(
-            height_factor=0.05,
-            width_factor=0.05
+            height_factor=0.0625,  # 2 pixels
+            width_factor=0.0625  # 2 pixels
+        )
+    )
+    model.add(
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(
+            height_factor=0.0625,  # 2 pixels
+            width_factor=0.0625  # 2 pixels
         )
     )
     return model
@@ -121,7 +123,7 @@ def get_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
         num_classes=NUM_CLASSES
     )
 
-    validation_size = 10_000
+    validation_size = x_train.shape[0] // 5
     train_dataset = tf.data.Dataset.from_tensor_slices(
         tensors=(x_train[:-validation_size], y_train[:-validation_size])
     )
