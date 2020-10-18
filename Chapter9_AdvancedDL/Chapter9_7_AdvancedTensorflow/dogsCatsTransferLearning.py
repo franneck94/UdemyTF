@@ -19,8 +19,11 @@ def build_model() -> tf.keras.Model:
         input_shape=IMG_SHAPE,
         classes=NUM_OUTPUTS
     )
-    base_model.summary()
-    base_model.trainable = False
+    # base_model.summary()
+    # base_model.trainable = False
+    fine_tune_at_layer_idx = len(base_model.layers) - 10
+    for layer in base_model.layers[:fine_tune_at_layer_idx]:
+        layer.trainable = False
     inputs = tf.keras.Input(shape=IMG_SHAPE)
     x = base_model(inputs)
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
@@ -58,3 +61,5 @@ def train_and_evaluate_model(model: tf.keras.Model) -> None:
 if __name__ == "__main__":
     model = build_model()
     train_and_evaluate_model(model)
+    # 1: loss: 0.0910 - binary_accuracy: 0.9630
+    # 2: loss: 0.0412 - binary_accuracy: 0.9860
