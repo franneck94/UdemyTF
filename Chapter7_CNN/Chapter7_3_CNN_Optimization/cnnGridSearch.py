@@ -89,7 +89,12 @@ grid = ParameterGrid(param_grid)
 for comb in grid:
     print(comb)
 
-keras_clf = KerasClassifier(build_fn=model_fn, epochs=epochs, batch_size=batch_size, verbose=0)
+keras_clf = KerasClassifier(
+    build_fn=model_fn,
+    epochs=epochs,
+    batch_size=batch_size,
+    verbose=0
+)
 
 grid_cv = GridSearchCV(estimator=keras_clf, param_grid=param_grid, n_jobs=1, verbose=0, cv=3)
 

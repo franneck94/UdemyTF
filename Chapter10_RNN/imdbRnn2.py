@@ -49,5 +49,10 @@ model.fit(
 )
 
 # Test the DNN
-score = model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

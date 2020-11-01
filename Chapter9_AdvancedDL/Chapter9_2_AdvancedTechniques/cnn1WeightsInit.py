@@ -159,7 +159,11 @@ rand_model = model_fn(
     bias_initializer,
 )
 model_log_dir = os.path.join(log_dir, "modelCatsDogsVarianceScaling")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 rand_model.fit(
     x=x_train_splitted,
     y=y_train_splitted,

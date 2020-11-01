@@ -80,12 +80,8 @@ class Model:
             train_loss = self.update_variables(x_train, y_train).numpy()
             if epoch % 100 == 0:
                 print(
-                    "Epoch: ",
-                    epoch + 1,
-                    " of ",
-                    epochs,
-                    " - Train Loss: ",
-                    round(train_loss, 4),
+                    "Epoch: ", epoch + 1, " of ", epochs,
+                    " - Train Loss: ", round(train_loss, 4)
                 )
         # print("Weights at the end: ", self.get_variables())
 
@@ -95,5 +91,12 @@ class Model:
 
 
 model = Model()
-model.fit(x_train, y_train, epochs=epochs)
-model.evaluate(x_test, y_test)
+model.fit(
+    x_train,
+    y_train,
+    epochs=epochs
+)
+model.evaluate(
+    x_test,
+    y_test
+)

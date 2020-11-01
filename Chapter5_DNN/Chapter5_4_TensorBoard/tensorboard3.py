@@ -69,31 +69,37 @@ model.add(
     )
 )
 model.add(Activation("relu"))
-
 model.add(Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b))
 model.add(Activation("relu"))
-
 model.add(Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
 model.add(Activation("relu"))
-
-model.add(
-    Dense(
-        units=num_classes,
-        kernel_initializer=init_w,
-        bias_initializer=init_b,
-    )
-)
+model.add(Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b,))
 model.add(Activation("softmax"))
 
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
-model.compile(loss="mse", optimizer=optimizer, metrics=["accuracy"])
+model.compile(
+    loss="categorical_crossentropy",
+    optimizer=optimizer,
+    metrics=["accuracy"]
+)
 
-tb_callback = TensorBoard(log_dir=model_log_dir, histogram_freq=1, write_graph=True)
+tb_callback = TensorBoard(
+    log_dir=model_log_dir,
+    histogram_freq=1,
+    write_graph=True
+)
 
 classes_list = [i for i in range(num_classes)]
-cm_callback = ConfusionMatrix(model, x_test, y_test, classes_list=classes_list, log_dir=model_log_dir)
+
+cm_callback = ConfusionMatrix(
+    model,
+    x_test,
+    y_test,
+    classes_list=classes_list,
+    log_dir=model_log_dir
+)
 
 model.fit(
     x=x_train,
@@ -104,5 +110,9 @@ model.fit(
     callbacks=[tb_callback, cm_callback],
 )
 
-score = model.evaluate(x_test, y_test, verbose=0)
+score = model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0
+)
 print("Score: ", score)

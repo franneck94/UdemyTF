@@ -31,7 +31,11 @@ def create_model():
     model.add(tf.keras.layers.Activation("softmax"))
 
     # Compile and train (fit) the model, afterwards evaluate the model
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"]
+    )
     return model
 
 

@@ -13,11 +13,9 @@ plt.show()
 
 # Grauwert Bild (2d)
 bild = np.array(
-    [
-        [0, 100, 100],
-        [255, 255, 255],
-        [100, 100, 0],
-    ],
+    [[0, 100, 100],
+     [255, 255, 255],
+     [100, 100, 0]],
     dtype=np.uint8,
 )
 print("\nGray (2D):\n", bild)

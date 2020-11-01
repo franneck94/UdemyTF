@@ -114,7 +114,11 @@ rand_model = model_fn(
     dense_layer_size,
 )
 model_log_dir = os.path.join(log_dir, "modelCatsDogsStart")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 rand_model.fit(
     x=x_train_splitted,
     y=y_train_splitted,
@@ -124,6 +128,7 @@ rand_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_val, y_val),
 )
+
 score = rand_model.evaluate(
     x=x_test,
     y=y_test,

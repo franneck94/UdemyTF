@@ -125,18 +125,11 @@ class Model:
             test_metrics.append(test_metric)
             # Print metrics
             print(
-                "Epoch: ",
-                epoch + 1,
-                " of ",
-                epochs,
-                " - Train Loss: ",
-                round(train_loss, 4),
-                " - Train Metric: ",
-                round(train_metric, 4),
-                " - Test Loss: ",
-                round(test_loss, 4),
-                " - Test Metric: ",
-                round(test_metric, 4),
+                "Epoch: ", epoch + 1, " of ", epochs,
+                " - Train Loss: ", round(train_loss, 4),
+                " - Train Metric: ", round(train_metric, 4),
+                " - Test Loss: ", round(test_loss, 4),
+                " - Test Metric: ", round(test_metric, 4),
             )
         # Visualization of the loss and metric values
         display_convergence_error(train_losses, test_losses)

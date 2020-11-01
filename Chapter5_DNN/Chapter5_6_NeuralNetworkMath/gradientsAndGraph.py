@@ -37,7 +37,11 @@ optimizer = Adam(learning_rate=learning_rate)
 
 model.compile(loss="mse", optimizer=optimizer, metrics=["mse"])
 
-tb = TensorBoard(log_dir=log_dir, embeddings_freq=0, write_graph=True)
+tb_callback = TensorBoard(
+    log_dir=log_dir,
+    embeddings_freq=0,
+    write_graph=True
+)
 
 model.fit(
     x=x_train,
@@ -46,7 +50,7 @@ model.fit(
     batch_size=1,
     epochs=0,
     validation_data=(x_test, y_test),
-    callbacks=[tb],
+    callbacks=[tb_callback],
 )
 
 model.layers[0].set_weights([np.array([[-0.250], [1.000]]), np.array([0.100])])

@@ -114,7 +114,11 @@ grid_model = model_fn(
     dense_layer_size,
 )
 model_log_dir = os.path.join(log_dir, "modelBestGrid")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 grid_model.fit(
     x=x_train,
     y=y_train,
@@ -124,7 +128,12 @@ grid_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_test, y_test),
 )
-score = grid_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = grid_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance best grid model: ", score)
 
 # Best random model
@@ -150,7 +159,11 @@ rand_model = model_fn(
     dense_layer_size,
 )
 model_log_dir = os.path.join(log_dir, "modelBestRand")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 rand_model.fit(
     x=x_train,
     y=y_train,
@@ -160,7 +173,12 @@ rand_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_test, y_test),
 )
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = rand_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance best rand model: ", score)
 
 # Huge model
@@ -186,7 +204,11 @@ rand_model = model_fn(
     dense_layer_size,
 )
 model_log_dir = os.path.join(log_dir, "modelHuge")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 rand_model.fit(
     x=x_train,
     y=y_train,
@@ -196,5 +218,10 @@ rand_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_test, y_test),
 )
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+score = rand_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance best rand model: ", score)

@@ -82,10 +82,27 @@ model = Model(inputs=[input_img], outputs=[y_pred])
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
-tb_callback = TensorBoard(log_dir=model_log_dir)
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
 
-model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
-model.fit(x=x_train, y=y_train, epochs=epochs, batch_size=batch_size, callbacks=[tb_callback])
+model.compile(
+    loss="categorical_crossentropy",
+    optimizer=optimizer,
+    metrics=["accuracy"]
+)
 
-score = model.evaluate(x_test, y_test, verbose=0)
+model.fit(
+    x=x_train,
+    y=y_train,
+    epochs=epochs,
+    batch_size=batch_size,
+    callbacks=[tb_callback]
+)
+
+score = model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0
+)
 print("Score: ", score)

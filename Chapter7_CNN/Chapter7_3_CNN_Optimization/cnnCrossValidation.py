@@ -74,11 +74,20 @@ def model_fn():
     # Build the model
     model = Model(inputs=[input_img], outputs=[y_pred])
 
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"]
+    )
     return model
 
 
-keras_clf = KerasClassifier(build_fn=model_fn, epochs=epochs, batch_size=batch_size, verbose=0)
+keras_clf = KerasClassifier(
+    build_fn=model_fn,
+    epochs=epochs,
+    batch_size=batch_size,
+    verbose=0
+)
 
 scores = cross_val_score(estimator=keras_clf, X=x_train, y=y_train, cv=3, n_jobs=1)
 

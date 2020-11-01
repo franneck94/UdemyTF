@@ -224,7 +224,11 @@ rand_model = model_fn(
     dropout_rate,
 )
 model_log_dir = os.path.join(log_dir, "modelDropout020")
-tb_callback = TensorBoard(log_dir=model_log_dir)
+
+tb_callback = TensorBoard(
+    log_dir=model_log_dir
+)
+
 rand_model.fit(
     x=x_train_splitted,
     y=y_train_splitted,
@@ -234,5 +238,11 @@ rand_model.fit(
     callbacks=[tb_callback],
     validation_data=(x_val, y_val),
 )
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+
+score = rand_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

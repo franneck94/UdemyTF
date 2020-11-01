@@ -238,7 +238,8 @@ params = {
     "filter_block3": 128,
     "kernel_size_block3": 3,
     "dense_layer_size": 1024,
-    # GlorotUniform, GlorotNormal, RandomNormal, RandomUniform, VarianceScaling
+    # GlorotUniform, GlorotNormal, RandomNormal
+    # RandomUniform, VarianceScaling
     "kernel_initializer": 'GlorotUniform',
     "bias_initializer": 'zeros',
     # relu, elu, LeakyReLU
@@ -280,12 +281,26 @@ def schedule_fn3(epoch):
 
 # Model 2: schedule_fn2
 # Model 3: schedule_fn3
-lrs_callback = LearningRateScheduler(schedule=schedule_fn3, verbose=1)
+lrs_callback = LearningRateScheduler(
+    schedule=schedule_fn3,
+    verbose=1
+)
 
 # Model 1: factor=0.95
-plateau_callback = ReduceLROnPlateau(monitor='val_accuracy', factor=0.95, patience=2, verbose=1, min_lr=1e-5)
+plateau_callback = ReduceLROnPlateau(
+    monitor='val_accuracy',
+    factor=0.95,
+    patience=2,
+    verbose=1,
+    min_lr=1e-5
+)
 
-es_callback = EarlyStopping(monitor='val_accuracy', patience=15, verbose=1, restore_best_weights=True)
+es_callback = EarlyStopping(
+    monitor='val_accuracy',
+    patience=15,
+    verbose=1,
+    restore_best_weights=True
+)
 
 
 class LRTensorBoard(TensorBoard):
@@ -310,5 +325,11 @@ rand_model.fit(
     validation_data=(x_test, y_test),
 )
 
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+
+score = rand_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

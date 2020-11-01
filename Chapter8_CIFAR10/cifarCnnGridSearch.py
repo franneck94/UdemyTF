@@ -132,7 +132,10 @@ for idx, comb in enumerate(grid):
     if os.path.exists(model_log_dir):
         shutil.rmtree(model_log_dir)
         os.mkdir(model_log_dir)
-    tb_callback = TensorBoard(log_dir=model_log_dir)
+
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir
+    )
 
     curr_model.fit(
         x=x_train_splitted,

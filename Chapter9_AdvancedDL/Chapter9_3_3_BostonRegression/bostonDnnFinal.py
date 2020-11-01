@@ -134,12 +134,26 @@ def schedule_fn2(epoch):
 
 # Model 1: schedule_fn1
 # Model 2: schedule_fn2
-lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+lrs_callback = LearningRateScheduler(
+    schedule=schedule_fn2,
+    verbose=1
+)
 
 # Model 3: factor=0.95
-plateau_callback = ReduceLROnPlateau(monitor='val_loss', factor=0.98, patience=50, verbose=1, min_lr=1e-5)
+plateau_callback = ReduceLROnPlateau(
+    monitor='val_loss',
+    factor=0.98,
+    patience=50,
+    verbose=1,
+    min_lr=1e-5
+)
 
-es_callback = EarlyStopping(monitor='val_loss', patience=200, verbose=1, restore_best_weights=True)
+es_callback = EarlyStopping(
+    monitor='val_loss',
+    patience=200,
+    verbose=1,
+    restore_best_weights=True
+)
 
 
 class LRTensorBoard(TensorBoard):
@@ -164,5 +178,11 @@ rand_model.fit(
     validation_data=(x_test, y_test),
 )
 
-score = rand_model.evaluate(x_test, y_test, verbose=0, batch_size=batch_size)
+
+score = rand_model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size
+)
 print("Test performance: ", score)

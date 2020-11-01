@@ -84,7 +84,12 @@ model = Model(inputs=[input_img], outputs=[y_pred])
 # Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
-model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+model.compile(
+    loss="categorical_crossentropy",
+    optimizer=optimizer,
+    metrics=["accuracy"]
+)
+
 model.fit(
     x=x_train,
     y=y_train,
@@ -93,5 +98,9 @@ model.fit(
     validation_data=(x_test, y_test),
 )
 
-score = model.evaluate(x_test, y_test, verbose=0)
+score = model.evaluate(
+    x=x_test,
+    y=y_test,
+    verbose=0
+)
 print("Score: ", score)

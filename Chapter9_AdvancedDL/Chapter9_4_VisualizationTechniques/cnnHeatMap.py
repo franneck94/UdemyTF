@@ -237,7 +237,8 @@ params = {
     "filter_block3": 128,
     "kernel_size_block3": 3,
     "dense_layer_size": 1024,
-    # GlorotUniform, GlorotNormal, RandomNormal, RandomUniform, VarianceScaling
+    # GlorotUniform, GlorotNormal, RandomNormal
+    # RandomUniform, VarianceScaling
     "kernel_initializer": 'GlorotUniform',
     "bias_initializer": 'zeros',
     # relu, elu, LeakyReLU
@@ -254,9 +255,20 @@ params = {
 
 model = model_fn(**params)
 
-plateau_callback = ReduceLROnPlateau(monitor='val_accuracy', factor=0.95, patience=2, verbose=1, min_lr=1e-5)
+plateau_callback = ReduceLROnPlateau(
+    monitor='val_accuracy',
+    factor=0.95,
+    patience=2,
+    verbose=1,
+    min_lr=1e-5
+)
 
-es_callback = EarlyStopping(monitor='val_accuracy', patience=15, verbose=1, restore_best_weights=True)
+es_callback = EarlyStopping(
+    monitor='val_accuracy',
+    patience=15,
+    verbose=1,
+    restore_best_weights=True
+)
 
 model.fit(
     x=x_train,
