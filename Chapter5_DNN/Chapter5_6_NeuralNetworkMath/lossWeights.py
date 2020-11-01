@@ -18,7 +18,7 @@ model = Sequential()
 model.add(Dense(12))  # Input zu Hidden
 model.add(Activation("relu"))  # ReLU vom Hidden
 model.add(Dense(1))  # Vom Hidden zum Output
-model.compile(optimizer=RMSprop(lr=1e-2), loss="mse")  # 1e-3 <=> 0.001
+model.compile(optimizer=RMSprop(learning_rate=1e-2), loss="mse")  # 1e-3 <=> 0.001
 model.fit(x, y, epochs=20)
 y_pred = model.predict(x).flatten()
 W, b = model.layers[0].get_weights()

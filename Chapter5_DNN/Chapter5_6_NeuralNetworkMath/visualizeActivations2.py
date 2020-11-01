@@ -25,7 +25,7 @@ model = Sequential()
 model.add(Dense(12))  # Input zu Hidden
 model.add(Activation("relu"))  # ReLU vom Hidden
 model.add(Dense(1))  # Vom Hidden zum Output
-model.compile(optimizer=Adam(lr=5e-2), loss="mse")
+model.compile(optimizer=Adam(learning_rate=5e-2), loss="mse")
 model.fit(x, y, epochs=20)
 
 W, b = model.layers[0].get_weights()

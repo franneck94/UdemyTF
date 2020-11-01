@@ -32,8 +32,8 @@ model.add(Dense(1, name="output"))
 model.summary()
 
 # Train the DNN
-lr = 1e-2
-optimizer = Adam(lr=lr)
+learning_rate = 1e-2
+optimizer = Adam(learning_rate=learning_rate)
 
 model.compile(loss="mse", optimizer=optimizer, metrics=["mse"])
 

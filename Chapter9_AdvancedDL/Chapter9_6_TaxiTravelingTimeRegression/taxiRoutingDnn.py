@@ -27,8 +27,8 @@ def r_squared(y_true, y_pred):
 
 
 # Model params
-lr = 0.001
-optimizer = Adam(lr=lr)
+learning_rate = 0.001
+optimizer = Adam(learning_rate=learning_rate)
 epochs = 200
 batch_size = 256
 

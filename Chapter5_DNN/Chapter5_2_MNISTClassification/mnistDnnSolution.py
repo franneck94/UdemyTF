@@ -38,18 +38,9 @@ epochs = 50
 class Model:
     def __init__(self):
         # Weights (Matrices)
-        self.W1 = tf.Variable(
-            tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.01),
-            name="W1",
-        )
-        self.W2 = tf.Variable(
-            tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.01),
-            name="W2",
-        )
-        self.W3 = tf.Variable(
-            tf.random.truncated_normal(shape=[nodes[2], nodes[3]], stddev=0.01),
-            name="W3",
-        )
+        self.W1 = tf.Variable(tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.01), name="W1",)
+        self.W2 = tf.Variable(tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.01), name="W2",)
+        self.W3 = tf.Variable(tf.random.truncated_normal(shape=[nodes[2], nodes[3]], stddev=0.01), name="W3",)
         # Biases (Vectors)
         self.b1 = tf.Variable(tf.constant(0.0, shape=[nodes[1]]), name="b1")
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")

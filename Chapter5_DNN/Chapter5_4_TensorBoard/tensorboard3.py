@@ -52,8 +52,8 @@ model_log_dir = os.path.join(log_dir, str(time.time()))
 # Model params
 init_w = TruncatedNormal(mean=0.0, stddev=0.01)
 init_b = Constant(value=0.0)
-lr = 0.001
-optimizer = Adam(lr=lr)
+learning_rate = 0.001
+optimizer = Adam(learning_rate=learning_rate)
 epochs = 10
 batch_size = 256
 

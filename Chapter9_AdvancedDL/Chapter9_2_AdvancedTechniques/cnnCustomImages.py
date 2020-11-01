@@ -257,14 +257,14 @@ model = model_fn(**params)
 
 
 def schedule_fn(epoch):
-    lr = 1e-3
+    learning_rate = 1e-3
     if epoch < 5:
-        lr = 1e-3
+        learning_rate = 1e-3
     elif epoch < 20:
-        lr = 5e-4
+        learning_rate = 5e-4
     else:
-        lr = 1e-4
-    return lr
+        learning_rate = 1e-4
+    return learning_rate
 
 
 def schedule_fn2(epoch):

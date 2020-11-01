@@ -37,8 +37,8 @@ model_log_dir = os.path.join(log_dir, "modelMinMaxFinal")
 # Model 3: MinMax, 3 Conv Blocks, Dense: 256, LR=0.001
 
 # Model params
-lr = 0.001
-optimizer = Adam(lr=lr)
+learning_rate = 0.001
+optimizer = Adam(learning_rate=learning_rate)
 epochs = 3
 batch_size = 128
 

@@ -32,8 +32,8 @@ if not os.path.exists(log_dir):
 model_log_dir = os.path.join(log_dir, "modelMinMaxAugmentation2")
 
 # Model params
-lr = 0.001
-optimizer = Adam(lr=lr)
+learning_rate = 0.001
+optimizer = Adam(learning_rate=learning_rate)
 epochs = 30
 batch_size = 128
 

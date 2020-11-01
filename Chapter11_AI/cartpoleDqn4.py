@@ -6,11 +6,11 @@ from tensorflow.keras.optimizers import Adam
 
 
 class DQN(Model):
-    def __init__(self, state_shape, num_actions, lr):
+    def __init__(self, state_shape, num_actions, learning_rate):
         super().__init__()
         self.state_shape = state_shape
         self.num_actions = num_actions
-        self.lr = lr
+        self.learning_rate = learning_rate
 
         input_state = Input(shape=state_shape)
         x = Dense(20)(input_state)
@@ -20,7 +20,7 @@ class DQN(Model):
         output_pred = Dense(self.num_actions)(x)
 
         self.model = Model(inputs=input_state, outputs=output_pred)
-        self.model.compile(loss="mse", optimizer=Adam(lr=self.lr))
+        self.model.compile(loss="mse", optimizer=Adam(learning_rate=self.learning_rate))
 
     def train(self, states, q_values):
         self.model.fit(states, q_values, verbose=0)

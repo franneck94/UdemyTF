@@ -7,7 +7,11 @@ import tensorflow as tf
 from sklearn.metrics import confusion_matrix
 
 
-def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.ndarray = None) -> None:
+def display_digit(
+    image: np.ndarray,
+    label: np.ndarray = None,
+    pred_label: np.ndarray = None
+) -> None:
     """Display the MNIST image.
     If the *label* and *label* is given, these are also displayed.
 
@@ -24,14 +28,19 @@ def display_digit(image: np.ndarray, label: np.ndarray = None, pred_label: np.nd
         image = image.reshape((28, 28))
     label = np.argmax(label, axis=0)
     if pred_label is None and label is not None:
-        plt.figure_title('Label: %d' % (label))
+        plt.figure_title(f'Label: {label}')
     elif label is not None:
-        plt.figure_title('Label: %d, Pred: %d' % (label, pred_label))
+        plt.figure_title(f'Label: {label}, Pred: {pred_label}')
     plt.imshow(image, cmap=plt.get_cmap('gray_r'))
     plt.show()
 
 
-def display_digit_and_predictions(image: np.ndarray, label: int, pred: int, pred_one_hot: np.ndarray) -> None:
+def display_digit_and_predictions(
+    image: np.ndarray,
+    label: int,
+    pred: int,
+    pred_one_hot: np.ndarray
+) -> None:
     """Display the MNIST image and the predicted class as a title.
 
     Parameters
@@ -61,7 +70,10 @@ def display_digit_and_predictions(image: np.ndarray, label: int, pred: int, pred
     plt.show()
 
 
-def display_convergence_error(train_losses: list, valid_losses: list) -> None:
+def display_convergence_error(
+    train_losses: list,
+    valid_losses: list
+) -> None:
     """Display the convergence of the errors.
 
     Parameters
@@ -83,7 +95,10 @@ def display_convergence_error(train_losses: list, valid_losses: list) -> None:
     plt.show()
 
 
-def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
+def display_convergence_acc(
+    train_accs: list,
+    valid_accs: list
+) -> None:
     """Display the convergence of the accs.
 
     Parameters
@@ -105,7 +120,11 @@ def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
     plt.show()
 
 
-def plot_confusion_matrix(y_pred: np.ndarray, y_true: np.ndarray, classes_list: list) -> plt.figure:
+def plot_confusion_matrix(
+    y_pred: np.ndarray,
+    y_true: np.ndarray,
+    classes_list: list
+) -> plt.figure:
     """Compute and create a plt.figure for the confusion matrix.
 
     Parameters
@@ -149,7 +168,9 @@ def plot_confusion_matrix(y_pred: np.ndarray, y_true: np.ndarray, classes_list: 
     return fig
 
 
-def plot_to_image(fig: plt.figure) -> tf.Tensor:
+def plot_to_image(
+    fig: plt.figure
+) -> tf.Tensor:
     """Plt plot/figure to tensorflow image.
 
     Parameters
@@ -176,13 +197,13 @@ class ImageCallback(tf.keras.callbacks.Callback):
 
     def __init__(
         self,
-        model,
-        x_test,
-        y_test,
-        log_dir="./",
-        classes_list=None,
-        figure_fn=None,
-        figure_title=None,
+        model: tf.keras.Model,
+        x_test: np.ndarray,
+        y_test: np.ndarray,
+        log_dir: str = "./",
+        classes_list: list = None,
+        figure_fn: plt.Figure = None,
+        figure_title: str = None,
     ):
         self.model = model
         self.x_test = x_test
@@ -192,14 +213,19 @@ class ImageCallback(tf.keras.callbacks.Callback):
         else:
             self.classes_list = classes_list
         self.log_dir = log_dir
-        self.file_writer_images = tf.summary.create_file_writer(os.path.join(self.log_dir, 'images'))
+        img_file = os.path.join(self.log_dir, 'images')
+        self.file_writer_images = tf.summary.create_file_writer(img_file)
         self.figure_fn = figure_fn
         if figure_title is None:
             self.figure_title = str(self.figure_fn)
         else:
             self.figure_title = figure_title
 
-    def on_epoch_end(self, epoch, logs=None):
+    def on_epoch_end(
+        self,
+        epoch: int,
+        logs: dict = None
+    ):
         y_pred_prob = self.model.predict(self.x_test)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
@@ -215,7 +241,14 @@ class ImageCallback(tf.keras.callbacks.Callback):
 class ConfusionMatrix(ImageCallback):
     """Custom tensorbard callback, to store the confusion matrix figure."""
 
-    def __init__(self, model, x_test, y_test, classes_list, log_dir):
+    def __init__(
+        self,
+        model: tf.keras.Model,
+        x_test: np.ndarray,
+        y_test: np.ndarray,
+        classes_list: list,
+        log_dir: str
+    ):
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
         super().__init__(
@@ -228,5 +261,9 @@ class ConfusionMatrix(ImageCallback):
             figure_title=self.figure_title,
         )
 
-    def on_epoch_end(self, epoch, logs=None):
+    def on_epoch_end(
+        self,
+        epoch: int,
+        logs: dict = None
+    ):
         super().on_epoch_end(epoch, logs)

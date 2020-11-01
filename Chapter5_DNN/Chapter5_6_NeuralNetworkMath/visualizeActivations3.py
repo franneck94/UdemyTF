@@ -25,7 +25,7 @@ model = Sequential()
 model.add(Dense(200))  # Input zu Hidden
 model.add(Dense(200))  # Input zu Hidden
 model.add(Dense(1))  # Vom Hidden zum Output
-model.compile(optimizer=Adam(lr=1e-2), loss="mse")
+model.compile(optimizer=Adam(learning_rate=1e-2), loss="mse")
 model.fit(x, y, epochs=30)
 y_pred_linear = model.predict(x)
 
@@ -35,7 +35,7 @@ model.add(Activation("relu"))  # ReLU vom Hidden
 model.add(Dense(500))  # Input zu Hidden
 model.add(Activation("relu"))  # ReLU vom Hidden
 model.add(Dense(1))  # Vom Hidden zum Output
-model.compile(optimizer=Adam(lr=1e-2), loss="mse")
+model.compile(optimizer=Adam(learning_rate=1e-2), loss="mse")
 model.fit(x, y, epochs=30)
 y_pred_relu = model.predict(x)
 
@@ -45,7 +45,7 @@ model.add(Activation("sigmoid"))  # ReLU vom Hidden
 model.add(Dense(500))  # Input zu Hidden
 model.add(Activation("sigmoid"))  # ReLU vom Hidden
 model.add(Dense(1))  # Vom Hidden zum Output
-model.compile(optimizer=Adam(lr=1e-2), loss="mse")
+model.compile(optimizer=Adam(learning_rate=1e-2), loss="mse")
 model.fit(x, y, epochs=30)
 y_pred_sigmoid = model.predict(x)
 

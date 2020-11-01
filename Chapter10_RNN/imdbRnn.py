@@ -34,7 +34,7 @@ def create_model():
     x = Dense(units=num_classes)(x)
     output_pred = Activation("softmax")(x)
 
-    optimizer = Adam(lr=1e-3)
+    optimizer = Adam(learning_rate=1e-3)
     model = Model(inputs=input_text, outputs=output_pred)
     model.compile(loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"])
     model.summary()

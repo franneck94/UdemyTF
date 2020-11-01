@@ -15,8 +15,8 @@ def create_model():
     num_classes = 10
     init_w = tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.01)
     init_b = tf.keras.initializers.Constant(value=0.0)
-    lr = 0.001
-    optimizer = tf.keras.optimizers.Adam(lr=lr)
+    learning_rate = 0.001
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
     # Define the DNN
     model = tf.keras.models.Sequential()
