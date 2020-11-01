@@ -10,8 +10,8 @@ def get_dataset():
 class Perceptron:
     def __init__(self, epochs, lr):
         self.epochs = epochs
-        self.w = []
         self.lr = lr
+        self.w: np.ndarray = None
 
     def train(self, x, y):
         N, dim = x.shape  # 4x2

@@ -10,8 +10,8 @@ def get_dataset():
 class Perceptron:
     def __init__(self, epochs, lr):
         self.epochs = epochs
-        self.w = []
         self.lr = lr
+        self.w: np.ndarray = None
 
     def train(self, x, y):
         N, dim = x.shape  # 4x2
@@ -39,10 +39,7 @@ class Perceptron:
 
     def update_weights(self, x, y, y_hat):
         for i in range(self.w.shape[0]):
-            if y_hat > 0:
-                delta = -x[i]
-            else:
-                delta = x[i]
+            delta = (y - y_hat) * x[i]
             self.w[i] = self.w[i] + self.lr * delta
 
     def activation(self, signal):
