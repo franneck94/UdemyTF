@@ -59,7 +59,6 @@ optimizer = Adam(learning_rate=learning_rate)
 epochs = 20
 batch_size = 256
 
-# Define the DNN
 model = Sequential()
 
 model.add(Dense(units=500, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,),))
@@ -69,8 +68,8 @@ model.add(Activation("relu"))
 model.add(Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b,))
 model.add(Activation("softmax"))
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
+
 model.compile(
     loss="categorical_crossentropy",
     optimizer=optimizer,

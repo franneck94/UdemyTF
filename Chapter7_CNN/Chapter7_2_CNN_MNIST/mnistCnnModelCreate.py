@@ -1,16 +1,13 @@
 import os
 import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPool2D
-from tensorflow.keras.models import Model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
@@ -57,27 +54,15 @@ optimizer = Adam(learning_rate=learning_rate)
 epochs = 10
 batch_size = 256
 
-# Define the DNN
 model = Sequential()
 
-model.add(
-    Conv2D(
-        filters=32,
-        kernel_size=5,
-        strides=1,
-        padding='same',
-        input_shape=x_train.shape[1:],
-    )
-)
+model.add(Conv2D(filters=32, kernel_size=5, strides=1, padding='same', input_shape=x_train.shape[1:]))
 model.add(Activation("relu"))
 model.add(MaxPool2D(pool_size=(2, 2)))
-
 model.add(Flatten())
-
 model.add(Dense(units=num_classes))
 model.add(Activation("softmax"))
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
 model.compile(

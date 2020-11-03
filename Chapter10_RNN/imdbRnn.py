@@ -36,12 +36,17 @@ def create_model():
 
     optimizer = Adam(learning_rate=1e-3)
     model = Model(inputs=input_text, outputs=output_pred)
-    model.compile(loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"]
+    )
     model.summary()
     return model
 
 
 model = create_model()
+
 model.fit(
     x=x_train,
     y=y_train,
@@ -51,7 +56,6 @@ model.fit(
     validation_data=(x_test, y_test),
 )
 
-# Test the DNN
 score = model.evaluate(
     x=x_test,
     y=y_test,

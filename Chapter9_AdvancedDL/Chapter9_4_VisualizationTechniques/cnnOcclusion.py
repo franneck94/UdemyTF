@@ -213,7 +213,10 @@ def model_fn(
     y_pred = Activation("softmax")(x)
 
     # Build the model
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred]
+    )
     opt = optimizer(learning_rate=learning_rate)
     model.compile(
         loss="categorical_crossentropy",
@@ -277,7 +280,8 @@ es_callback = EarlyStopping(
 #     batch_size=batch_size,
 #     epochs=epochs,
 #     callbacks=[plateau_callback, es_callback],
-#     validation_data=(x_test, y_test))
+#     validation_data=(x_test, y_test)
+# )
 # model.save_weights(filepath=data_model_path)
 
 model.load_weights(filepath=data_model_path)
@@ -285,7 +289,14 @@ model.load_weights(filepath=data_model_path)
 #     x_test,
 #     y_test,
 #     verbose=0,
-#     batch_size=batch_size)
+#     batch_size=batch_size
+# )
 # print("Test performance: ", score)
 
-get_occlusion(img=x_test[1337], label=y_test[1337], box_size=4, step_size=4, model=model)
+get_occlusion(
+    img=x_test[1337],
+    label=y_test[1337],
+    box_size=4,
+    step_size=4,
+    model=model
+)

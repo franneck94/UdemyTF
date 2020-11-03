@@ -18,7 +18,6 @@ def create_model():
     learning_rate = 0.001
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
-    # Define the DNN
     model = tf.keras.models.Sequential()
     model.add(tf.keras.layers.Dense(units=500, kernel_initializer=init_w,
                                     bias_initializer=init_b, input_shape=(num_features,)))
@@ -30,7 +29,6 @@ def create_model():
     model.add(tf.keras.layers.Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
     model.add(tf.keras.layers.Activation("softmax"))
 
-    # Compile and train (fit) the model, afterwards evaluate the model
     model.compile(
         loss="categorical_crossentropy",
         optimizer=optimizer,

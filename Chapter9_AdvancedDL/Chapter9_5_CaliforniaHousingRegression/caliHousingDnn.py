@@ -29,8 +29,8 @@ optimizer = Adam(learning_rate=learning_rate)
 epochs = 200
 batch_size = 256
 
-# Define the DNN
 model = Sequential()
+
 model.add(Dense(units=16, input_shape=(num_features,)))
 model.add(Activation("relu"))
 model.add(Dense(units=64))
@@ -38,9 +38,9 @@ model.add(Activation("relu"))
 model.add(Dense(units=16))
 model.add(Activation("relu"))
 model.add(Dense(units=num_targets))
+
 model.summary()
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.compile(
     loss="mse",
     optimizer=optimizer,

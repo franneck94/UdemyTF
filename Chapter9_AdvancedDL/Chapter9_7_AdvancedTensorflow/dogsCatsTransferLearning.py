@@ -55,7 +55,9 @@ def train_and_evaluate_model(model: tf.keras.Model) -> None:
         epochs=20,
         validation_data=validation_dataset
     )
-    model.evaluate(x=test_dataset)
+    model.evaluate(
+        test_dataset
+    )
 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@ import numpy as np
 import tensorflow as tf
 
 
-# XOR dataset
 def get_dataset():
+    """XOR dataset."""
     x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]]).astype(np.float32)
     y = np.array([0, 1, 1, 0]).astype(np.float32)
     return x, y

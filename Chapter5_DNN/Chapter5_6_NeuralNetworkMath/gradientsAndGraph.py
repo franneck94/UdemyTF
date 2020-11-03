@@ -21,14 +21,12 @@ x = np.array([[i, i] for i in range(100)], dtype=np.float32)
 y = np.array([i for i in range(100)], dtype=np.float32).reshape(-1, 1)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
-print(x.shape)
-print(y.shape)
-
-# Define the DNN
 model = Sequential()
+
 model.add(Dense(1, input_shape=(2,), name="hidden"))
 model.add(Activation("relu", name="relu"))
 model.add(Dense(1, name="output"))
+
 model.summary()
 
 # Train the DNN

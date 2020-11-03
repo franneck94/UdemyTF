@@ -40,7 +40,6 @@ batch_size = 256
 units = 50
 return_sequences = False
 
-# Define the DNN
 model = Sequential()
 model.add(LSTM(units=units, return_sequences=return_sequences, input_shape=x_train.shape[1:]))
 model.add(Activation("relu"))
@@ -48,7 +47,6 @@ model.add(Dense(units=num_classes))
 model.add(Activation("softmax"))
 model.summary()
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.compile(
     loss="categorical_crossentropy",
     optimizer=optimizer,

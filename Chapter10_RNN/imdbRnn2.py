@@ -26,19 +26,28 @@ epochs = 10
 
 def create_model():
     input_text = Input(shape=x_train.shape[1:])
-    x = Embedding(input_dim=num_words, output_dim=embedding_dim, input_length=maxlen)(input_text)
+    x = Embedding(
+        input_dim=num_words,
+        output_dim=embedding_dim,
+        input_length=maxlen
+    )(input_text)
     x = LSTM(units=100)(x)
     x = Dense(units=num_classes)(x)
     output_pred = Activation("softmax")(x)
 
     optimizer = Adam(learning_rate=1e-3)
     model = Model(inputs=input_text, outputs=output_pred)
-    model.compile(loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"]
+    )
     model.summary()
     return model
 
 
 model = create_model()
+
 model.fit(
     x=x_train,
     y=y_train,
@@ -48,7 +57,6 @@ model.fit(
     validation_data=(x_test, y_test),
 )
 
-# Test the DNN
 score = model.evaluate(
     x=x_test,
     y=y_test,

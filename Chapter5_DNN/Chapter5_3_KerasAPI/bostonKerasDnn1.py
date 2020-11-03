@@ -41,9 +41,10 @@ def r_squared(y_true, y_pred):
 init_w = RandomUniform(minval=-1.0, maxval=1.0)
 init_b = Constant(value=0.0)
 
-# Define the DNN
 model = Sequential()
+
 model.add(Dense(units=16, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,),))
 model.add(Activation("relu"))
 model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
+
 model.summary()

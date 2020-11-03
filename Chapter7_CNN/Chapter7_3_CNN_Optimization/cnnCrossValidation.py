@@ -44,7 +44,6 @@ batch_size = 128
 
 
 def model_fn():
-    # Define the DNN
     input_img = Input(shape=x_train.shape[1:])
 
     x = Conv2D(filters=32, kernel_size=3, padding='same')(input_img)

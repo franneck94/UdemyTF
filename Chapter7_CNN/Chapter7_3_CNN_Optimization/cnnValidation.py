@@ -49,7 +49,6 @@ optimizer = Adam(learning_rate=learning_rate)
 epochs = 30
 batch_size = 128
 
-# Define the DNN
 input_img = Input(shape=x_train.shape[1:])
 
 x = Conv2D(filters=32, kernel_size=3, padding='same')(input_img)
@@ -76,10 +75,8 @@ x = Activation("relu")(x)
 x = Dense(units=num_classes)(x)
 y_pred = Activation("softmax")(x)
 
-# Build the model
 model = Model(inputs=[input_img], outputs=[y_pred])
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
 tb_callback = TensorBoard(

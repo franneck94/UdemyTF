@@ -42,7 +42,6 @@ model_log_dir = os.path.join(log_dir, "modelMinMaxFinal")
 
 
 def model_fn(optimizer, learning_rate):
-    # Define the DNN
     input_img = Input(shape=x_train.shape[1:])
 
     x = Conv2D(filters=32, kernel_size=3, padding='same')(input_img)

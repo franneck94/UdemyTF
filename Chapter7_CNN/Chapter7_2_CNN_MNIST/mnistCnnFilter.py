@@ -1,5 +1,4 @@
 import os
-import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,7 +10,6 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
-from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
@@ -57,7 +55,6 @@ optimizer = Adam(learning_rate=learning_rate)
 epochs = 10
 batch_size = 256
 
-# Define the DNN
 input_img = Input(shape=x_train.shape[1:])
 
 x = Conv2D(filters=32, kernel_size=5, padding='same')(input_img)
@@ -81,7 +78,6 @@ y_pred = Activation("softmax")(x)
 # Build the model
 model = Model(inputs=[input_img], outputs=[y_pred])
 
-# Compile and train (fit) the model, afterwards evaluate the model
 model.summary()
 
 model.compile(
@@ -89,6 +85,7 @@ model.compile(
     optimizer=optimizer,
     metrics=["accuracy"]
 )
+
 model.fit(
     x=x_train,
     y=y_train,
