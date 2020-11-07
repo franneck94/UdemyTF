@@ -19,9 +19,9 @@ train_size = x_train.shape[0]
 test_size = x_test.shape[0]
 
 # Model variables
-hidden_layer_size = 50
+hidden_layer_size = 100
 nodes = [features, hidden_layer_size, target]  # input, hidden, output
-epochs = 2200
+epochs = 3_000
 
 
 def r_squared(y_true, y_pred):
@@ -36,8 +36,8 @@ def r_squared(y_true, y_pred):
 class Model:
     def __init__(self):
         # Weights (Matrices)
-        self.W1 = tf.Variable(tf.random.truncated_normal(shape=[nodes[0], nodes[1]], stddev=0.1), name="W1",)
-        self.W2 = tf.Variable(tf.random.truncated_normal(shape=[nodes[1], nodes[2]], stddev=0.1), name="W2",)
+        self.W1 = tf.Variable(tf.random.normal(shape=[nodes[0], nodes[1]], stddev=0.1), name="W1",)
+        self.W2 = tf.Variable(tf.random.normal(shape=[nodes[1], nodes[2]], stddev=0.1), name="W2",)
         # Biases (Vectors)
         self.b1 = tf.Variable(tf.constant(0.0, shape=[nodes[1]]), name="b1")
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")
