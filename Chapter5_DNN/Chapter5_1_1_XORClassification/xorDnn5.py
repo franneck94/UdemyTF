@@ -18,11 +18,11 @@ features = 2
 classes = 2
 target = 1
 # Model variables
-hidden_layer_size = 20
+hidden_layer_size = 6
 nodes = [features, hidden_layer_size, target]  # input, hidden, output
 train_size = x_train.shape[0]
 test_size = x_test.shape[0]
-epochs = 100
+epochs = 2_000
 
 
 class Model:
@@ -35,7 +35,7 @@ class Model:
         self.b2 = tf.Variable(tf.constant(0.0, shape=[nodes[2]]), name="b2")
         self.variables = [self.W1, self.W2, self.b1, self.b2]
         # Model variables
-        self.learning_rate = 0.001
+        self.learning_rate = 0.1
         self.optimizer = tf.optimizers.Adam(learning_rate=self.learning_rate)
         self.current_loss_val = None
 
@@ -47,8 +47,8 @@ class Model:
         input_layer = x
         # From the input to the hidden layer
         hidden_layer = tf.math.add(tf.linalg.matmul(input_layer, self.W1), self.b1)
-        # ReLU = max(val, 0.0)
-        hidden_layer_act = tf.nn.relu(hidden_layer)
+        # Tanh
+        hidden_layer_act = tf.nn.tanh(hidden_layer)
         # From the hidden to the output layer
         output_layer = tf.math.add(tf.linalg.matmul(hidden_layer_act, self.W2), self.b2)
         # sigmoid = 1 / (1 + exp(-x))
@@ -56,7 +56,8 @@ class Model:
         return output_layer_act
 
     def loss(self, y_true, y_pred):
-        loss_fn = tf.math.reduce_mean(tf.math.square(y_pred - y_true))  # 1/N * Sum( (y_true - y_pred)^2)
+        """1/N * Sum( (y_true - y_pred)^2)"""
+        loss_fn = tf.math.reduce_mean(tf.math.square(y_pred - y_true))
         self.current_loss_val = loss_fn.numpy()
         return loss_fn
 
@@ -85,6 +86,8 @@ class Model:
                     "Epoch: ", epoch + 1, " of ", epochs, " - Train Loss: ",
                     round(train_loss, 4), " - Train Acc: ", round(train_accuracy, 4),
                 )
+            if train_accuracy == 1.0:
+                break
         print("Weights at the end: ", self.get_variables())
 
     def evaluate(self, x, y):
