@@ -86,7 +86,10 @@ def model_fn(
     y_pred = Activation("linear")(x)
 
     # Build the model
-    model = Model(inputs=[input_house], outputs=[y_pred])
+    model = Model(
+        inputs=[input_house],
+        outputs=[y_pred]
+    )
     opt = optimizer(learning_rate=learning_rate)
     model.compile(loss="mse", optimizer=opt, metrics=[r_squared])
     model.summary()

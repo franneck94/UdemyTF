@@ -29,7 +29,10 @@ def model_fn() -> tf.keras.Model:
     x = base_model(inputs, training=False)
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
     outputs = tf.keras.layers.Dense(units=NUM_CLASSES)(x)
-    model = tf.keras.Model(inputs=inputs, outputs=outputs)
+    model = tf.keras.Model(
+        inputs=inputs,
+        outputs=outputs
+    )
     model.summary()
     return model
 

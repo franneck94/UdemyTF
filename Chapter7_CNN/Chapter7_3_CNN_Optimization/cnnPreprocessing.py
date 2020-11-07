@@ -55,7 +55,10 @@ x = Activation("relu")(x)
 x = Dense(units=num_classes)(x)
 y_pred = Activation("softmax")(x)
 
-model = Model(inputs=[input_img], outputs=[y_pred])
+model = Model(
+    inputs=[input_img],
+    outputs=[y_pred]
+)
 
 model.summary()
 

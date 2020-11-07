@@ -205,7 +205,10 @@ def model_fn(
     y_pred = Activation("softmax")(x)
 
     # Build the model
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred]
+    )
     opt = optimizer(learning_rate=learning_rate)
     model.compile(
         loss="categorical_crossentropy",

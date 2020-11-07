@@ -35,7 +35,10 @@ def create_model():
     output_pred = Activation("softmax")(x)
 
     optimizer = Adam(learning_rate=1e-3)
-    model = Model(inputs=input_text, outputs=output_pred)
+    model = Model(
+        inputs=input_text,
+        outputs=output_pred
+    )
     model.compile(
         loss="binary_crossentropy",
         optimizer=optimizer,

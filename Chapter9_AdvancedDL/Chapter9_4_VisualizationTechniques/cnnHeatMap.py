@@ -213,7 +213,10 @@ def model_fn(
     y_pred = Activation("softmax")(x)
 
     # Build the model
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred]
+    )
     opt = optimizer(learning_rate=learning_rate)
     model.compile(
         loss="categorical_crossentropy",
@@ -289,4 +292,5 @@ model.load_weights(filepath=data_model_path)
 #     batch_size=batch_size)
 # print("Test performance: ", score)
 
-get_heatmap(img=x_test[12], model=model)
+# TODO: Put the heatmap function again into the plotting file!
+# get_heatmap(img=x_test[12], model=model)

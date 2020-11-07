@@ -73,7 +73,10 @@ x = Dense(units=num_classes)(x)
 y_pred = Activation("softmax")(x)
 
 # Build the model
-model = Model(inputs=[input_img], outputs=[y_pred])
+model = Model(
+    inputs=[input_img],
+    outputs=[y_pred]
+)
 
 model.summary()
 
