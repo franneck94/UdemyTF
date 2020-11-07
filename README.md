@@ -3,8 +3,8 @@
 Dies ist der Code zu meinem Udemy Kurs:
 *Deep Learning, Neuronale Netze und TensorFlow 2 in Python* von Jan Schaffranek.
 
-Erhalte den Kurs vom 15.10.2020 bis zum 15.11.2020 für nur 16,99€*.
-Rabatt-Link: [TensorFlow Kurs im Rabatt](https://www.udemy.com/course/deep-learning-grundlagen-neuronale-netzwerke-mit-tensorflow/?couponCode=FRANNECK_OCT_2020)
+Erhalte den Kurs vom 7.11.2020 bis zum 7.12.2020 für nur 12,99€*.
+Rabatt-Link: [TensorFlow Kurs im Rabatt](https://www.udemy.com/course/deep-learning-grundlagen-neuronale-netzwerke-mit-tensorflow/?couponCode=FRANNECK_NOV_2020)
 
 ## Bewertungen von Kursteilnehmern
 
