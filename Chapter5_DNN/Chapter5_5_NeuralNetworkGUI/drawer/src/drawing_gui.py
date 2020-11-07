@@ -1,13 +1,14 @@
 import os
 import sys
 
-from dnn import create_model
-from dnn import nn_predict
-from preprocessing import get_image
 from PyQt5 import QtCore
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5 import uic
+
+from .dnn import create_model
+from .dnn import nn_predict
+from .preprocessing import get_image
 
 
 FILE_PATH = os.path.abspath(__file__)
@@ -20,10 +21,9 @@ MODEL_PATH = os.path.join(PROJECT_PATH, "ressources", "weights", "dnn_mnist.h5")
 gui_model = os.path.join(GUI_PATH, 'GUI.ui')
 form, base = uic.loadUiType(gui_model)
 
-# Point class for shapes
-
 
 class Point:
+    """Point class for shapes."""
     x, y = 0, 0
 
     def __init__(self, nx=0, ny=0):
@@ -76,23 +76,23 @@ class Painter(QtWidgets.QWidget):
 
     # Mouse down event
     def mousePressEvent(self, event=None):
-        self.ParentLink.IsPainting = True
-        self.ParentLink.ShapeNum += 1
+        self.ParentLink.IsPainting = True  # type: ignore
+        self.ParentLink.ShapeNum += 1  # type: ignore
         self.LastPos = Point(0, 0)
 
     # Mouse Move event
     def mouseMoveEvent(self, event=None):
-        if self.ParentLink.IsPainting == True:
+        if self.ParentLink.IsPainting == True:  # type: ignore
             self.MouseLoc = Point(event.x(), event.y())
             if (self.LastPos.x != self.MouseLoc.x) and (self.LastPos.y != self.MouseLoc.y):
                 self.LastPos = Point(event.x(), event.y())
-                self.ParentLink.DrawingShapes.NewShape(self.LastPos, self.ParentLink.ShapeNum)
+                self.ParentLink.DrawingShapes.NewShape(self.LastPos, self.ParentLink.ShapeNum)  # type: ignore
             self.repaint()
 
     # Mose Up Event
     def mouseReleaseEvent(self, event=None):
-        if self.ParentLink.IsPainting == True:
-            self.ParentLink.IsPainting = False
+        if self.ParentLink.IsPainting == True:  # type: ignore
+            self.ParentLink.IsPainting = False  # type: ignore
 
     # Paint Event
     def paintEvent(self, event):
@@ -103,9 +103,9 @@ class Painter(QtWidgets.QWidget):
 
     # Draw the line
     def drawLines(self, event, painter):
-        for i in range(self.ParentLink.DrawingShapes.NumberOfShapes() - 1):
-            T = self.ParentLink.DrawingShapes.GetShape(i)
-            T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)
+        for i in range(self.ParentLink.DrawingShapes.NumberOfShapes() - 1):  # type: ignore
+            T = self.ParentLink.DrawingShapes.GetShape(i)  # type: ignore
+            T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)  # type: ignore
             if T.number == T1.number:
                 pen = QtGui.QPen(QtGui.QColor(0, 0, 0), 7, QtCore.Qt.SolidLine)
                 painter.setPen(pen)
@@ -113,7 +113,8 @@ class Painter(QtWidgets.QWidget):
 
 
 # Main UI Class
-class CreateUI(base, form):
+class CreateUI(base, form):  # type: ignore
+    # type: ignore
     DrawingShapes = Shapes()
     PaintPanel = 0
     IsPainting = False
@@ -145,22 +146,22 @@ class CreateUI(base, form):
     # Reset Button
     def ClearSlate(self):
         self.DrawingShapes = Shapes()
-        self.PaintPanel.repaint()
+        self.PaintPanel.repaint()  # type: ignore
         default_image_path = os.path.join(IMAGE_PATH, str(-1) + ".png")
         self.pixmap = QtGui.QPixmap(default_image_path)
         self.label.setPixmap(self.pixmap)
 
     # Predict Button
     def PredictNumber(self):
-        raise NotImplementedError # TODO
+        image = get_image(self.DrawingFrame)
+        pred = nn_predict(self.model, image=image)
+        pred_image_path = os.path.join(IMAGE_PATH, str(pred) + ".png")
+        self.pixmap = QtGui.QPixmap(pred_image_path)
+        self.label.setPixmap(self.pixmap)
 
 
-def main_gui():
+def main_gui() -> int:
     app = QtWidgets.QApplication(sys.argv)
     main_window = CreateUI()
     main_window.show()
     sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main_gui()

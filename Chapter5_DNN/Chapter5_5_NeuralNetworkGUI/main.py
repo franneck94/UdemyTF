@@ -1,4 +1,4 @@
-from drawing_gui import main_gui
+from drawer import main_gui
 
 
 if __name__ == "__main__":

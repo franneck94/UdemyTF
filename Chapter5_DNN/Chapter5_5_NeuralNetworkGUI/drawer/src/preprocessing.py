@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 import cv2
 import matplotlib.pyplot as plt
@@ -11,22 +12,22 @@ FILE_PATH = os.path.abspath(__file__)
 PROJECT_PATH = os.path.dirname(os.path.dirname(FILE_PATH))
 
 
-def load(image_path):
+def load(image_path: str) -> np.ndarray:
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     return image
 
 
-def resize(image):
+def resize(image: np.ndarray) -> np.ndarray:
     image = cv2.resize(image, (28, 28))
     return image
 
 
-def normalize(image):
+def normalize(image: np.ndarray) -> np.ndarray:
     _, image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY_INV)
     return image
 
 
-def center(image):
+def center(image: np.ndarray) -> np.ndarray:
     cy, cx = center_of_mass(image)
     rows, cols = image.shape
     shiftx = np.round(cols / 2.0 - cx).astype(int)
@@ -36,7 +37,7 @@ def center(image):
     return image
 
 
-def get_image(DrawingFrame, debug=False):
+def get_image(DrawingFrame: Any, debug: bool = False) -> np.ndarray:
     pixmap = DrawingFrame.grab()
     temp_image_path = os.path.join(PROJECT_PATH, "ressources", "imgs", "temp_image.jpg")
     pixmap.save(temp_image_path)
