@@ -1,22 +1,50 @@
-#### Dicts in Python ####
+names = ["Ben", "Jan", "Peter", "Melissa"]
+grades = [1, 2, 1, 4]
 
-# key: value
-noten_klasse_8a = {"armin": 1, "ben": 2, "jan": 1}
+# dict {(key, value)}
+names_and_grades = {"Ben": 1, "Jan": 2, "Peter": 1, "Melissa": 4}
+print(names_and_grades)
 
-armins_note = noten_klasse_8a["armin"]
-print("Armins Note: ", armins_note)
+names_and_grades.update({"Pia": 3})
+print(names_and_grades)
 
-print("\n")
+names_and_grades["Julia"] = 1
+print(names_and_grades)
 
-for schüler, note in noten_klasse_8a.items():
-    print(schüler, " hat als Note eine ", note)
-
-print("\n")
-
-for schüler in noten_klasse_8a.keys():
-    print(schüler, " hat als Note eine ", noten_klasse_8a[schüler])
+names_and_grades.pop("Julia")
+print(names_and_grades)
 
 print("\n")
 
-for note in noten_klasse_8a.values():
-    print(" hat als Note eine ", note)
+# Keys
+for element in names_and_grades:
+    print(element)
+
+print("\n")
+
+# Keys
+for k in names_and_grades.keys():
+    print(k)
+
+print("\n")
+
+# Values
+for v in names_and_grades.values():
+    print(v)
+
+print("\n")
+
+# Keys, Values
+for k, v in names_and_grades.items():
+    print(k, v)
+
+# Contains
+if "Julia" in names_and_grades:
+    print("Julia is present!")
+else:
+    print("Julia is not present")
+
+if "Jan" in names_and_grades:
+    print("Jan is present!")
+else:
+    print("Jan is not present")

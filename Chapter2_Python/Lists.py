@@ -1,22 +1,21 @@
-#### Listen in Python ####
+grade_ben = 1
+grade_jan = 2
+grade_peter = 1
 
-#       0   1  2  3  4  5
-noten = [1, 1, 3, 4, 2, 1]
+#         0, 1, 2
+grades = [1, 2, 1]
 
-noten.append(6)
-noten.append(1)
+grade_melissa = 4
 
-print(noten)
+print(grades)
+grades.append(grade_melissa)
+print(grades)
+grades.pop()
+print(grades)
 
-noten.pop()
-noten.pop()
+print("Ben's grade: ", grades[0])
+print("Jan's grade: ", grades[1])
+print("Peter's grade: ", grades[2])
 
-print(noten)
-
-noten.insert(0, 12)
-
-print(noten)
-
-noten.pop(2)
-
-print(noten)
+grades.pop(1)
+print(grades)
