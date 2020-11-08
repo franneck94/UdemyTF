@@ -6,25 +6,30 @@ from sklearn.model_selection import train_test_split
 from helper import regression_data
 
 
-def mae(y_true, y_pred):
+def mae(y_true: np.ndarray, y_pred: np.ndarray):
     return np.mean(np.abs(y_true - y_pred))
 
 
-def mse(y_true, y_pred):
+def mse(y_true: np.ndarray, y_pred: np.ndarray):
     return np.mean(np.square(y_true - y_pred))
 
 
 x, y = regression_data()
 x = x.reshape(-1, 1)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
 regr = LinearRegression()
-regr.fit(x_train, y_train)  # Training
+regr.fit(x_train, y_train)
 y_pred = regr.predict(x_test)
 
-print("R2: ", regr.score(x_test, y_test))  # Testing
-print("MAE: ", mae(y_test, y_pred))  # Testing
-print("MSE: ", mse(y_test, y_pred))  # Testing
+r2_score = regr.score(x_test, y_test)
+mae_score = mae(y_test, y_pred)
+mse_score = mse(y_test, y_pred)
+
+print(f"R2-Score: {r2_score}")
+print(f"MAE: {mae_score}")
+print(f"MSE: {mse_score}")
 
 plt.scatter(x, y)
 plt.plot(x_test, y_pred)
