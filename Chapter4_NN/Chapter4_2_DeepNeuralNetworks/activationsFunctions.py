@@ -6,50 +6,41 @@ import numpy as np
 
 IMG_PATH = os.path.dirname(os.path.abspath(__file__))
 
-# Step function
-# f(a) = 0, if a <= 0 else 1
-data = [0 if a <= 0 else 1 for a in np.linspace(start=-10, stop=10, num=1000)]
 
-plt.step(np.linspace(start=-10, stop=10, num=1000), data)
-plt.xlabel('a')
-plt.ylabel('step(a)')
-plt.xlim(-12, 12)
-plt.ylim(-0.1, 1.1)
-# plt.savefig(os.path.join(IMG_PATH, "step.png"))
-plt.show()
+def plot_function(
+    input_signal: np.ndarray,
+    output_signal: np.ndarray,
+    name: str = None
+) -> None:
+    plt.step(input_signal, output_signal)
+    plt.xlabel('a')
+    plt.ylabel('f(a)')
+    plt.xlim(np.min(input_signal) - 0.2, np.max(input_signal) + 0.2)
+    plt.ylim(np.min(output_signal) - 0.2, np.max(output_signal) + 0.2)
+    if name:
+        plt.title(f"Activation function: {name}")
+    plt.show()
 
-# Tanh
-# f(a) = tanh(a) = 2 / (1+e^(-2a)) - 1
-data = [2 / (1 + np.exp(-2 * a)) - 1 for a in np.linspace(start=-10, stop=10, num=1000)]
 
-plt.plot(np.linspace(start=-10, stop=10, num=1000), data)
-plt.xlabel('a')
-plt.ylabel('tanh(a)')
-plt.xlim(-12, 12)
-plt.ylim(-1.1, 1.1)
-# plt.savefig(os.path.join(IMG_PATH, "tanh.png"))
-plt.show()
+if __name__ == "__main__":
+    input_signal = np.linspace(start=-10, stop=10, num=1000)
 
-# SIGMOID
-# sigmoid(a) = 1 / (1 + e^-a)
-data = [1 / (1 + np.exp(-a)) for a in np.linspace(start=-10, stop=10, num=1000)]
+    # Step function
+    # f(a) = 0, if a <= 0 else 1
+    output_signal = [0 if a <= 0 else 1 for a in input_signal]
+    plot_function(input_signal, output_signal, name='step')
 
-plt.plot(np.linspace(start=-10, stop=10, num=1000), data)
-plt.xlabel('a')
-plt.ylabel('sigmoid(a)')
-plt.xlim(-12, 12)
-plt.ylim(-0.1, 1.1)
-# plt.savefig(os.path.join(IMG_PATH, "sigmoid.png"))
-plt.show()
+    # Tanh
+    # f(a) = tanh(a) = 2 / (1+e^(-2a)) - 1
+    output_signal = [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal]
+    plot_function(input_signal, output_signal, name='tanh')
 
-# RELU = Rectified Linear Unit
-# f(a) = max (0, a)
-data = [max(0, a) for a in np.linspace(start=-10, stop=10, num=1000)]
+    # SIGMOID
+    # sigmoid(a) = 1 / (1 + e^-a)
+    output_signal = [1 / (1 + np.exp(-a)) for a in input_signal]
+    plot_function(input_signal, output_signal, name='sigmoid')
 
-plt.plot(np.linspace(start=-10, stop=10, num=1000), data)
-plt.xlabel('a')
-plt.ylabel('relu(a)')
-plt.xlim(-12, 12)
-plt.ylim(-0.1, 10)
-# plt.savefig(os.path.join(IMG_PATH, "relu.png"))
-plt.show()
+    # RELU = Rectified Linear Unit
+    # f(a) = max (0, a)
+    output_signal = [max(0, a) for a in input_signal]
+    plot_function(input_signal, output_signal, name='relu')

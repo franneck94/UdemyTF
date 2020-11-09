@@ -1,9 +1,10 @@
 import numpy as np
 
 
-def generate_data_or():
-    x = [[0, 0], [1, 1], [1, 0], [0, 1]]
-    y = [0, 1, 1, 1]
+def get_dataset():
+    """OR dataset."""
+    x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
+    y = np.array([[0], [1], [1], [1]])
     return x, y
 
 
@@ -25,7 +26,7 @@ def softmax(y_pred):
 
 
 if __name__ == "__main__":
-    x, y = generate_data_or()
+    x, y = get_dataset()
     y = to_one_hot(y, num_classes=2)
     print(y)
 

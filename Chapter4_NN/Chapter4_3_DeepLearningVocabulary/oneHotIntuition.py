@@ -1,9 +1,10 @@
 import numpy as np
 
 
-def generate_data_or():
-    x = [[0, 0], [1, 1], [1, 0], [0, 1]]
-    y = [0, 1, 1, 1]
+def get_dataset():
+    """OR dataset."""
+    x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
+    y = np.array([[0], [1], [1], [1]])
     return x, y
 
 
