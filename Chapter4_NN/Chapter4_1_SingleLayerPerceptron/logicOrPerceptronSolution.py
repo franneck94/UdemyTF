@@ -4,9 +4,9 @@ import numpy as np
 
 
 def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
-    """OR dataset."""
+    """AND dataset."""
     x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
-    y = np.array([[0], [1], [1], [1]])
+    y = np.array([[0], [0], [0], [1]])
     return x, y
 
 
@@ -22,13 +22,10 @@ def step_function(input_signal: np.ndarray) -> np.ndarray:
 
 
 class Perceptron:
-    def __init__(self) -> None:
-        self.learning_rate: float
-        self.w: np.ndarray
-
-    def compile(self, learning_rate: float, input_dim: int) -> None:
+    def __init__(self, learning_rate: float, input_dim: int) -> None:
         self.learning_rate = learning_rate
-        self.w = np.random.uniform(-1, 1, size=(input_dim, 1))
+        self.input_dim = input_dim
+        self.w = np.random.uniform(-1, 1, size=(self.input_dim, 1))
 
     def _update_weights(self, x: np.ndarray, y: np.ndarray, y_pred: np.ndarray) -> None:
         error = (y - y_pred)
@@ -41,16 +38,14 @@ class Perceptron:
             y_pred = self.predict(x)
             self._update_weights(x, y, y_pred)
             accuracy = accuracy_score(y, y_pred)
-            print(f"Epoch: {epoch} Train Accuracy: {accuracy}")
-            if accuracy == 1.0:
-                break
+            print(f"Epoch: {epoch} Accuracy: {accuracy}")
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         input_signal = np.dot(x, self.w)
         output_signal = step_function(input_signal)
         return output_signal
 
-    def evaluate(self, x: np.ndarray, y: np.ndarray) -> float:
+    def evaluate(self, x: np.ndarray, y: np.ndarray):
         y_pred = self.predict(x)
         return accuracy_score(y, y_pred)
 
@@ -60,10 +55,6 @@ if __name__ == "__main__":
 
     input_dim = x.shape[1]
     learning_rate = 0.5
-    epochs = 10
 
-    p = Perceptron()
-    p.compile(learning_rate=learning_rate, input_dim=input_dim)
-    p.train(x, y, epochs=10)
-    score = p.evaluate(x, y)
-    print(f"Final Accuracy: {score}")
+    p = Perceptron(learning_rate, input_dim)
+    p.train(x, y, epochs=50)

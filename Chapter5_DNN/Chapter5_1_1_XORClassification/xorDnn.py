@@ -9,19 +9,6 @@ def get_dataset():
     return x, y
 
 
-def accuracy_score(y_true, y_pred):
-    y_pred_class = tf.reshape(tf.cast(tf.math.greater(y_pred, 0.5), tf.float32), y_true.shape)
-    correct_result = tf.math.equal(y_pred_class, y_true)
-    accuracy = tf.math.reduce_mean(tf.cast(correct_result, tf.float32))
-    return accuracy
-
-
-def mse_loss(y_true, y_pred):
-    """MSE = 1/N * Sum( (y_true - y_pred)^2)"""
-    loss_fn = tf.math.reduce_mean(tf.math.square(y_pred - y_true))
-    return loss_fn
-
-
 def dense(W, b, x):
     return tf.math.add(tf.linalg.matmul(x, W), b)
 
