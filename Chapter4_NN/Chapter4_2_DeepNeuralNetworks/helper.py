@@ -8,22 +8,22 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 
 
 def f(x0, x1):
-    '''Rosenbrock Funktion.'''
+    """Rosenbrock Funktion."""
     return 100 * (x0 ** 2 - x1) ** 2 + (x0 - 1) ** 2
 
 
 def f_prime_x0(x0, x1):
-    '''Derivative of x0.'''
+    """Derivative of x0."""
     return 2 * (200 * x0 * (x0 ** 2 - x1) + x0 - 1)
 
 
 def f_prime_x1(x0, x1):
-    '''Derivative of x0.'''
+    """Derivative of x0."""
     return -200 * (x0 ** 2 - x1)
 
 
 def plot_rosenbrock(x_start, gradient_steps=None):
-    '''Plot the gradient steps.'''
+    """Plot the gradient steps."""
     fig = plt.figure(figsize=(12, 8))
     ax = Axes3D(fig)
 

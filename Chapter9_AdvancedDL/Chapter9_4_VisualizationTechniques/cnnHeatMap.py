@@ -18,8 +18,9 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
+from utils.plotting import get_heatmap
+
 from dogsCatsData import DOGSCATS
-from plotting import get_heatmap
 
 
 random.seed(0)
@@ -285,12 +286,11 @@ model.fit(
 model.save_weights(filepath=data_model_path)
 
 model.load_weights(filepath=data_model_path)
-# score = model.evaluate(
-#     x_test,
-#     y_test,
-#     verbose=0,
-#     batch_size=batch_size)
-# print("Test performance: ", score)
+score = model.evaluate(
+    x_test,
+    y_test,
+    verbose=0,
+    batch_size=batch_size)
+print("Test performance: ", score)
 
-# TODO: Put the heatmap function again into the plotting file!
-# get_heatmap(img=x_test[12], model=model)
+get_heatmap(img=x_test[12], model=model)

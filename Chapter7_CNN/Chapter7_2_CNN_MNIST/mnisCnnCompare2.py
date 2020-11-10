@@ -1,7 +1,5 @@
 import os
-import time
 
-import matplotlib.pyplot as plt
 import numpy as np
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.layers import Activation

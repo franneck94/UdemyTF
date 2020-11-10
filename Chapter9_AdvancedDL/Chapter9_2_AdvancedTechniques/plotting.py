@@ -28,9 +28,9 @@ def display_digit(
         image = image.reshape((28, 28))
     label = np.argmax(label, axis=0)
     if pred_label is None and label is not None:
-        plt.figure_title(f'Label: {label}')
+        plt.title(f'Label: {label}')
     elif label is not None:
-        plt.figure_title(f'Label: {label}, Pred: {pred_label}')
+        plt.title(f'Label: {label}, Pred: {pred_label}')
     plt.imshow(image, cmap=plt.get_cmap('gray_r'))
     plt.show()
 
@@ -66,7 +66,7 @@ def display_digit_and_predictions(
     # Image data
     axs[1].imshow(image, cmap=plt.get_cmap('gray_r'))
     # General plotting settings
-    plt.figure_title('Label: %d, Pred: %d' % (label, pred))
+    plt.title('Label: %d, Pred: %d' % (label, pred))
     plt.show()
 
 

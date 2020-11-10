@@ -18,8 +18,9 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
+from utils.plotting import get_occlusion
+
 from dogsCatsData import DOGSCATS
-from plotting import get_occlusion
 
 
 random.seed(0)
