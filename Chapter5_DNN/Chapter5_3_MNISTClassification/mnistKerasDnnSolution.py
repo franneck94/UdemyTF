@@ -35,6 +35,8 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
     model.add(Activation("relu"))
     model.add(Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b))
     model.add(Activation("relu"))
+    model.add(Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(Activation("relu"))
     model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
     model.add(Activation("softmax"))
     model.summary()
@@ -52,7 +54,7 @@ if __name__ == "__main__":
 
     model.compile(
         loss="categorical_crossentropy",
-        optimizer="Adam",
+        optimizer=Adam(learning_rate=0.0005),
         metrics=["accuracy"]
     )
 
