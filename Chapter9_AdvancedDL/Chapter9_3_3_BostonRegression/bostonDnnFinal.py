@@ -55,14 +55,14 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
 
 
 def model_fn(
-    optimizer,
-    learning_rate,
-    dense_layer_size1,
-    dense_layer_size2,
-    activation_str,
-    dropout_rate,
-    use_bn,
-):
+    optimizer: tf.keras.optimizers.Optimizer,
+    learning_rate: float,
+    dense_layer_size1: int,
+    dense_layer_size2: int,
+    activation_str: str,
+    dropout_rate: bool,
+    use_bn: bool,
+) -> Model:
     # Input
     input_house = Input(shape=x_train.shape[1:])
     # Dense Layer 1
@@ -120,7 +120,7 @@ params = {
 rand_model = model_fn(**params)
 
 
-def schedule_fn(epoch):
+def schedule_fn(epoch: int) -> float:
     learning_rate = 1e-3
     if epoch < 5:
         learning_rate = 1e-3
@@ -131,7 +131,7 @@ def schedule_fn(epoch):
     return learning_rate
 
 
-def schedule_fn2(epoch):
+def schedule_fn2(epoch: int) -> float:
     threshold = 500
     if epoch < threshold:
         return 1e-3

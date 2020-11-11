@@ -46,21 +46,21 @@ if not os.path.exists(log_dir):
 
 
 def model_fn(
-    optimizer,
-    learning_rate,
-    filter_block1,
-    kernel_size_block1,
-    filter_block2,
-    kernel_size_block2,
-    filter_block3,
-    kernel_size_block3,
-    dense_layer_size,
-    kernel_initializer,
-    bias_initializer,
-    activation_str,
-    dropout_rate,
-    use_bn,
-):
+    optimizer: tf.keras.optimizers.Optimizer,
+    learning_rate: float,
+    filter_block1: int,
+    kernel_size_block1: int,
+    filter_block2: int,
+    kernel_size_block2: int,
+    filter_block3: int,
+    kernel_size_block3: int,
+    dense_layer_size: int,
+    kernel_initializer: tf.keras.initializers.Initializer,
+    bias_initializer: tf.keras.initializers.Initializer,
+    activation_str: str,
+    dropout_rate: float,
+    use_bn: bool
+) -> Model:
     # Input
     input_img = Input(shape=x_train.shape[1:])
     # Conv Block 1

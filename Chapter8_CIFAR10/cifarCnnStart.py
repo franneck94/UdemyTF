@@ -37,19 +37,17 @@ if not os.path.exists(log_dir):
 model_log_dir = os.path.join(log_dir, "modelCifarStart")
 
 
-def model_fn():
-    pass
-    # # Input
-    # input_img = Input(shape=x_train.shape[1:])
-    # # ...
-    # # Output
-    # x = Dense(units=num_classes)(x)
-    # y_pred = Activation("softmax")(x)
+def model_fn() -> Model:
+    input_img = Input(shape=x_train.shape[1:])
+    y_pred = Activation("softmax")(input_img)
 
-    # # Build the model
-    # model = Model(
-    #     inputs=[input_img],
-    #     outputs=[y_pred]
-    # )
-    # model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-    # return model
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred]
+    )
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer="adam",
+        metrics=["accuracy"]
+    )
+    return model

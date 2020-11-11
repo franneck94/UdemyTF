@@ -1,5 +1,6 @@
 import os
 
+import tensorflow as tf
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import ParameterGrid
 from tensorflow.keras.layers import Activation
@@ -35,7 +36,10 @@ if not os.path.exists(log_dir):
 model_log_dir = os.path.join(log_dir, "modelMinMaxFinal")
 
 
-def model_fn(optimizer, learning_rate):
+def model_fn(
+    optimizer: tf.keras.optimizers.Optimizer,
+    learning_rate: float
+) -> Model:
     input_img = Input(shape=x_train.shape[1:])
 
     x = Conv2D(filters=32, kernel_size=3, padding='same')(input_img)
