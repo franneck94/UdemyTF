@@ -11,18 +11,11 @@ image = image.reshape((28, 28))
 
 
 def get_kernel_values(i, j, image):
-    """Max-Pooling Funktion definieren und auf ein Bild aus dem
-    MNIST Dataset anwenden.
-    """
     kernel_values = image[i: i + 2, j: j + 2]
     return kernel_values
 
 
 def max_pooling(image):
-    """Max-Pooling Funktion definieren und auf ein Bild aus dem
-    MNIST Dataset anwenden.
-    2x2, max
-    """
     # Setup output image as ndarray
     new_rows = image.shape[0] // 2
     new_cols = image.shape[1] // 2

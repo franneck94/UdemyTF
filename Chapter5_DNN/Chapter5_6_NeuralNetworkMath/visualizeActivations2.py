@@ -1,12 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
-
-np.random.seed(42)
 import tensorflow as tf
-
-
-tf.random.set_seed(42)
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential

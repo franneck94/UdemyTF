@@ -12,38 +12,43 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 
-MODEL_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/models")
-if not os.path.exists(MODEL_DIR):
-    os.mkdir(MODEL_DIR)
-MNIST_MODEL_FILE = os.path.join(MODEL_DIR, "mnist_model.h5")
-LOG_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(LOG_DIR):
-    os.mkdir(LOG_DIR)
-MODEL_LOG_DIR = os.path.join(LOG_DIR, "mnist_model2")
+MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models")
+if not os.path.exists(MODELS_DIR):
+    os.mkdir(MODELS_DIR)
+MODEL_FILE_PATH = os.path.join(MODELS_DIR, "mnist_model.h5")
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
+MODEL_LOG_DIR = os.path.join(LOGS_DIR, "mnist_model2")
 
 
-def prepare_dataset(num_features: int, num_classes: int):
+def prepare_dataset(num_features: int, num_targets: int):
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-    y_train = to_categorical(y_train, num_classes=num_classes, dtype=np.float32)
-    y_test = to_categorical(y_test, num_classes=num_classes, dtype=np.float32)
 
     x_train = x_train.reshape(-1, num_features).astype(np.float32)
     x_test = x_test.reshape(-1, num_features).astype(np.float32)
 
+    y_train = to_categorical(y_train, num_classes=num_targets, dtype=np.float32)
+    y_test = to_categorical(y_test, num_classes=num_targets, dtype=np.float32)
+
+    print(f"x_train shape: {x_train.shape}")
+    print(f"y_train shape: {y_train.shape}")
+    print(f"x_test shape: {x_test.shape}")
+    print(f"y_test shape: {y_test.shape}")
+
     return (x_train, y_train), (x_test, y_test)
 
 
-def build_model(num_features: int, num_classes: int) -> Sequential:
+def build_model(num_features: int, num_targets: int) -> Sequential:
     init_w = TruncatedNormal(mean=0.0, stddev=0.01)
     init_b = Constant(value=0.0)
 
     model = Sequential()
-    model.add(Dense(units=500, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,),))
+    model.add(Dense(units=500, kernel_initializer=init_w, bias_initializer=init_b, input_shape=(num_features,)))
     model.add(Activation("relu"))
-    model.add(Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b))
     model.add(Activation("relu"))
-    model.add(Dense(units=num_classes, kernel_initializer=init_w, bias_initializer=init_b))
+    model.add(Dense(units=num_targets, kernel_initializer=init_w, bias_initializer=init_b))
     model.add(Activation("softmax"))
     model.summary()
 
@@ -52,19 +57,15 @@ def build_model(num_features: int, num_classes: int) -> Sequential:
 
 if __name__ == "__main__":
     num_features = 784
-    num_classes = 10
+    num_targets = 10
 
-    (x_train, y_train), (x_test, y_test) = prepare_dataset(num_features, num_classes)
+    (x_train, y_train), (x_test, y_test) = prepare_dataset(num_features, num_targets)
 
-    optimizer = Adam(learning_rate=0.001)
-    epochs = 1
-    batch_size = 256
-
-    model = build_model(num_features, num_classes)
+    model = build_model(num_features, num_targets)
 
     model.compile(
         loss="categorical_crossentropy",
-        optimizer=optimizer,
+        optimizer=Adam(learning_rate=0.0005),
         metrics=["accuracy"]
     )
 
@@ -77,10 +78,11 @@ if __name__ == "__main__":
     model.fit(
         x=x_train,
         y=y_train,
-        epochs=epochs,
-        batch_size=batch_size,
+        epochs=20,
+        batch_size=128,
+        verbose=1,
         validation_data=(x_test, y_test),
-        callbacks=[tb_callback],
+        callbacks=[tb_callback]
     )
 
     scores = model.evaluate(
@@ -88,4 +90,4 @@ if __name__ == "__main__":
         y=y_test,
         verbose=0
     )
-    print("Scores: ", scores)
+    print(f"Scores before saving: {scores}")

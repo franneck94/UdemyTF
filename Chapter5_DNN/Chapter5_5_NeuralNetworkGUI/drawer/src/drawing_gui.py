@@ -12,14 +12,14 @@ from .preprocessing import get_image
 
 
 FILE_PATH = os.path.abspath(__file__)
-PROJECT_PATH = os.path.dirname(os.path.dirname(FILE_PATH))
-IMAGE_PATH = os.path.join(PROJECT_PATH, 'ressources', 'imgs')
-GUI_PATH = os.path.join(PROJECT_PATH, 'ressources', 'gui')
-MODEL_PATH = os.path.join(PROJECT_PATH, "ressources", "weights", "dnn_mnist.h5")
+PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
+IMAGE_DIR = os.path.join(PROJECT_DIR, 'ressources', 'imgs')
+GUI_DIR = os.path.join(PROJECT_DIR, 'ressources', 'gui')
+MODEL_FILE_PATH = os.path.join(PROJECT_DIR, "ressources", "weights", "dnn_mnist.h5")
 
 # Load the UI File
-gui_model = os.path.join(GUI_PATH, 'GUI.ui')
-form, base = uic.loadUiType(gui_model)
+GUI_MODEL = os.path.join(GUI_DIR, 'GUI.ui')
+FORM, BASE = uic.loadUiType(GUI_MODEL)
 
 
 class Point:
@@ -113,7 +113,7 @@ class Painter(QtWidgets.QWidget):
 
 
 # Main UI Class
-class CreateUI(base, form):  # type: ignore
+class CreateUI(BASE, FORM):  # type: ignore
     # type: ignore
     DrawingShapes = Shapes()
     PaintPanel = 0
@@ -132,14 +132,14 @@ class CreateUI(base, form):  # type: ignore
         # Set up Label for on hold picture
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(460, 70, 280, 280))
-        default_image_path = os.path.join(IMAGE_PATH, str(-1) + ".png")
+        default_image_path = os.path.join(IMAGE_DIR, str(-1) + ".png")
         self.pixmap = QtGui.QPixmap(default_image_path)
         self.label.setPixmap(self.pixmap)
         self.Clear_Button.clicked.connect(self.ClearSlate)
         self.Predict_Button.clicked.connect(self.PredictNumber)
         self.model = create_model()
-        if os.path.exists(MODEL_PATH):
-            self.model.load_weights(MODEL_PATH)
+        if os.path.exists(MODEL_FILE_PATH):
+            self.model.load_weights(MODEL_FILE_PATH)
         else:
             raise FileNotFoundError("Weights file not found.")
 
@@ -147,7 +147,7 @@ class CreateUI(base, form):  # type: ignore
     def ClearSlate(self):
         self.DrawingShapes = Shapes()
         self.PaintPanel.repaint()  # type: ignore
-        default_image_path = os.path.join(IMAGE_PATH, str(-1) + ".png")
+        default_image_path = os.path.join(IMAGE_DIR, str(-1) + ".png")
         self.pixmap = QtGui.QPixmap(default_image_path)
         self.label.setPixmap(self.pixmap)
 
@@ -155,7 +155,7 @@ class CreateUI(base, form):  # type: ignore
     def PredictNumber(self):
         image = get_image(self.DrawingFrame)
         pred = nn_predict(self.model, image=image)
-        pred_image_path = os.path.join(IMAGE_PATH, str(pred) + ".png")
+        pred_image_path = os.path.join(IMAGE_DIR, str(pred) + ".png")
         self.pixmap = QtGui.QPixmap(pred_image_path)
         self.label.setPixmap(self.pixmap)
 

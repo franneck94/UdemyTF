@@ -1,26 +1,28 @@
-# Libraries
+# TensorFlow Libraries
 tensorflow==2.3.1
-tensorflow_datasets==4.0.1
-scikit-learn==0.23.2
-seaborn==0.10.1
-scipy==1.4.1
-scikit-image==0.17.2
-numpy==1.18.5
-matplotlib==3.3.1
-pandas==1.1.1
-openpyxl==3.0.5
-xlrd==1.2.0
-keract==4.3.1
-opencv-python==4.4.0.42
-pygame==1.9.6
-gym==0.17.2
-pyqt5==5.15
+tensorflow-datasets==4.0.*
+tensorflow-addons==0.11.*
+# Other Libraries
+scikit-learn==0.23.*
+seaborn==0.10.*
+scipy==1.4.*
+scikit-image==0.17.*
+numpy==1.18.*
+matplotlib==3.3.*
+pandas==1.1.*
+openpyxl==3.0.*
+xlrd==1.2.0.*
+keract==4.3.*
+opencv-python==4.4.*
+pygame==1.9.*
+gym==0.17.*
+pyqt5==5.15.*
 
-# Linting
-pylint>=2.6.0
-flake8>=3.8.3
-mypy>=0.782
-isort>=5.4.2
-black>=20.8b0
-autopep8>=1.5.4
-pre-commit>=2.6.0
+# Linting/Tooling
+pylint
+flake8
+mypy
+isort
+black
+autopep8
+pre-commit

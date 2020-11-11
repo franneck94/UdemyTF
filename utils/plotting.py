@@ -137,7 +137,7 @@ def plot_confusion_matrix(
     plt.xticks(tick_marks, classes_list, rotation=45)
     plt.yticks(tick_marks, classes_list)
     cm = np.around(
-        cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2
+        cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=4
     )
 
     thresh = cm.max() / 2.0

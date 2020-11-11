@@ -10,8 +10,8 @@ from tensorflow.keras.utils import to_categorical
 
 
 FILE_PATH = os.path.abspath(__file__)
-PROJECT_PATH = os.path.dirname(os.path.dirname(FILE_PATH))
-MODEL_PATH = os.path.join(PROJECT_PATH, "ressources", "weights", "dnn_mnist.h5")
+PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
+MODEL_FILE_PATH = os.path.join(PROJECT_DIR, "ressources", "weights", "dnn_mnist.h5")
 
 
 def create_model() -> Sequential:
@@ -85,7 +85,7 @@ def nn_train() -> None:
         validation_data=(x_test, y_test),
     )
 
-    model.save_weights(MODEL_PATH)
+    model.save_weights(MODEL_FILE_PATH)
 
 
 if __name__ == "__main__":

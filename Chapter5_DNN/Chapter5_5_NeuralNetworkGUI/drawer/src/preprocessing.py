@@ -9,7 +9,7 @@ from scipy.ndimage import center_of_mass
 
 
 FILE_PATH = os.path.abspath(__file__)
-PROJECT_PATH = os.path.dirname(os.path.dirname(FILE_PATH))
+PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 
 
 def load(image_path: str) -> np.ndarray:
@@ -39,7 +39,7 @@ def center(image: np.ndarray) -> np.ndarray:
 
 def get_image(DrawingFrame: Any, debug: bool = False) -> np.ndarray:
     pixmap = DrawingFrame.grab()
-    temp_image_path = os.path.join(PROJECT_PATH, "ressources", "imgs", "temp_image.jpg")
+    temp_image_path = os.path.join(PROJECT_DIR, "ressources", "imgs", "temp_image.jpg")
     pixmap.save(temp_image_path)
     image = load(temp_image_path).astype(np.float32)
     image = resize(image)

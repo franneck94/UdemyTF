@@ -11,11 +11,7 @@ image = image.reshape((28, 28))
 
 
 def max_pooling(image):
-    """Max-Pooling Funktion definieren und auf ein Bild aus dem
-    MNIST Dataset anwenden.
-    2x2, max
-    """
-    return image
+    pass
 
 
 pooling_image = max_pooling(image)

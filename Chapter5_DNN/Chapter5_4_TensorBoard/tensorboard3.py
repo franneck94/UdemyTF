@@ -1,5 +1,8 @@
 import os
 
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.datasets import mnist
@@ -17,7 +20,7 @@ from utils.plotting import ConfusionMatrix
 MODEL_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/models")
 if not os.path.exists(MODEL_DIR):
     os.mkdir(MODEL_DIR)
-MNIST_MODEL_FILE = os.path.join(MODEL_DIR, "mnist_model.h5")
+MODEL_FILE_PATH = os.path.join(MODEL_DIR, "mnist_model.h5")
 LOG_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
@@ -80,7 +83,7 @@ if __name__ == "__main__":
         write_graph=True
     )
 
-    classes_list = [i for i in range(num_classes)]
+    classes_list = [class_idx for class_idx in range(num_classes)]
 
     cm_callback = ConfusionMatrix(
         model,

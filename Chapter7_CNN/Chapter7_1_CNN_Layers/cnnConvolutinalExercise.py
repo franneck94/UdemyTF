@@ -13,8 +13,7 @@ kernel = np.random.uniform(low=0.0, high=1.0, size=(2, 2))
 
 
 def conv2D(image, kernel):
-    """Conv Funktion definieren und anschließend plotten."""
-    return image
+    pass
 
 
 conv_image = conv2D(image, kernel)
