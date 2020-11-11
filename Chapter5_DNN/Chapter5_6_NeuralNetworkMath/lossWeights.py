@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_squared_error
@@ -7,17 +9,17 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import RMSprop
 
 
-def f(x):
+def f(x: float) -> float:
     return x ** 2 + x + 10
 
 
-def get_dataset():
+def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
     y = f(x)
     return x, y
 
 
-def build_model():
+def build_model() -> Sequential:
     model = Sequential()
     model.add(Dense(12))  # Input zu Hidden
     model.add(Activation("relu"))  # ReLU vom Hidden
@@ -51,7 +53,7 @@ if __name__ == "__main__":
         loss = mean_squared_error(y, new_pred)
         losses.append(loss)
 
-    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 6))
+    _, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 6))
     ax1.grid(True)
     ax2.grid(True)
     ax1.plot(x, y, color="blue")

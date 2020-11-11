@@ -1,4 +1,6 @@
 import os
+from typing import List
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -10,11 +12,11 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
 
-LOG_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/computation/")
-MODEL_LOG_DIR = os.path.join(LOG_DIR, "gradient_model")
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/computation/")
+MODEL_LOG_DIR = os.path.join(LOGS_DIR, "gradient_model")
 
 
-def get_dataset():
+def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     x = np.array(
         [[i, i] for i in range(100)],
         dtype=np.float32
@@ -26,7 +28,7 @@ def get_dataset():
     return x, y
 
 
-def build_model():
+def build_model() -> Sequential:
     model = Sequential()
     model.add(Dense(1, input_shape=(2,), name="hidden"))
     model.add(Activation("relu", name="relu"))
@@ -35,7 +37,12 @@ def build_model():
     return model
 
 
-def get_gradients(x_test, y_test, model, loss_object):
+def get_gradients(
+    x_test: np.ndarray,
+    y_test: np.ndarray,
+    model: Sequential,
+    loss_object: tf.keras.losses.Loss
+) -> List[Tuple[np.ndarray, np.ndarray]]:
     with tf.GradientTape() as tape:
         y_pred = model(x_test, training=True)
         loss_value = loss_object(y_test, y_pred)

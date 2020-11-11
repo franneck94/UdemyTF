@@ -1,30 +1,31 @@
+from typing import Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
 
-def f(x):
+def f(x: float) -> float:
     return x ** 2 + x + 10
 
 
-def relu(x):
+def relu(x: float) -> float:
     if x > 0:
         return x
     else:
         return 0
 
 
-def get_dataset():
+def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
     y = f(x)
     return x, y
 
 
-def build_model():
+def build_model() -> Sequential:
     model = Sequential()
     model.add(Dense(12))  # Input zu Hidden
     model.add(Activation("relu"))  # ReLU vom Hidden
