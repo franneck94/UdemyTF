@@ -3,19 +3,12 @@ import numpy as np
 from tensorflow.keras.datasets import mnist
 
 
-# Load MNIST dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-image = x_train[0]
-image = image.reshape((28, 28))
-
-
-def get_kernel_values(i, j, image):
+def get_kernel_values(i: int, j: int, image: np.ndarray) -> np.ndarray:
     kernel_values = image[i: i + 2, j: j + 2]
     return kernel_values
 
 
-def max_pooling(image):
+def max_pooling(image: np.ndarray) -> np.ndarray:
     # Setup output image as ndarray
     new_rows = image.shape[0] // 2
     new_cols = image.shape[1] // 2
@@ -29,14 +22,19 @@ def max_pooling(image):
     return output
 
 
-pooling_image = max_pooling(image)
+if __name__ == "__main__":
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-print(image.shape)
-print(pooling_image.shape)
+    image = x_train[0]
+    image = image.reshape((28, 28))
 
-# Input und Outputbild des Pooling Layers mit imshow() ausgeben
-plt.imshow(image, cmap="gray")
-plt.show()
+    pooling_image = max_pooling(image)
 
-plt.imshow(pooling_image, cmap="gray")
-plt.show()
+    print(image.shape)
+    print(pooling_image.shape)
+
+    plt.imshow(image, cmap="gray")
+    plt.show()
+
+    plt.imshow(pooling_image, cmap="gray")
+    plt.show()

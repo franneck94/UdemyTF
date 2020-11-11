@@ -3,24 +3,21 @@ import numpy as np
 from tensorflow.keras.datasets import mnist
 
 
-# Load MNIST dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-image = x_train[0]
-image = image.reshape((28, 28))
-
-kernel = np.random.uniform(low=0.0, high=1.0, size=(2, 2))
+def conv2D(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
+    return image  # TODO
 
 
-def conv2D(image, kernel):
-    pass
+if __name__ == "__main__":
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
+    image = x_train[0]
+    image = image.reshape((28, 28))
+    kernel = np.random.uniform(low=0.0, high=1.0, size=(2, 2))
 
-conv_image = conv2D(image, kernel)
+    conv_image = conv2D(image, kernel)
 
-# Input und Outputbild des Pooling Layers mit imshow() ausgeben
-plt.imshow(image, cmap="gray")
-plt.show()
+    plt.imshow(image, cmap="gray")
+    plt.show()
 
-plt.imshow(conv_image, cmap="gray")
-plt.show()
+    plt.imshow(conv_image, cmap="gray")
+    plt.show()
