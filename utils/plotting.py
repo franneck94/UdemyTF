@@ -53,14 +53,11 @@ def display_digit_and_predictions(
         image = image.reshape((28, 28))
     _, axs = plt.subplots(1, 2)
     pred_one_hot = [[int(round(val * 100.0, 4)) for val in pred_one_hot[0]]]
-    # Table data
     labels = [i for i in range(10)]
     axs[0].axis('tight')
     axs[0].axis('off')
     axs[0].table(cellText=pred_one_hot, colLabels=labels, loc="center")
-    # Image data
     axs[1].imshow(image, cmap=plt.get_cmap('gray_r'))
-    # General plotting settings
     plt.title('Label: %d, Pred: %d' % (label, pred))
     plt.show()
 

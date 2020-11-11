@@ -41,10 +41,14 @@ if not os.path.exists(log_dir):
     os.mkdir(log_dir)
 
 
-def r_squared(y_true, y_pred):
-    numerator = tf.math.reduce_sum(tf.math.square(tf.math.subtract(y_true, y_pred)))
+def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
+    error = tf.math.subtract(y_true, y_pred)
+    squared_error = tf.math.square(error)
+    numerator = tf.math.reduce_sum(squared_error)
     y_true_mean = tf.math.reduce_mean(y_true)
-    denominator = tf.math.reduce_sum(tf.math.square(tf.math.subtract(y_true, y_true_mean)))
+    mean_deviation = tf.math.subtract(y_true, y_true_mean)
+    squared_mean_deviation = tf.math.square(mean_deviation)
+    denominator = tf.reduce_sum(squared_mean_deviation)
     r2 = tf.math.subtract(1.0, tf.math.divide(numerator, denominator))
     r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
     return r2_clipped

@@ -1,9 +1,11 @@
 import os
+from typing import Any, Tuple
 
 import cv2
 import numpy as np
 from skimage import transform
 from sklearn.model_selection import train_test_split
+from sklearn.base import TransformerMixin
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -16,19 +18,19 @@ IMG_HEIGHT = 64
 IMG_DEPTH = 3
 
 
-def extract_cats_vs_dogs():
+def extract_cats_vs_dogs() -> None:
     cats_dir = os.path.join(FILE_DIR, "cat")
     dogs_dir = os.path.join(FILE_DIR, "dog")
 
+    dirs = [cats_dir, dogs_dir]
+    class_names = ["cats", "dogs"]
+
     print("Deleting no .jpg images!")
-    for f in os.listdir(cats_dir):
-        if f.split(".")[-1] != "jpg":
-            print("Removing file: ", f)
-            os.remove(os.path.join(cats_dir, f))
-    for f in os.listdir(dogs_dir):
-        if f.split(".")[-1] != "jpg":
-            print("Removing file: ", f)
-            os.remove(os.path.join(dogs_dir, f))
+    for d in dirs:
+        for f in os.listdir(d):
+            if f.split(".")[-1] != "jpg":
+                print(f"Removing file: {f}")
+                os.remove(os.path.join(d, f))
 
     num_cats = len(os.listdir(cats_dir))
     num_dogs = len(os.listdir(dogs_dir))
@@ -44,37 +46,24 @@ def extract_cats_vs_dogs():
     )
 
     cnt = 0
-    print("Start reading cat images!")
-    for f in os.listdir(cats_dir):
-        img_file = os.path.join(cats_dir, f)
-        try:
-            img = cv2.imread(img_file, cv2.IMREAD_COLOR)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            x[cnt] = transform.resize(
-                image=img,
-                output_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_DEPTH)
-            )
-            y[cnt] = 0
-            cnt += 1
-        except:
-            print("Cat image %s cannot be read!" % f)
-            os.remove(img_file)
-
-    print("Start reading dog images!")
-    for f in os.listdir(dogs_dir):
-        img_file = os.path.join(dogs_dir, f)
-        try:
-            img = cv2.imread(img_file, cv2.IMREAD_COLOR)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            x[cnt] = transform.resize(
-                image=img,
-                output_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_DEPTH)
-            )
-            y[cnt] = 1
-            cnt += 1
-        except:
-            print("Dog image %s cannot be read!" % f)
-            os.remove(img_file)
+    for d, class_name in zip(dirs, class_names):
+        for f in os.listdir(d):
+            img_file = os.path.join(d, f)
+            try:
+                img = cv2.imread(img_file, cv2.IMREAD_COLOR)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                x[cnt] = transform.resize(
+                    image=img,
+                    output_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_DEPTH)
+                )
+                if class_name == "cats":
+                    y[cnt] = 0
+                else:
+                    y[cnt] = 1
+                cnt += 1
+            except:  # noqa: E722
+                print(f"Image {f} cannot be read!")
+                os.remove(img_file)
 
     # Dropping not readable image idxs
     x = x[:cnt]
@@ -84,7 +73,10 @@ def extract_cats_vs_dogs():
     np.save(os.path.join(FILE_DIR, "y.npy"), y)
 
 
-def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
+def load_cats_vs_dogs(
+    test_size: float = 0.33,
+    extracting_images: bool = False
+) -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
     file_x = os.path.join(FILE_DIR, "x.npy")
     file_y = os.path.join(FILE_DIR, "y.npy")
 
@@ -98,16 +90,20 @@ def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
 
 
 class DOGSCATS:
-    def __init__(self, test_size=0.33, extracting_images=False):
+    def __init__(
+        self,
+        test_size: float = 0.33,
+        extracting_images: bool = False
+    ) -> None:
         # Load the data set
         # Class 0: Cat, Class 1: Dog
         (self.x_train, self.y_train), (self.x_test, self.y_test) = load_cats_vs_dogs(
             test_size=test_size, extracting_images=extracting_images
         )
-        self.x_train_ = None
-        self.x_val = None
-        self.y_train_ = None
-        self.y_val = None
+        self.x_train_: np.ndarray = None
+        self.x_val: np.ndarray = None
+        self.y_train_: np.ndarray = None
+        self.y_val: np.ndarray = None
         # Convert to float32
         self.x_train = self.x_train.astype(np.float32)
         self.y_train = self.y_train.astype(np.float32)
@@ -133,15 +129,18 @@ class DOGSCATS:
             num_classes=self.num_classes
         )
         # Addtional class attributes
-        self.scaler = None
+        self.scaler: TransformerMixin = None
 
-    def get_train_set(self):
+    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self):
+    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_splitted_train_validation_set(self, validation_size=0.33):
+    def get_splitted_train_validation_set(
+        self,
+        validation_size: float = 0.33
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
             self.x_train, self.y_train, test_size=validation_size
         )
@@ -149,7 +148,7 @@ class DOGSCATS:
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val
 
-    def data_augmentation(self, augment_size=5000):
+    def data_augmentation(self, augment_size: int = 5000) -> None:
         # Create an instance of the image data generator class
         image_generator = ImageDataGenerator(
             rotation_range=10,
@@ -178,9 +177,9 @@ class DOGSCATS:
 
     def data_preprocessing(
         self,
-        preprocess_mode="standard",
-        preprocess_params=None
-    ):
+        preprocess_mode: str = "standard",
+        preprocess_params: Any = None
+    ) -> None:
         # Preprocess the data
         if preprocess_mode == "standard":
             if preprocess_params:

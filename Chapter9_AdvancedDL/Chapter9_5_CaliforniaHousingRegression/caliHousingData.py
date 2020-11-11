@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler  # noqa: F401
+from sklearn.preprocessing import StandardScaler  # noqa: F401
 
 
 class CALIHOUSING:
