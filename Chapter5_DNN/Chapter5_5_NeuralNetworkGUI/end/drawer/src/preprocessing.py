@@ -30,28 +30,19 @@ def normalize(image: np.ndarray) -> np.ndarray:
 def center(image: np.ndarray) -> np.ndarray:
     cy, cx = center_of_mass(image)
     rows, cols = image.shape
-    shiftx = np.round(cols / 2.0 - cx).astype(int)
-    shifty = np.round(rows / 2.0 - cy).astype(int)
-    M = np.float32([[1, 0, shiftx], [0, 1, shifty]])
+    shiftx = np.round(cols / 2 - cx).astype(int)
+    shifty = np.round(rows / 2 - cy).astype(int)
+    M = np.array([[1, 0, shiftx], [0, 1, shifty]]).astype(np.float32)
     image = cv2.warpAffine(image, M, (cols, rows))
     return image
 
 
 def get_image(DrawingFrame: Any, debug: bool = False) -> np.ndarray:
     pixmap = DrawingFrame.grab()
-    temp_image_path = os.path.join(PROJECT_DIR, "ressources", "imgs", "temp_image.jpg")
-    pixmap.save(temp_image_path)
-    image = load(temp_image_path).astype(np.float32)
+    temp_image_file_path = os.path.join(PROJECT_DIR, "ressources", "imgs", "temp_image.jpg")
+    pixmap.save(temp_image_file_path)
+    image = load(temp_image_file_path)
     image = resize(image)
-    if debug:
-        plt.imshow(image, cmap="gray")
-        plt.show()
     image = normalize(image)
-    if debug:
-        plt.imshow(image, cmap="gray")
-        plt.show()
     image = center(image)
-    if debug:
-        plt.imshow(image, cmap="gray")
-        plt.show()
     return image

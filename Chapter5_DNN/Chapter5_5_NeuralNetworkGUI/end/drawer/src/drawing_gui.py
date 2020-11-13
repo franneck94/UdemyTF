@@ -6,7 +6,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 
-from .dnn import create_model
+from .dnn import build_model
 from .dnn import nn_predict
 from .preprocessing import get_image
 
@@ -137,11 +137,14 @@ class CreateUI(BASE, FORM):  # type: ignore
         self.label.setPixmap(self.pixmap)
         self.Clear_Button.clicked.connect(self.ClearSlate)
         self.Predict_Button.clicked.connect(self.PredictNumber)
-        self.model = create_model()
+        # NN Model
+        num_features = 784
+        num_targets = 10
+        self.model = build_model(num_features, num_targets)
         if os.path.exists(MODEL_FILE_PATH):
             self.model.load_weights(MODEL_FILE_PATH)
         else:
-            raise FileNotFoundError("Weights file not found.")
+            raise FileNotFoundError("Weights file not found!")
 
     # Reset Button
     def ClearSlate(self):
@@ -154,9 +157,9 @@ class CreateUI(BASE, FORM):  # type: ignore
     # Predict Button
     def PredictNumber(self):
         image = get_image(self.DrawingFrame)
-        pred = nn_predict(self.model, image=image)
-        pred_image_path = os.path.join(IMAGE_DIR, str(pred) + ".png")
-        self.pixmap = QtGui.QPixmap(pred_image_path)
+        y_pred_class_idx = nn_predict(self.model, image=image)
+        image_file_path = os.path.join(IMAGE_DIR, str(y_pred_class_idx) + ".png")
+        self.pixmap = QtGui.QPixmap(image_file_path)
         self.label.setPixmap(self.pixmap)
 
 
