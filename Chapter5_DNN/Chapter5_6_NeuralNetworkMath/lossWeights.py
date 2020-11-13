@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     y_pred = model.predict(x).flatten()
     W, b = model.layers[0].get_weights()
-    print("Weights: ", W[0][0])
+    print(f"Weights: {W[0][0]}")
 
     w = np.linspace(start=-5, stop=5, num=200)
     losses = []

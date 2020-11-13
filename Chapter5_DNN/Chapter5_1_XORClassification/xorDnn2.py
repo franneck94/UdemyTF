@@ -1,3 +1,4 @@
+from typing import List
 from typing import Tuple
 
 import numpy as np
@@ -11,13 +12,19 @@ def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
-def dense(W, b, x):
+def dense(W: tf.Variable, b: tf.Variable, x: tf.Tensor) -> tf.Tensor:
     """output = W*x + b"""
     return tf.math.add(tf.linalg.matmul(x, W), b)
 
 
 class Model:
-    def __init__(self, optimizer, loss, metric, units_list) -> None:
+    def __init__(
+        self,
+        optimizer: tf.keras.optimizers.Optimizer,
+        loss: tf.keras.losses.Loss,
+        metric: tf.keras.metrics.Metric,
+        units_list: List[int]
+    ) -> None:
         # Model parameters
         self.optimizer = optimizer
         self.loss = loss
@@ -51,7 +58,7 @@ class Model:
         output_layer_activation = tf.nn.sigmoid(output_layer)
         return output_layer_activation
 
-    def evaluate(self, x: np.ndarray, y: np.ndarray):
+    def evaluate(self, x: np.ndarray, y: np.ndarray) -> List[float]:
         pass
 
 

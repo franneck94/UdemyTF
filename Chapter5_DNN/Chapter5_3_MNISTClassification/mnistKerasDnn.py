@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import numpy as np
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.initializers import Constant
@@ -9,7 +11,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 
-def prepare_dataset(num_features: int, num_targets: int):
+def prepare_dataset(num_features: int, num_targets: int) -> tuple:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     x_train = x_train.reshape(-1, num_features).astype(np.float32)

@@ -31,7 +31,7 @@ class Perceptron:
     def predict(self, x: np.ndarray) -> np.ndarray:
         pass
 
-    def evaluate(self, x: np.ndarray, y: np.ndarray):
+    def evaluate(self, x: np.ndarray, y: np.ndarray) -> float:
         pass
 
 

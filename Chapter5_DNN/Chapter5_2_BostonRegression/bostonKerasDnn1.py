@@ -1,5 +1,4 @@
 import numpy as np
-import tensorflow as tf
 from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras.initializers import Constant
 from tensorflow.keras.initializers import RandomUniform

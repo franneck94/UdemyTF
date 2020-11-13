@@ -25,23 +25,9 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-data = DOGSCATS()
-data.data_augmentation(augment_size=5000)
-data.data_preprocessing(preprocess_mode="MinMax")
-(x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
-x_train, y_train = data.get_train_set()
-x_test, y_test = data.get_test_set()
-num_classes = data.num_classes
-
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-data_model_path = os.path.join(dir_path, "data_model.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
 
 
 def model_fn(
@@ -218,36 +204,7 @@ def model_fn(
     return model
 
 
-# Global params
-epochs = 40
-batch_size = 256
-
-params = {
-    "optimizer": Adam,
-    "learning_rate": 0.001,
-    "filter_block1": 32,
-    "kernel_size_block1": 3,
-    "filter_block2": 64,
-    "kernel_size_block2": 3,
-    "filter_block3": 128,
-    "kernel_size_block3": 3,
-    "dense_layer_size": 1024,
-    # GlorotUniform, GlorotNormal, RandomNormal
-    # RandomUniform, VarianceScaling
-    "kernel_initializer": 'GlorotUniform',
-    "bias_initializer": 'zeros',
-    # relu, elu, LeakyReLU
-    "activation_str": "relu",
-    # 0.05, 0.1, 0.2
-    "dropout_rate": 0.00,
-    # True, False
-    "use_bn": True,
-}
-
-rand_model = model_fn(**params)
-
-
-def schedule_fn(epoch):
+def schedule_fn(epoch: int) -> float:
     learning_rate = 1e-3
     if epoch < 5:
         learning_rate = 1e-3
@@ -258,54 +215,89 @@ def schedule_fn(epoch):
     return learning_rate
 
 
-def schedule_fn2(epoch):
+def schedule_fn2(epoch: int) -> float:
     if epoch < 10:
         return 1e-3
     else:
         return 1e-3 * np.exp(0.1 * (10 - epoch))
 
 
-lrs_callback = LearningRateScheduler(
-    schedule=schedule_fn2,
-    verbose=1
-)
-
-plateau_callback = ReduceLROnPlateau(
-    monitor='val_loss',
-    factor=0.95,
-    patience=3,
-    verbose=1,
-    min_lr=1e-5
-)
-
-
 class LRTensorBoard(TensorBoard):
-    def __init__(self, log_dir, **kwargs):
+    def __init__(self, log_dir: str, **kwargs: dict) -> None:
         super().__init__(log_dir=log_dir, **kwargs)
 
-    def on_epoch_end(self, epoch, logs=None):
+    def on_epoch_end(self, epoch: int, logs: dict) -> None:
         logs.update({'learning_rate': self.model.optimizer.learning_rate})
         super().on_epoch_end(epoch, logs)
 
 
-model_log_dir = os.path.join(log_dir, "modelPlateau")
-tb_callback = LRTensorBoard(log_dir=model_log_dir)
+if __name__ == "__main__":
+    data = DOGSCATS()
+    data.data_augmentation(augment_size=5_000)
+    data.data_preprocessing(preprocess_mode="MinMax")
+    (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+    x_train, y_train = data.get_train_set()
+    x_test, y_test = data.get_test_set()
+    num_classes = data.num_classes
 
-rand_model.fit(
-    x=x_train_splitted,
-    y=y_train_splitted,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[tb_callback, plateau_callback],
-    validation_data=(x_val, y_val),
-)
+    # Global params
+    epochs = 40
+    batch_size = 256
 
+    params = {
+        "optimizer": Adam,
+        "learning_rate": 0.001,
+        "filter_block1": 32,
+        "kernel_size_block1": 3,
+        "filter_block2": 64,
+        "kernel_size_block2": 3,
+        "filter_block3": 128,
+        "kernel_size_block3": 3,
+        "dense_layer_size": 1024,
+        # GlorotUniform, GlorotNormal, RandomNormal
+        # RandomUniform, VarianceScaling
+        "kernel_initializer": 'GlorotUniform',
+        "bias_initializer": 'zeros',
+        # relu, elu, LeakyReLU
+        "activation_str": "relu",
+        # 0.05, 0.1, 0.2
+        "dropout_rate": 0.00,
+        # True, False
+        "use_bn": True,
+    }
 
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size
-)
-print("Test performance: ", score)
+    rand_model = model_fn(**params)
+
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1
+    )
+
+    plateau_callback = ReduceLROnPlateau(
+        monitor='val_loss',
+        factor=0.95,
+        patience=3,
+        verbose=1,
+        min_lr=1e-5
+    )
+
+    model_log_dir = os.path.join(LOGS_DIR, "modelPlateau")
+    tb_callback = LRTensorBoard(log_dir=model_log_dir)
+
+    rand_model.fit(
+        x=x_train_splitted,
+        y=y_train_splitted,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[tb_callback, plateau_callback],
+        validation_data=(x_val, y_val),
+    )
+
+    score = rand_model.evaluate(
+        x_test,
+        y_test,
+        verbose=0,
+        batch_size=batch_size
+    )
+    print(f"Test performance: {score}")

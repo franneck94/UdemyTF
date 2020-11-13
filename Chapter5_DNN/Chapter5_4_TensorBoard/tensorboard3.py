@@ -14,7 +14,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
-from utils.plotting import ConfusionMatrix
+from tf_utils.plotting import ConfusionMatrix
 
 
 MODEL_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/models")
@@ -27,7 +27,7 @@ if not os.path.exists(LOGS_DIR):
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "mnist_cm")
 
 
-def prepare_dataset(num_features: int, num_classes: int):
+def prepare_dataset(num_features: int, num_classes: int) -> tuple:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     y_train = to_categorical(y_train, num_classes=num_classes, dtype=np.float32)

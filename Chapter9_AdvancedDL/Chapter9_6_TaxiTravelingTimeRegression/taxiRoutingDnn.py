@@ -9,14 +9,6 @@ from tensorflow.keras.optimizers import Adam
 from taxiRoutingData import TAXIROUTING
 
 
-excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
-taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
-x_train, y_train = taxi_data.x_train, taxi_data.y_train
-x_test, y_test = taxi_data.x_test, taxi_data.y_test
-num_features = taxi_data.num_features
-num_targets = taxi_data.num_targets
-
-
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     error = tf.math.subtract(y_true, y_pred)
     squared_error = tf.math.square(error)
@@ -30,39 +22,47 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     return r2_clipped
 
 
-# Model params
-learning_rate = 0.001
-optimizer = Adam(learning_rate=learning_rate)
-epochs = 200
-batch_size = 256
+if __name__ == "__main__":
+    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
+    taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
+    x_train, y_train = taxi_data.x_train, taxi_data.y_train
+    x_test, y_test = taxi_data.x_test, taxi_data.y_test
+    num_features = taxi_data.num_features
+    num_targets = taxi_data.num_targets
 
-model = Sequential()
+    # Model params
+    learning_rate = 0.001
+    optimizer = Adam(learning_rate=learning_rate)
+    epochs = 200
+    batch_size = 256
 
-model.add(Dense(units=16, input_shape=(num_features,)))
-model.add(Activation("relu"))
-model.add(Dense(units=16))
-model.add(Activation("relu"))
-model.add(Dense(units=num_targets))
+    model = Sequential()
 
-model.summary()
+    model.add(Dense(units=16, input_shape=(num_features,)))
+    model.add(Activation("relu"))
+    model.add(Dense(units=16))
+    model.add(Activation("relu"))
+    model.add(Dense(units=num_targets))
 
-model.compile(
-    loss="mse",
-    optimizer=optimizer,
-    metrics=[r_squared]
-)
+    model.summary()
 
-model.fit(
-    x=x_train,
-    y=y_train,
-    epochs=epochs,
-    batch_size=batch_size,
-    validation_data=(x_test, y_test),
-)
+    model.compile(
+        loss="mse",
+        optimizer=optimizer,
+        metrics=[r_squared]
+    )
 
-score = model.evaluate(
-    x=x_test,
-    y=y_test,
-    verbose=0
-)
-print("Score: ", score)
+    model.fit(
+        x=x_train,
+        y=y_train,
+        epochs=epochs,
+        batch_size=batch_size,
+        validation_data=(x_test, y_test),
+    )
+
+    score = model.evaluate(
+        x=x_test,
+        y=y_test,
+        verbose=0
+    )
+    print(f"Score: {score}")

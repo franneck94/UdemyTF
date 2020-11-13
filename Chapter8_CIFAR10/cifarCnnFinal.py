@@ -20,22 +20,10 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-cifar = CIFAR10()
-cifar.data_augmentation(augment_size=5000)
-cifar.data_preprocessing(preprocess_mode="MinMax")
-x_train, y_train = cifar.get_train_set()
-x_test, y_test = cifar.get_test_set()
-num_classes = cifar.num_classes
 
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-cifar_model_path = os.path.join(dir_path, "cifar_model.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
 
 
 def model_fn(
@@ -90,141 +78,149 @@ def model_fn(
     return model
 
 
-# Global params
-epochs = 50
-batch_size = 256
+if __name__ == "__main__":
+    cifar = CIFAR10()
+    cifar.data_augmentation(augment_size=5_000)
+    cifar.data_preprocessing(preprocess_mode="MinMax")
+    x_train, y_train = cifar.get_train_set()
+    x_test, y_test = cifar.get_test_set()
+    num_classes = cifar.num_classes
 
-# Best grid search model
-optimizer = Adam
-learning_rate = 1e-3
-filter_block1 = 32
-kernel_size_block1 = 3
-filter_block2 = 64
-kernel_size_block2 = 5
-filter_block3 = 7
-kernel_size_block3 = 64
-dense_layer_size = 512
+    # Global params
+    epochs = 50
+    batch_size = 256
 
-grid_model = model_fn(
-    optimizer,
-    learning_rate,
-    filter_block1,
-    kernel_size_block1,
-    filter_block2,
-    kernel_size_block2,
-    filter_block3,
-    kernel_size_block3,
-    dense_layer_size,
-)
-model_log_dir = os.path.join(log_dir, "modelBestGrid")
+    # Best grid search model
+    optimizer = Adam
+    learning_rate = 1e-3
+    filter_block1 = 32
+    kernel_size_block1 = 3
+    filter_block2 = 64
+    kernel_size_block2 = 5
+    filter_block3 = 7
+    kernel_size_block3 = 64
+    dense_layer_size = 512
 
-tb_callback = TensorBoard(
-    log_dir=model_log_dir
-)
+    grid_model = model_fn(
+        optimizer,
+        learning_rate,
+        filter_block1,
+        kernel_size_block1,
+        filter_block2,
+        kernel_size_block2,
+        filter_block3,
+        kernel_size_block3,
+        dense_layer_size,
+    )
+    model_log_dir = os.path.join(LOGS_DIR, "modelBestGrid")
 
-grid_model.fit(
-    x=x_train,
-    y=y_train,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[tb_callback],
-    validation_data=(x_test, y_test),
-)
-score = grid_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size
-)
-print("Test performance best grid model: ", score)
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir
+    )
 
-# Best random model
-optimizer = Adam
-learning_rate = 0.0006214855772522395
-filter_block1 = 43
-kernel_size_block1 = 3
-filter_block2 = 50
-kernel_size_block2 = 3
-filter_block3 = 54
-kernel_size_block3 = 4
-dense_layer_size = 844
+    grid_model.fit(
+        x=x_train,
+        y=y_train,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[tb_callback],
+        validation_data=(x_test, y_test),
+    )
+    score = grid_model.evaluate(
+        x_test,
+        y_test,
+        verbose=0,
+        batch_size=batch_size
+    )
+    print(f"Test performance best grid model: {score}")
 
-rand_model = model_fn(
-    optimizer,
-    learning_rate,
-    filter_block1,
-    kernel_size_block1,
-    filter_block2,
-    kernel_size_block2,
-    filter_block3,
-    kernel_size_block3,
-    dense_layer_size,
-)
-model_log_dir = os.path.join(log_dir, "modelBestRand")
+    # Best random model
+    optimizer = Adam
+    learning_rate = 0.0006214855772522395
+    filter_block1 = 43
+    kernel_size_block1 = 3
+    filter_block2 = 50
+    kernel_size_block2 = 3
+    filter_block3 = 54
+    kernel_size_block3 = 4
+    dense_layer_size = 844
 
-tb_callback = TensorBoard(
-    log_dir=model_log_dir
-)
+    rand_model = model_fn(
+        optimizer,
+        learning_rate,
+        filter_block1,
+        kernel_size_block1,
+        filter_block2,
+        kernel_size_block2,
+        filter_block3,
+        kernel_size_block3,
+        dense_layer_size,
+    )
+    model_log_dir = os.path.join(LOGS_DIR, "modelBestRand")
 
-rand_model.fit(
-    x=x_train,
-    y=y_train,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[tb_callback],
-    validation_data=(x_test, y_test),
-)
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size
-)
-print("Test performance best rand model: ", score)
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir
+    )
 
-# Huge model
-optimizer = Adam
-learning_rate = 0.0005
-filter_block1 = 32
-kernel_size_block1 = 35
-filter_block2 = 64
-kernel_size_block2 = 4
-filter_block3 = 128
-kernel_size_block3 = 3
-dense_layer_size = 2048
+    rand_model.fit(
+        x=x_train,
+        y=y_train,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[tb_callback],
+        validation_data=(x_test, y_test),
+    )
+    score = rand_model.evaluate(
+        x_test,
+        y_test,
+        verbose=0,
+        batch_size=batch_size
+    )
+    print(f"Test performance best rand model: {score}")
 
-rand_model = model_fn(
-    optimizer,
-    learning_rate,
-    filter_block1,
-    kernel_size_block1,
-    filter_block2,
-    kernel_size_block2,
-    filter_block3,
-    kernel_size_block3,
-    dense_layer_size,
-)
-model_log_dir = os.path.join(log_dir, "modelHuge")
+    # Huge model
+    optimizer = Adam
+    learning_rate = 0.0005
+    filter_block1 = 32
+    kernel_size_block1 = 35
+    filter_block2 = 64
+    kernel_size_block2 = 4
+    filter_block3 = 128
+    kernel_size_block3 = 3
+    dense_layer_size = 2048
 
-tb_callback = TensorBoard(
-    log_dir=model_log_dir
-)
+    rand_model = model_fn(
+        optimizer,
+        learning_rate,
+        filter_block1,
+        kernel_size_block1,
+        filter_block2,
+        kernel_size_block2,
+        filter_block3,
+        kernel_size_block3,
+        dense_layer_size,
+    )
+    model_log_dir = os.path.join(LOGS_DIR, "modelHuge")
 
-rand_model.fit(
-    x=x_train,
-    y=y_train,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[tb_callback],
-    validation_data=(x_test, y_test),
-)
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size
-)
-print("Test performance best rand model: ", score)
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir
+    )
+
+    rand_model.fit(
+        x=x_train,
+        y=y_train,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[tb_callback],
+        validation_data=(x_test, y_test),
+    )
+    score = rand_model.evaluate(
+        x_test,
+        y_test,
+        verbose=0,
+        batch_size=batch_size
+    )
+    print(f"Test performance best rand model: {score}")

@@ -5,7 +5,12 @@ from tensorflow.keras.utils import to_categorical
 
 
 class IMDBData:
-    def __init__(self, num_words, skip_top, maxlen):
+    def __init__(
+        self,
+        num_words: int,
+        skip_top: int,
+        maxlen: int
+    ) -> None:
         # Dataset variables
         self.num_classes = 2
         self.num_words = num_words
@@ -36,7 +41,10 @@ class IMDBData:
         self.y_train = to_categorical(self.y_train, self.num_classes)
         self.y_test = to_categorical(self.y_test, self.num_classes)
 
-    def get_review_text(self, review):
+    def get_review_text(
+        self,
+        review: list
+    ) -> list:
         reveiw_text = [self.index_to_word[index] for index in review]
         return reveiw_text
 

@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 class TAXIROUTING:
-    def __init__(self, excel_file_path):
+    def __init__(self, excel_file_path: str) -> None:
         # Load the excel file
         self.column_names = [
             "Uhrzeit",

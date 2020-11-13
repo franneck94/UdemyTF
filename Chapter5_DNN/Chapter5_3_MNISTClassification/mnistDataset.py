@@ -1,6 +1,6 @@
 from tensorflow.keras.datasets import mnist
 
-from utils.plotting import display_digit
+from tf_utils.plotting import display_digit
 
 
 if __name__ == "__main__":

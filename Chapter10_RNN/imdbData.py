@@ -5,7 +5,12 @@ from tensorflow.keras.utils import to_categorical
 
 
 class IMDBData:
-    def __init__(self, num_words, skip_top, maxlen):
+    def __init__(
+        self,
+        num_words: int,
+        skip_top: int,
+        maxlen: int
+    ) -> None:
         # Dataset variables
         self.num_classes = 2
         self.num_words = num_words

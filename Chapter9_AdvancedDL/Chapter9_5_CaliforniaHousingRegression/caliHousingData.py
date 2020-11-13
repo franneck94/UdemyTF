@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler  # noqa: F401
 
 
 class CALIHOUSING:
-    def __init__(self):
+    def __init__(self) -> None:
         self.dataset = fetch_california_housing()
         self.feature_names = self.dataset.feature_names
         self.DESCR = self.dataset.DESCR

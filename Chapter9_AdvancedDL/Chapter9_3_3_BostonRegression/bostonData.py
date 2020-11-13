@@ -1,4 +1,7 @@
+from typing import Tuple
+
 import numpy as np
+from sklearn.base import TransformerMixin
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
@@ -6,16 +9,13 @@ from tensorflow.keras.datasets import boston_housing
 
 
 class BOSTON:
-    def __init__(self):
+    def __init__(self) -> None:
         # Load the data set
-        (self.x_train, self.y_train), (
-            self.x_test,
-            self.y_test,
-        ) = boston_housing.load_data()
-        self.x_train_ = None
-        self.x_val = None
-        self.y_train_ = None
-        self.y_val = None
+        (self.x_train, self.y_train), (self.x_test, self.y_test) = boston_housing.load_data()
+        self.x_train_: np.ndarray = None
+        self.x_val: np.ndarray = None
+        self.y_train_: np.ndarray = None
+        self.y_val: np.ndarray = None
         # Convert to float32
         self.x_train = self.x_train.astype(np.float32)
         self.y_train = self.y_train.astype(np.float32)
@@ -29,15 +29,15 @@ class BOSTON:
         self.num_targets = 1  # Constant for the data set
         self.num_features = self.x_train.shape[1]
         # Addtional class attributes
-        self.scaler = None
+        self.scaler: TransformerMixin = None
 
-    def get_train_set(self):
+    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self):
+    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_splitted_train_validation_set(self, validation_size=0.33):
+    def get_splitted_train_validation_set(self, validation_size: float = 0.33) -> tuple:
         self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
             self.x_train, self.y_train, test_size=validation_size
         )
@@ -45,7 +45,7 @@ class BOSTON:
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val
 
-    def data_preprocessing(self, preprocess_mode="standard", preprocess_params=None):
+    def data_preprocessing(self, preprocess_mode: str = "standard", preprocess_params: dict = None) -> None:
         # Preprocess the data
         if preprocess_mode == "standard":
             if preprocess_params:

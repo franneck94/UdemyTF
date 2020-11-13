@@ -22,7 +22,7 @@ if not os.path.exists(LOGS_DIR):
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "mnist_model")
 
 
-def prepare_dataset(num_features: int, num_targets: int):
+def prepare_dataset(num_features: int, num_targets: int) -> tuple:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     x_train = x_train.reshape(-1, num_features).astype(np.float32)

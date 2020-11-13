@@ -1,8 +1,10 @@
 import os
+from typing import Tuple
 
 import cv2
 import numpy as np
 from skimage import transform
+from sklearn.base import TransformerMixin
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
@@ -19,7 +21,7 @@ CATS_CLASS_IDX = 0
 DOGS_CLASS_IDX = 1
 
 
-def extract_cats_vs_dogs():
+def extract_cats_vs_dogs() -> None:
     cats_dir = os.path.join(FILE_DIR, "cat")
     dogs_dir = os.path.join(FILE_DIR, "dog")
 
@@ -75,7 +77,7 @@ def extract_cats_vs_dogs():
     np.save(os.path.join(FILE_DIR, "y.npy"), y)
 
 
-def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
+def load_cats_vs_dogs(test_size: float = 0.33, extracting_images: bool = False) -> tuple:
     file_x = os.path.join(FILE_DIR, "x.npy")
     file_y = os.path.join(FILE_DIR, "y.npy")
 
@@ -89,16 +91,16 @@ def load_cats_vs_dogs(test_size=0.33, extracting_images=False):
 
 
 class DOGSCATS:
-    def __init__(self, test_size=0.33, extracting_images=False):
+    def __init__(self, test_size: float = 0.33, extracting_images: bool = False) -> None:
         # Load the data set
         # Class 0: Cat, Class 1: Dog
         (self.x_train, self.y_train), (self.x_test, self.y_test) = load_cats_vs_dogs(
             test_size=test_size, extracting_images=extracting_images
         )
-        self.x_train_ = None
-        self.x_val = None
-        self.y_train_ = None
-        self.y_val = None
+        self.x_train_: np.ndarray = None
+        self.x_val: np.ndarray = None
+        self.y_train_: np.ndarray = None
+        self.y_val: np.ndarray = None
         # Convert to float32
         self.x_train = self.x_train.astype(np.float32)
         self.y_train = self.y_train.astype(np.float32)
@@ -118,16 +120,16 @@ class DOGSCATS:
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
         # Addtional class attributes
-        self.scaler = None
+        self.scaler: TransformerMixin = None
         self.CLASS_IDXS = ["Cat", "Dog"]
 
-    def get_train_set(self):
+    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self):
+    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_splitted_train_validation_set(self, validation_size=0.33):
+    def get_splitted_train_validation_set(self, validation_size: float = 0.33) -> tuple:
         self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
             self.x_train, self.y_train, test_size=validation_size
         )
@@ -135,7 +137,7 @@ class DOGSCATS:
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val
 
-    def data_augmentation(self, augment_size=5000):
+    def data_augmentation(self, augment_size: int = 5_000) -> None:
         # Create an instance of the image data generator class
         image_generator = ImageDataGenerator(
             rotation_range=10,
@@ -159,7 +161,7 @@ class DOGSCATS:
         self.y_train = np.concatenate((self.y_train, y_augmented))
         self.train_size = self.x_train.shape[0]
 
-    def data_preprocessing(self, preprocess_mode="standard", preprocess_params=None):
+    def data_preprocessing(self, preprocess_mode: str = "standard", preprocess_params: dict = None) -> None:
         # Preprocess the data
         if preprocess_mode == "standard":
             if preprocess_params:
@@ -182,7 +184,7 @@ class DOGSCATS:
         self.x_train = self.x_train.reshape((self.train_size, self.width, self.height, self.depth))
         self.x_test = self.x_test.reshape((self.test_size, self.width, self.height, self.depth))
 
-    def load_and_preprocess_custom_image(self, image_path):
+    def load_and_preprocess_custom_image(self, image_path: str) -> np.ndarray:
         x = cv2.imread(image_path, cv2.IMREAD_COLOR)
         x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
         x = transform.resize(x, (self.width, self.height, self.depth))

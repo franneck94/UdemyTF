@@ -1,14 +1,16 @@
+from typing import Tuple
+
 import numpy as np
 
 
-def get_dataset():
+def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     """OR dataset."""
     x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
     y = np.array([[0], [1], [1], [1]])
     return x, y
 
 
-def to_one_hot(y, num_classes):
+def to_one_hot(y: np.ndarray, num_classes: int) -> np.ndarray:
     y_one_hot = np.zeros(shape=(len(y), num_classes))  # 4x2
     for i, y_i in enumerate(y):
         y_oh = np.zeros(shape=num_classes)
@@ -17,7 +19,7 @@ def to_one_hot(y, num_classes):
     return y_one_hot
 
 
-def softmax(y_pred):
+def softmax(y_pred: np.ndarray) -> np.ndarray:
     y_softmax = np.zeros(shape=y_pred.shape)
     for i in range(len(y_pred)):
         exps = np.exp(y_pred[i])
@@ -25,7 +27,7 @@ def softmax(y_pred):
     return y_softmax
 
 
-def cross_entropy(y_true, y_pred):
+def cross_entropy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     num_samples = y_pred.shape[0]
     num_classes = y_pred.shape[1]
     loss = 0.0
@@ -40,10 +42,10 @@ if __name__ == "__main__":
     y = to_one_hot(y, num_classes=2)
     print(y)
 
-    p1 = [0.223, 0.613]
-    p2 = [-0.75, 0.5]
-    p3 = [0.01, 0.2]
-    p4 = [0.564, 0.234]
+    p1 = np.array([0.223, 0.613])
+    p2 = np.array([-0.750, 0.500])
+    p3 = np.array([0.010, 0.200])
+    p4 = np.array([0.564, 0.234])
     y_pred = np.array([p1, p2, p3, p4])
 
     print(y_pred)

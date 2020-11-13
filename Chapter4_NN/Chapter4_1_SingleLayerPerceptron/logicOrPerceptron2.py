@@ -45,7 +45,7 @@ class Perceptron:
         output_signal = step_function(input_signal)
         return output_signal
 
-    def evaluate(self, x: np.ndarray, y: np.ndarray):
+    def evaluate(self, x: np.ndarray, y: np.ndarray) -> float:
         y_pred = self.predict(x)
         return accuracy_score(y, y_pred)
 

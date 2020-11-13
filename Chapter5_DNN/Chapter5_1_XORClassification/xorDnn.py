@@ -1,3 +1,4 @@
+from typing import List
 from typing import Tuple
 
 import numpy as np
@@ -12,7 +13,12 @@ def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
 
 
 class Model:
-    def __init__(self, optimizer, loss, metric) -> None:
+    def __init__(
+        self,
+        optimizer: tf.keras.optimizers.Optimizer,
+        loss: tf.keras.losses.Loss,
+        metric: tf.keras.metrics.Metric
+    ) -> None:
         self.optimizer = optimizer
         self.loss = loss
         self.metric = metric
@@ -27,7 +33,7 @@ class Model:
     def predict(self, x: np.ndarray) -> np.ndarray:
         pass
 
-    def evaluate(self, x: np.ndarray, y: np.ndarray):
+    def evaluate(self, x: np.ndarray, y: np.ndarray) -> List[float]:
         pass
 
 

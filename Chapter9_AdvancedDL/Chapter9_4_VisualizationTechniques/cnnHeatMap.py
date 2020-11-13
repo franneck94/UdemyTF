@@ -18,9 +18,8 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from utils.plotting import get_heatmap
-
 from dogsCatsData import DOGSCATS
+from tf_utils.plotting import get_heatmap
 
 
 random.seed(0)
@@ -28,22 +27,21 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 data = DOGSCATS()
-data.data_augmentation(augment_size=5000)
+data.data_augmentation(augment_size=5_000)
 data.data_preprocessing(preprocess_mode="MinMax")
 (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
 
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-data_model_path = os.path.join(dir_path, "dogs_cats_plot.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+
+MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
+if not os.path.exists(MODELS_DIR):
+    os.mkdir(MODELS_DIR)
+MODEL_FILE_PATH = os.path.join(MODELS_DIR, "dogs_cats_plot.h5")
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
 
 
 def model_fn(
@@ -283,14 +281,14 @@ model.fit(
     callbacks=[plateau_callback, es_callback],
     validation_data=(x_test, y_test),
 )
-model.save_weights(filepath=data_model_path)
+model.save_weights(filepath=MODEL_FILE_PATH)
 
-model.load_weights(filepath=data_model_path)
+model.load_weights(filepath=MODEL_FILE_PATH)
 score = model.evaluate(
     x_test,
     y_test,
     verbose=0,
     batch_size=batch_size)
-print("Test performance: ", score)
+print(f"Test performance: {score}")
 
 get_heatmap(img=x_test[12], model=model)

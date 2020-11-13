@@ -1,4 +1,3 @@
-import os
 import random
 
 import numpy as np
@@ -21,24 +20,6 @@ from mnistDataValidation import MNIST
 random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
-
-mnist = MNIST()
-mnist.data_augmentation(augment_size=5000)
-mnist.data_preprocessing(preprocess_mode="MinMax")
-x_train, y_train = mnist.get_train_set()
-x_test, y_test = mnist.get_test_set()
-num_classes = mnist.num_classes
-
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-mnist_model_path = os.path.join(dir_path, "mnist_model.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
-model_log_dir = os.path.join(log_dir, "modelMinMaxFinal")
 
 
 def model_fn(
@@ -86,40 +67,47 @@ def model_fn(
     return model
 
 
-epochs = 3
-batch_size = 128
-optimizer_candidates = [Adam, RMSprop]
-lr_candidates = [random.uniform(1e-4, 1e-3) for _ in range(100)]
+if __name__ == "__main__":
+    mnist = MNIST()
+    mnist.data_augmentation(augment_size=5_000)
+    mnist.data_preprocessing(preprocess_mode="MinMax")
+    x_train, y_train = mnist.get_train_set()
+    x_test, y_test = mnist.get_test_set()
+    num_classes = mnist.num_classes
 
-param_distributions = {
-    "optimizer": optimizer_candidates,
-    "learning_rate": lr_candidates,
-}
+    epochs = 3
+    batch_size = 128
+    optimizer_candidates = [Adam, RMSprop]
+    lr_candidates = [random.uniform(1e-4, 1e-3) for _ in range(100)]
 
-keras_clf = KerasClassifier(
-    build_fn=model_fn,
-    epochs=epochs,
-    batch_size=batch_size,
-    verbose=0
-)
+    param_distributions = {
+        "optimizer": optimizer_candidates,
+        "learning_rate": lr_candidates,
+    }
 
-rand_cv = RandomizedSearchCV(
-    estimator=keras_clf,
-    param_distributions=param_distributions,
-    n_iter=4,
-    n_jobs=1,
-    verbose=0,
-    cv=3,
-)
+    keras_clf = KerasClassifier(
+        build_fn=model_fn,
+        epochs=epochs,
+        batch_size=batch_size,
+        verbose=0
+    )
 
-rand_result = rand_cv.fit(x_train, y_train)
+    rand_cv = RandomizedSearchCV(
+        estimator=keras_clf,
+        param_distributions=param_distributions,
+        n_iter=4,
+        n_jobs=1,
+        verbose=0,
+        cv=3,
+    )
 
-# Summary
-print("Best: %f using %s" % (rand_result.best_score_, rand_result.best_params_))
+    rand_result = rand_cv.fit(x_train, y_train)
 
-means = rand_result.cv_results_["mean_test_score"]
-stds = rand_result.cv_results_["std_test_score"]
-params = rand_result.cv_results_["params"]
+    print(f"Best: {rand_result.best_score_} using {rand_result.best_params_}")
 
-for mean, std, param in zip(means, stds, params):
-    print("Acc: %f (+/- %f) with: %r" % (mean, std, param))
+    means = rand_result.cv_results_["mean_test_score"]
+    stds = rand_result.cv_results_["std_test_score"]
+    params = rand_result.cv_results_["params"]
+
+    for mean, std, param in zip(means, stds, params):
+        print(f"Acc: {mean} (+/- {std * 2}) with: {param}")

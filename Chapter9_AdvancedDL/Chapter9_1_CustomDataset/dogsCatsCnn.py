@@ -21,22 +21,17 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 data = DOGSCATS()
-data.data_augmentation(augment_size=5000)
+data.data_augmentation(augment_size=5_000)
 data.data_preprocessing(preprocess_mode="MinMax")
 (x_train_splitted, x_val, y_train_splitted, y_val) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
 
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-data_model_path = os.path.join(dir_path, "data_model.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
 
 
 def model_fn(
@@ -116,7 +111,7 @@ rand_model = model_fn(
     kernel_size_block3,
     dense_layer_size,
 )
-model_log_dir = os.path.join(log_dir, "modelCatsDogsStart")
+model_log_dir = os.path.join(LOGS_DIR, "modelCatsDogsStart")
 
 tb_callback = TensorBoard(
     log_dir=model_log_dir
@@ -138,4 +133,4 @@ score = rand_model.evaluate(
     verbose=0,
     batch_size=batch_size
 )
-print("Test performance: ", score)
+print(f"Test performance: {score}")

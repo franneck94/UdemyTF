@@ -23,22 +23,9 @@ random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
-data = BOSTON()
-data.data_preprocessing(preprocess_mode="MinMax")
-(x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
-x_train, y_train = data.get_train_set()
-x_test, y_test = data.get_test_set()
-num_targets = data.num_targets
-
-# Save Path
-dir_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
-if not os.path.exists(dir_path):
-    os.mkdir(dir_path)
-data_model_path = os.path.join(dir_path, "data_model.h5")
-# Log Dir
-log_dir = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
 
 
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
@@ -100,96 +87,98 @@ def model_fn(
     return model
 
 
-# Global params
-epochs = 2000
-batch_size = 256
+if __name__ == "__main__":
 
-params = {
-    "optimizer": Adam,
-    "learning_rate": 0.001,
-    "dense_layer_size1": 128,
-    "dense_layer_size2": 64,
-    # relu, elu, LeakyReLU
-    "activation_str": "relu",
-    # 0.05, 0.1, 0.2
-    "dropout_rate": 0.00,
-    # True, False
-    "use_bn": True,
-}
+    data = BOSTON()
+    data.data_preprocessing(preprocess_mode="MinMax")
+    (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+    x_train, y_train = data.get_train_set()
+    x_test, y_test = data.get_test_set()
+    num_targets = data.num_targets
+    # Global params
+    epochs = 2000
+    batch_size = 256
 
-rand_model = model_fn(**params)
+    params = {
+        "optimizer": Adam,
+        "learning_rate": 0.001,
+        "dense_layer_size1": 128,
+        "dense_layer_size2": 64,
+        # relu, elu, LeakyReLU
+        "activation_str": "relu",
+        # 0.05, 0.1, 0.2
+        "dropout_rate": 0.00,
+        # True, False
+        "use_bn": True,
+    }
 
+    rand_model = model_fn(**params)
 
-def schedule_fn(epoch: int) -> float:
-    learning_rate = 1e-3
-    if epoch < 5:
+    def schedule_fn(epoch: int) -> float:
         learning_rate = 1e-3
-    elif epoch < 20:
-        learning_rate = 5e-4
-    else:
-        learning_rate = 1e-4
-    return learning_rate
+        if epoch < 5:
+            learning_rate = 1e-3
+        elif epoch < 20:
+            learning_rate = 5e-4
+        else:
+            learning_rate = 1e-4
+        return learning_rate
 
+    def schedule_fn2(epoch: int) -> float:
+        threshold = 500
+        if epoch < threshold:
+            return 1e-3
+        else:
+            return 1e-3 * np.exp(0.005 * (threshold - epoch))
 
-def schedule_fn2(epoch: int) -> float:
-    threshold = 500
-    if epoch < threshold:
-        return 1e-3
-    else:
-        return 1e-3 * np.exp(0.005 * (threshold - epoch))
+    # Model 1: schedule_fn1
+    # Model 2: schedule_fn2
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1
+    )
 
+    # Model 3: factor=0.95
+    plateau_callback = ReduceLROnPlateau(
+        monitor='val_loss',
+        factor=0.98,
+        patience=50,
+        verbose=1,
+        min_lr=1e-5
+    )
 
-# Model 1: schedule_fn1
-# Model 2: schedule_fn2
-lrs_callback = LearningRateScheduler(
-    schedule=schedule_fn2,
-    verbose=1
-)
+    es_callback = EarlyStopping(
+        monitor='val_loss',
+        patience=200,
+        verbose=1,
+        restore_best_weights=True
+    )
 
-# Model 3: factor=0.95
-plateau_callback = ReduceLROnPlateau(
-    monitor='val_loss',
-    factor=0.98,
-    patience=50,
-    verbose=1,
-    min_lr=1e-5
-)
+    class LRTensorBoard(TensorBoard):
+        def __init__(self, log_dir: str, **kwargs: dict) -> None:
+            super().__init__(log_dir=log_dir, **kwargs)
 
-es_callback = EarlyStopping(
-    monitor='val_loss',
-    patience=200,
-    verbose=1,
-    restore_best_weights=True
-)
+        def on_epoch_end(self, epoch: int, logs: dict) -> None:
+            logs.update({'learning_rate': self.model.optimizer.learning_rate})
+            super().on_epoch_end(epoch, logs)
 
+    model_log_dir = os.path.join(LOGS_DIR, "modelBostonFinal6")
+    tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
-class LRTensorBoard(TensorBoard):
-    def __init__(self, log_dir, **kwargs):
-        super().__init__(log_dir=log_dir, **kwargs)
+    rand_model.fit(
+        x=x_train,
+        y=y_train,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[tb_callback, lrs_callback, es_callback],
+        validation_data=(x_test, y_test),
+    )
 
-    def on_epoch_end(self, epoch, logs=None):
-        logs.update({'learning_rate': self.model.optimizer.learning_rate})
-        super().on_epoch_end(epoch, logs)
-
-
-model_log_dir = os.path.join(log_dir, "modelBostonFinal6")
-tb_callback = LRTensorBoard(log_dir=model_log_dir)
-
-rand_model.fit(
-    x=x_train,
-    y=y_train,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[tb_callback, lrs_callback, es_callback],
-    validation_data=(x_test, y_test),
-)
-
-
-score = rand_model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size
-)
-print("Test performance: ", score)
+    score = rand_model.evaluate(
+        x_test,
+        y_test,
+        verbose=0,
+        batch_size=batch_size
+    )
+    print(f"Test performance: {score}")

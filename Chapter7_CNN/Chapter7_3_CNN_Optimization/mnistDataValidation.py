@@ -1,4 +1,7 @@
+from typing import Tuple
+
 import numpy as np
+from sklearn.base import TransformerMixin
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
@@ -8,13 +11,13 @@ from tensorflow.keras.utils import to_categorical
 
 
 class MNIST:
-    def __init__(self):
+    def __init__(self) -> None:
         # Load the data set
         (self.x_train, self.y_train), (self.x_test, self.y_test) = mnist.load_data()
-        self.x_train_ = None
-        self.x_val = None
-        self.y_train_ = None
-        self.y_val = None
+        self.x_train_: np.ndarray = None
+        self.x_val: np.ndarray = None
+        self.y_train_: np.ndarray = None
+        self.y_val: np.ndarray = None
         # Convert to float32
         self.x_train = self.x_train.astype(np.float32)
         self.y_train = self.y_train.astype(np.float32)
@@ -36,15 +39,15 @@ class MNIST:
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
         # Addtional class attributes
-        self.scaler = None
+        self.scaler: TransformerMixin = None
 
-    def get_train_set(self):
+    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self):
+    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_splitted_train_validation_set(self):
+    def get_splitted_train_validation_set(self) -> tuple:
         self.x_train_, self.x_val, self.y_train_, self.y_val = train_test_split(
             self.x_train, self.y_train, test_size=0.33
         )
@@ -52,7 +55,7 @@ class MNIST:
         self.train_splitted_size = self.x_train_.shape[0]
         return self.x_train_, self.x_val, self.y_train_, self.y_val
 
-    def data_augmentation(self, augment_size=5000):
+    def data_augmentation(self, augment_size: int = 5_000) -> None:
         # Create an instance of the image data generator class
         image_generator = ImageDataGenerator(
             rotation_range=10,
@@ -76,7 +79,7 @@ class MNIST:
         self.y_train = np.concatenate((self.y_train, y_augmented))
         self.train_size = self.x_train.shape[0]
 
-    def data_preprocessing(self, preprocess_mode="standard"):
+    def data_preprocessing(self, preprocess_mode: str = "standard") -> None:
         # Preprocess the data
         if preprocess_mode == "standard":
             self.scaler = StandardScaler()

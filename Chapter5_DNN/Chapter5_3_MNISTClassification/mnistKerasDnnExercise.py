@@ -5,11 +5,10 @@ from tensorflow.keras.initializers import TruncatedNormal
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 
-def prepare_dataset(num_features: int, num_targets: int):
+def prepare_dataset(num_features: int, num_targets: int) -> tuple:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     x_train = x_train.reshape(-1, num_features).astype(np.float32)

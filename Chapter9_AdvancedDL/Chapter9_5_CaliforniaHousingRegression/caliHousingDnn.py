@@ -7,13 +7,6 @@ from tensorflow.keras.optimizers import Adam
 from caliHousingData import CALIHOUSING
 
 
-cali_data = CALIHOUSING()
-x_train, y_train = cali_data.x_train, cali_data.y_train
-x_test, y_test = cali_data.x_test, cali_data.y_test
-num_features = cali_data.num_features
-num_targets = cali_data.num_targets
-
-
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     error = tf.math.subtract(y_true, y_pred)
     squared_error = tf.math.square(error)
@@ -27,41 +20,47 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     return r2_clipped
 
 
-# Model params
-learning_rate = 0.001
-optimizer = Adam(learning_rate=learning_rate)
-epochs = 200
-batch_size = 256
+if __name__ == "__main__":
+    cali_data = CALIHOUSING()
+    x_train, y_train = cali_data.x_train, cali_data.y_train
+    x_test, y_test = cali_data.x_test, cali_data.y_test
+    num_features = cali_data.num_features
+    num_targets = cali_data.num_targets
+    # Model params
+    learning_rate = 0.001
+    optimizer = Adam(learning_rate=learning_rate)
+    epochs = 200
+    batch_size = 256
 
-model = Sequential()
+    model = Sequential()
 
-model.add(Dense(units=16, input_shape=(num_features,)))
-model.add(Activation("relu"))
-model.add(Dense(units=64))
-model.add(Activation("relu"))
-model.add(Dense(units=16))
-model.add(Activation("relu"))
-model.add(Dense(units=num_targets))
+    model.add(Dense(units=16, input_shape=(num_features,)))
+    model.add(Activation("relu"))
+    model.add(Dense(units=64))
+    model.add(Activation("relu"))
+    model.add(Dense(units=16))
+    model.add(Activation("relu"))
+    model.add(Dense(units=num_targets))
 
-model.summary()
+    model.summary()
 
-model.compile(
-    loss="mse",
-    optimizer=optimizer,
-    metrics=[r_squared]
-)
+    model.compile(
+        loss="mse",
+        optimizer=optimizer,
+        metrics=[r_squared]
+    )
 
-model.fit(
-    x=x_train,
-    y=y_train,
-    epochs=epochs,
-    batch_size=batch_size,
-    validation_data=(x_test, y_test),
-)
+    model.fit(
+        x=x_train,
+        y=y_train,
+        epochs=epochs,
+        batch_size=batch_size,
+        validation_data=(x_test, y_test),
+    )
 
-score = model.evaluate(
-    x=x_test,
-    y=y_test,
-    verbose=0
-)
-print("Score: ", score)
+    score = model.evaluate(
+        x=x_test,
+        y=y_test,
+        verbose=0
+    )
+    print(f"Score: {score}")

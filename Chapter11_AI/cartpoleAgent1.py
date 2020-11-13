@@ -8,25 +8,25 @@ from tensorflow.keras.utils import to_categorical
 
 
 class Agent:
-    def __init__(self, env):
+    def __init__(self, env: gym.Env):
         pass
 
-    def build_model(self):
+    def build_model(self) -> Sequential:
         pass
 
-    def get_action(self, state):
+    def get_action(self, state: np.ndarray) -> int:
         pass
 
     def get_sample(self, num_episodes):
         pass
 
-    def filter_episodes(self, rewards, episodes, percentile):
+    def filter_episodes(self, rewards: list, episodes: list, percentile: float) -> tuple:
         pass
 
-    def train(self, percentile, num_iterations, num_episodes):
+    def train(self, percentile: float, num_iterations: int, num_episodes: int) -> None:
         pass
 
-    def play(self, num_episodes, render=True):
+    def play(self, num_episodes: int, render: bool = True) -> None:
         pass
 
 

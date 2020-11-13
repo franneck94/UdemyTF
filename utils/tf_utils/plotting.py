@@ -1,9 +1,13 @@
+"""PLotting helper functions.
+"""
+
 import io
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+from numpy.lib.arraysetops import isin
 from sklearn.metrics import confusion_matrix
 
 
@@ -24,10 +28,13 @@ def display_digit(
     """
     if image.shape == (784,):
         image = image.reshape((28, 28))
-    label = np.argmax(label, axis=0)
+    if isinstance(label, np.ndarray):
+        label = np.argmax(label)
     if pred_label is None and label is not None:
         plt.title(f'Label: {label}')
     elif label is not None:
+        if isinstance(pred_label, np.ndarray):
+            pred_label = np.argmax(pred_label)
         plt.title(f'Label: {label}, Pred: {pred_label}')
     plt.imshow(image, cmap=plt.get_cmap('gray_r'))
     plt.show()
