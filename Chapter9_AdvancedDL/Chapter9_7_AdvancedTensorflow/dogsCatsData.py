@@ -34,6 +34,7 @@ def build_preprocessing() -> tf.keras.Sequential:
             offset=-1.0
         )
     )
+
     return model
 
 
@@ -64,6 +65,9 @@ def build_data_augmentation() -> tf.keras.Sequential:
             width_factor=0.0625  # 10 pixel
         )
     )
+
+    model.summary()
+
     return model
 
 

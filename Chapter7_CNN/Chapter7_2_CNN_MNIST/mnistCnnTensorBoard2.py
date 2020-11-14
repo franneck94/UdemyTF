@@ -83,7 +83,7 @@ if __name__ == "__main__":
     model.fit(
         x=x_train,
         y=y_train,
-        epochs=20,
+        epochs=40,
         batch_size=128,
         verbose=1,
         validation_data=(x_test, y_test),

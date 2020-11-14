@@ -19,7 +19,6 @@ from tensorflow.keras.optimizers import Adam
 from bostonData import BOSTON
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -41,7 +40,7 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     return r2_clipped
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     dense_layer_size1: int,
@@ -112,7 +111,7 @@ if __name__ == "__main__":
         "use_bn": True,
     }
 
-    rand_model = model_fn(**params)
+    rand_model = build_model(**params)
 
     def schedule_fn(epoch: int) -> float:
         learning_rate = 1e-3

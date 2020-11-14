@@ -20,7 +20,6 @@ from tensorflow.keras.optimizers import Adam
 from dogsCatsData import DOGSCATS
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -29,7 +28,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -265,7 +264,7 @@ if __name__ == "__main__":
         "use_bn": True,
     }
 
-    rand_model = model_fn(**params)
+    rand_model = build_model(**params)
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,

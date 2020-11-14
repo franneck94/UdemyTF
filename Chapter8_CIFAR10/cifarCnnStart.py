@@ -14,7 +14,6 @@ from tensorflow.keras.models import Model
 from cifar10Data import CIFAR10
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -24,7 +23,7 @@ if not os.path.exists(LOGS_DIR):
 model_log_dir = os.path.join(LOGS_DIR, "modelCifarStart")
 
 
-def model_fn() -> Model:
+def build_model() -> Model:
     input_img = Input(shape=x_train.shape[1:])
     y_pred = Activation("softmax")(input_img)
 

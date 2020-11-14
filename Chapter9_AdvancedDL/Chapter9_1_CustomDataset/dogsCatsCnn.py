@@ -16,7 +16,6 @@ from tensorflow.keras.optimizers import Adam
 from dogsCatsData import DOGSCATS
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -34,7 +33,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -100,7 +99,7 @@ filter_block3 = 128
 kernel_size_block3 = 3
 dense_layer_size = 512
 
-rand_model = model_fn(
+rand_model = build_model(
     optimizer,
     learning_rate,
     filter_block1,

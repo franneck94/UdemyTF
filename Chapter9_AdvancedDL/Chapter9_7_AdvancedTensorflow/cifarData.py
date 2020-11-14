@@ -32,6 +32,7 @@ def build_preprocessing() -> tf.keras.Sequential:
             offset=-1.0
         )
     )
+
     return model
 
 
@@ -47,7 +48,7 @@ def build_data_augmentation() -> tf.keras.Sequential:
     model = tf.keras.Sequential()
     model.add(
         tf.keras.layers.experimental.preprocessing.RandomRotation(
-            factor=0.0625  # 10 pixels
+            factor=0.0625,  # 10 pixel
         )
     )
     model.add(
@@ -62,6 +63,9 @@ def build_data_augmentation() -> tf.keras.Sequential:
             width_factor=0.0625  # 10 pixels
         )
     )
+
+    model.summary()
+
     return model
 
 
@@ -116,14 +120,8 @@ def get_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
         (train_dataset, validation_dataset, test_dataset)
     """
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    y_train = tf.keras.utils.to_categorical(
-        y=y_train,
-        num_classes=NUM_CLASSES
-    )
-    y_test = tf.keras.utils.to_categorical(
-        y=y_test,
-        num_classes=NUM_CLASSES
-    )
+    y_train = tf.keras.utils.to_categorical(y=y_train, num_classes=NUM_CLASSES)
+    y_test = tf.keras.utils.to_categorical(y=y_test, num_classes=NUM_CLASSES)
 
     validation_size = x_train.shape[0] // 5
     train_dataset = tf.data.Dataset.from_tensor_slices(

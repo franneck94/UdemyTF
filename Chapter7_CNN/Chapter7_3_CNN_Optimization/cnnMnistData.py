@@ -8,9 +8,7 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 
-from mnistDataAdvanced import IMG_SHAPE
-from mnistDataAdvanced import NUM_CLASSES
-from mnistDataAdvanced import get_dataset
+from mnistData import MNIST
 
 
 def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
@@ -44,31 +42,32 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     return model
 
 
-def train_and_evaluate_model(model: Model) -> None:
-    """Train and test the transfer learning model
+if __name__ == "__main__":
+    data = MNIST()
+    x_train, y_train = data.get_train_set()
+    x_test, y_test = data.get_test_set()
 
-    Parameters
-    ----------
-    model : Model
-        The transfer learning model
-    """
+    img_shape = data.img_shape
+    num_classes = data.num_classes
+
+    model = build_model(img_shape, num_classes)
+
     model.compile(
         loss="categorical_crossentropy",
         optimizer="Adam",
         metrics=["accuracy"]
     )
-    train_dataset, test_dataset = get_dataset()
+
     model.fit(
-        train_dataset,
-        epochs=20,
-        validation_data=test_dataset
-    )
-    model.evaluate(
-        test_dataset
+        x=x_train / 255.0,
+        y=y_train,
+        epochs=3,
+        validation_data=(x_test, y_test)
     )
 
+    scores = model.evaluate(
+        x=x_test / 255.0,
+        y=y_test
+    )
 
-if __name__ == "__main__":
-    model = build_model(IMG_SHAPE, NUM_CLASSES)
-
-    train_and_evaluate_model(model)
+    print(f"Scores: {scores}")

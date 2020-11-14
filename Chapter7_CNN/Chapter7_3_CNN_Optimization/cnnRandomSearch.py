@@ -17,12 +17,11 @@ from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from mnistData import MNIST
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float
 ) -> Model:
@@ -68,12 +67,12 @@ def model_fn(
 
 
 if __name__ == "__main__":
-    mnist = MNIST()
-    mnist.data_augmentation(augment_size=5_000)
-    mnist.data_preprocessing(preprocess_mode="MinMax")
-    x_train, y_train = mnist.get_train_set()
-    x_test, y_test = mnist.get_test_set()
-    num_classes = mnist.num_classes
+    data = MNIST()
+    x_train, y_train = data.get_train_set()
+    x_test, y_test = data.get_test_set()
+
+    img_shape = data.img_shape
+    num_classes = data.num_classes
 
     epochs = 3
     batch_size = 128
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     }
 
     keras_clf = KerasClassifier(
-        build_fn=model_fn,
+        build_fn=build_model,
         epochs=epochs,
         batch_size=batch_size,
         verbose=0
@@ -101,7 +100,10 @@ if __name__ == "__main__":
         cv=3,
     )
 
-    rand_result = rand_cv.fit(x_train, y_train)
+    rand_result = rand_cv.fit(
+        X=x_train,
+        y=y_train
+    )
 
     print(f"Best: {rand_result.best_score_} using {rand_result.best_params_}")
 

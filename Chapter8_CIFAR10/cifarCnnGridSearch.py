@@ -19,7 +19,6 @@ from tensorflow.keras.optimizers import RMSprop
 from cifar10Data import CIFAR10
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -28,7 +27,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -124,7 +123,7 @@ if __name__ == "__main__":
     print(f"Parameter combinations in total: {len(grid)}")
     for idx, comb in enumerate(grid):
         print(f"Running comb {idx}")
-        curr_model = model_fn(**comb)
+        curr_model = build_model(**comb)
 
         model_log_dir = os.path.join(LOGS_DIR, f"modelGrid{idx}")
         if os.path.exists(model_log_dir):

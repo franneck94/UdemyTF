@@ -15,7 +15,7 @@ from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from mnistData import MNIST
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float
 ) -> Model:
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         print(comb)
 
     keras_clf = KerasClassifier(
-        build_fn=model_fn,
+        build_fn=build_model,
         epochs=epochs,
         batch_size=batch_size,
         verbose=0

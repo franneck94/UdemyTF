@@ -23,6 +23,7 @@ class MNIST:
         self.width = self.x_train.shape[1]
         self.height = self.x_train.shape[2]
         self.depth = self.x_train.shape[3]
+        self.img_shape = (self.width, self.height, self.depth)
         self.num_classes = 10
         # Reshape the y data to one hot encoding
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)

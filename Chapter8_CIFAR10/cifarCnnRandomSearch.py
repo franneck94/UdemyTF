@@ -18,7 +18,6 @@ from tensorflow.keras.optimizers import Adam
 from cifar10Data import CIFAR10
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -28,7 +27,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -126,7 +125,7 @@ if __name__ == "__main__":
     for idx in range(n_models):
         comb = next(rand_search)
         print(f"Running comb {idx}")
-        curr_model = model_fn(**comb)
+        curr_model = build_model(**comb)
 
         model_log_dir = os.path.join(LOGS_DIR, "modelRand%d" % idx)
         if os.path.exists(model_log_dir):

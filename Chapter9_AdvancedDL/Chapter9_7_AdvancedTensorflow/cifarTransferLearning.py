@@ -5,7 +5,7 @@ from cifarData import NUM_CLASSES
 from cifarData import get_dataset
 
 
-def model_fn() -> tf.keras.Model:
+def build_model() -> tf.keras.Model:
     """Build the transfer learning model.
 
     Returns
@@ -66,5 +66,5 @@ def train_model(model: tf.keras.Model) -> None:
 
 if __name__ == "__main__":
     # Own model had accuracy of 0.85 on test set
-    model = model_fn()
+    model = build_model()
     train_model(model)

@@ -22,7 +22,6 @@ from dogsCatsData import DOGSCATS
 from tf_utils.plotting import get_occlusion
 
 
-random.seed(0)
 np.random.seed(0)
 tf.random.set_seed(0)
 
@@ -44,7 +43,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def model_fn(
+def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -255,7 +254,7 @@ params = {
     "use_additional_dense_layer": True,
 }
 
-model = model_fn(**params)
+model = build_model(**params)
 
 plateau_callback = ReduceLROnPlateau(
     monitor='val_accuracy',
