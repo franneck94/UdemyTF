@@ -14,21 +14,19 @@ from mnistDataAdvanced import MNIST
 def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     input_img = Input(shape=img_shape)
 
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(input_img)
+    x = Conv2D(filters=32, kernel_size=3, padding="same")(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=32, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=64, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=64, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
-    x = Dense(units=128)(x)
-    x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     y_pred = Activation("softmax")(x)
 
@@ -45,6 +43,7 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
 if __name__ == "__main__":
     data = MNIST()
     train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
     test_dataset = data.get_test_set()
 
     img_shape = data.img_shape
@@ -61,7 +60,7 @@ if __name__ == "__main__":
     model.fit(
         train_dataset,
         epochs=3,
-        validation_data=test_dataset
+        validation_data=val_dataset
     )
 
     scores = model.evaluate(

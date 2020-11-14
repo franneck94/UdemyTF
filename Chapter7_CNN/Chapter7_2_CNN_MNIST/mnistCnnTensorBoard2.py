@@ -8,7 +8,7 @@ from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
@@ -41,13 +41,13 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Sequential
     model.add(Activation("relu"))
     model.add(Conv2D(filters=16, kernel_size=3, input_shape=img_shape))
     model.add(Activation("relu"))
-    model.add(MaxPooling2D())
+    model.add(MaxPool2D())
 
     model.add(Conv2D(filters=32, kernel_size=3))
     model.add(Activation("relu"))
     model.add(Conv2D(filters=32, kernel_size=3))
     model.add(Activation("relu"))
-    model.add(MaxPooling2D())
+    model.add(MaxPool2D())
 
     model.add(Flatten())
     model.add(Dense(units=128))

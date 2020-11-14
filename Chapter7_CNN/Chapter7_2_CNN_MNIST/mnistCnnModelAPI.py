@@ -9,7 +9,7 @@ from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
-from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
@@ -42,13 +42,13 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     x = Activation("relu")(x)
     x = Conv2D(filters=32, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
-    x = MaxPooling2D()(x)
+    x = MaxPool2D()(x)
 
     x = Conv2D(filters=64, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
     x = Conv2D(filters=64, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
-    x = MaxPooling2D()(x)
+    x = MaxPool2D()(x)
 
     x = Flatten()(x)
     x = Dense(units=num_classes)(x)
