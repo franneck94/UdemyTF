@@ -39,7 +39,7 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Sequential
 
     model.add(Conv2D(filters=32, kernel_size=3, padding="same", input_shape=img_shape))
     model.add(Activation("relu"))
-    model.add(Conv2D(filters=32, kernel_size=3, padding="same", input_shape=img_shape))
+    model.add(Conv2D(filters=32, kernel_size=3, padding="same"))
     model.add(Activation("relu"))
     model.add(MaxPooling2D())
 
