@@ -1,7 +1,6 @@
 import os
 from typing import Tuple
 
-import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
@@ -50,30 +49,10 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     return model
 
 
-def plot_filters(model: Model) -> None:
-    first_conv_layer = model.layers[1]
-    layer_weights = first_conv_layer.get_weights()
-    kernels = layer_weights[0]
-
-    num_filters = kernels.shape[3]
-    subplot_grid = (num_filters // 4, 4)
-
-    fig, ax = plt.subplots(subplot_grid[0], subplot_grid[1], figsize=(20, 20))
-    ax = ax.reshape(num_filters)
-
-    for filter_idx in range(num_filters):
-        ax[filter_idx].imshow(kernels[:, :, 0, filter_idx], cmap="gray")
-
-    ax = ax.reshape(subplot_grid)
-    fig.subplots_adjust(hspace=0.5)
-    plt.show()
-
-
 if __name__ == "__main__":
     data = MNIST(with_normalization=False)
 
-    x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
+    x_train_, x_val_, y_train_, y_val_ = data.get_splitted_train_validation_set()
 
     model = build_model(data.img_shape, data.num_classes)
 
@@ -89,18 +68,11 @@ if __name__ == "__main__":
     )
 
     model.fit(
-        x=x_train,
-        y=y_train,
+        x=x_train_,
+        y=y_train_,
         epochs=40,
         batch_size=128,
         verbose=1,
-        validation_data=(x_test, y_test),
+        validation_data=(x_val_, y_val_),
         callbacks=[tb_callback]
     )
-
-    scores = model.evaluate(
-        x=x_test,
-        y=y_test,
-        verbose=0
-    )
-    print(scores)

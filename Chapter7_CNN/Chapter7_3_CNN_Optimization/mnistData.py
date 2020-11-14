@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import numpy as np
+from sklearn.model_selection import train_test_split
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import to_categorical
@@ -9,6 +10,12 @@ from tensorflow.keras.utils import to_categorical
 class MNIST:
     def __init__(self, with_normalization: bool = True) -> None:
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
+        self.x_train_: np.ndarray = None
+        self.y_train_: np.ndarray = None
+        self.x_val_: np.ndarray = None
+        self.y_val_: np.ndarray = None
+        self.val_size = 0
+        self.train_splitted_size = 0
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
         self.x_train = np.expand_dims(x_train, axis=-1)
@@ -35,6 +42,16 @@ class MNIST:
 
     def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
+
+    def get_splitted_train_validation_set(self, validation_size: float = 0.33) -> tuple:
+        self.x_train_, self.x_val_, self.y_train_, self.y_val_ = train_test_split(
+            self.x_train,
+            self.y_train,
+            test_size=validation_size
+        )
+        self.val_size = self.x_val_.shape[0]
+        self.train_splitted_size = self.x_train_.shape[0]
+        return self.x_train_, self.x_val_, self.y_train_, self.y_val_
 
     def data_augmentation(self, augment_size: int = 5_000) -> None:
         image_generator = ImageDataGenerator(

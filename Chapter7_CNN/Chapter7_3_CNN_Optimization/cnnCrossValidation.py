@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import cross_val_score
@@ -13,19 +11,25 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-from mnistDataAdvanced import MNIST
+from mnistData import MNIST
 
 
 np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
-    input_img = Input(shape=img_shape)
+def build_model() -> Model:
+    input_img = Input(shape=(28, 28, 1))
 
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(input_img)
+    x = Conv2D(filters=16, kernel_size=3, padding='same')(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=16, kernel_size=3, padding='same')(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(filters=32, kernel_size=3, padding='same')(x)
+    x = Activation("relu")(x)
+    x = Conv2D(filters=32, kernel_size=3, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
@@ -38,7 +42,7 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     x = Flatten()(x)
     x = Dense(units=128)(x)
     x = Activation("relu")(x)
-    x = Dense(units=num_classes)(x)
+    x = Dense(units=10)(x)
     y_pred = Activation("softmax")(x)
 
     model = Model(
@@ -46,31 +50,25 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
         outputs=[y_pred]
     )
 
-    model.summary()
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer="Adam",
+        metrics=["accuracy"]
+    )
 
     return model
 
 
 if __name__ == "__main__":
-    data = MNIST()
+    data = MNIST(with_normalization=True)
+
     x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    # Model params
-    learning_rate = 0.001
-    optimizer = Adam(learning_rate=learning_rate)
-    epochs = 3
-    batch_size = 128
     keras_clf = KerasClassifier(
         build_fn=build_model,
-        img_shape=img_shape,
-        num_classes=num_classes,
-        epochs=epochs,
-        batch_size=batch_size,
-        verbose=0
+        epochs=10,
+        batch_size=128,
+        verbose=1
     )
 
     scores = cross_val_score(
