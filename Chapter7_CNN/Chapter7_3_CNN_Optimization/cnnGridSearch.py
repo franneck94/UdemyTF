@@ -12,7 +12,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
-from mnistDataValidation import MNIST
+from mnistData import MNIST
 
 
 def model_fn(

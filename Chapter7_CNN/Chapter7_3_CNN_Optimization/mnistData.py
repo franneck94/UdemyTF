@@ -27,28 +27,9 @@ class MNIST:
         # Reshape the y data to one hot encoding
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
-        # # MinMaxScaler [0, 255] => [0.0, 1.0]
-        # max_value = np.max(self.x_train)
-        # self.x_train = self.x_train / max_value
-        # self.x_test = self.x_test / max_value
-        # # StandardScaler [0, 255] => mean=0, std=1
-        # mean = np.mean(self.x_train)
-        # std = np.std(self.x_train)
-        # self.x_train = (self.x_train - mean) / std
-        # self.x_test = (self.x_test - mean) / std
 
     def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
     def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
-
-
-if __name__ == "__main__":
-    data = MNIST()
-
-    x_train, y_train = data.get_train_set()
-    print(np.max(x_train))
-    print(np.min(x_train))
-    print(np.mean(x_train))
-    print(np.std(x_train))
