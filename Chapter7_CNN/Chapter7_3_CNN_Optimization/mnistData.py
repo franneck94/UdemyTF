@@ -7,7 +7,7 @@ from tensorflow.keras.utils import to_categorical
 
 
 class MNIST:
-    def __init__(self, with_normalization: bool = True):
+    def __init__(self, with_normalization: bool = True) -> None:
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)

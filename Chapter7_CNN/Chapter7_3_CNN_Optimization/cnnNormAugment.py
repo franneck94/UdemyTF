@@ -2,6 +2,7 @@ import os
 from typing import Tuple
 
 import matplotlib.pyplot as plt
+from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
@@ -12,6 +13,12 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from mnistData import MNIST
+
+
+LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
+MODEL_LOG_DIR = os.path.join(LOGS_DIR, "cnn_norm_augment")
 
 
 def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
@@ -63,7 +70,7 @@ def plot_filters(model: Model) -> None:
 
 
 if __name__ == "__main__":
-    data = MNIST(with_normalization=False)
+    data = MNIST()
 
     x_train, y_train = data.get_train_set()
     x_test, y_test = data.get_test_set()
@@ -76,13 +83,19 @@ if __name__ == "__main__":
         metrics=["accuracy"]
     )
 
+    tb_callback = TensorBoard(
+        log_dir=MODEL_LOG_DIR,
+        write_graph=True
+    )
+
     model.fit(
         x=x_train,
         y=y_train,
-        epochs=10,
+        epochs=40,
         batch_size=128,
         verbose=1,
-        validation_data=(x_test, y_test)
+        validation_data=(x_test, y_test),
+        callbacks=[tb_callback]
     )
 
     scores = model.evaluate(
