@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from bostonData import BOSTON
+from tf_utils.bostonData import BOSTON
 
 
 if __name__ == "__main__":

@@ -57,7 +57,7 @@ def build_model(
     use_additional_dense_layer: bool
 ) -> Model:
     # Input
-    input_img = Input(shape=x_train.shape[1:])
+    input_img = Input(shape=img_shape)
     # Conv Block 1
     x = Conv2D(
         filters=filter_block1,
@@ -219,70 +219,85 @@ def build_model(
     return model
 
 
-# Global params
-epochs = 10
-batch_size = 256
+if __name__ == "__main__":
+    data = DOGSCATS()
 
-params = {
-    "optimizer": Adam,
-    "learning_rate": 0.001,
-    "filter_block1": 32,
-    "kernel_size_block1": 3,
-    "filter_block2": 64,
-    "kernel_size_block2": 3,
-    "filter_block3": 128,
-    "kernel_size_block3": 3,
-    "dense_layer_size": 1024,
-    # GlorotUniform, GlorotNormal, RandomNormal
-    # RandomUniform, VarianceScaling
-    "kernel_initializer": 'GlorotUniform',
-    "bias_initializer": 'zeros',
-    # relu, elu, LeakyReLU
-    "activation_str": "relu",
-    # 0.05, 0.1, 0.2
-    "dropout_rate": 0.00,
-    # True, False
-    "use_bn": True,
-    # True, False
-    "use_global_pooling": True,
-    # True, False
-    "use_additional_dense_layer": True,
-}
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
 
-model = build_model(**params)
+    img_shape = data.img_shape
+    num_classes = data.num_classes
 
-plateau_callback = ReduceLROnPlateau(
-    monitor='val_accuracy',
-    factor=0.95,
-    patience=2,
-    verbose=1,
-    min_lr=1e-5
-)
+    # Global params
+    epochs = 10
+    batch_size = 256
 
-es_callback = EarlyStopping(
-    monitor='val_accuracy',
-    patience=15,
-    verbose=1,
-    restore_best_weights=True
-)
+    params = {
+        "optimizer": Adam,
+        "learning_rate": 0.001,
+        "filter_block1": 32,
+        "kernel_size_block1": 3,
+        "filter_block2": 64,
+        "kernel_size_block2": 3,
+        "filter_block3": 128,
+        "kernel_size_block3": 3,
+        "dense_layer_size": 1024,
+        # GlorotUniform, GlorotNormal, RandomNormal
+        # RandomUniform, VarianceScaling
+        "kernel_initializer": 'GlorotUniform',
+        "bias_initializer": 'zeros',
+        # relu, elu, LeakyReLU
+        "activation_str": "relu",
+        # 0.05, 0.1, 0.2
+        "dropout_rate": 0.00,
+        # True, False
+        "use_bn": True,
+        # True, False
+        "use_global_pooling": True,
+        # True, False
+        "use_additional_dense_layer": True,
+    }
 
-model.fit(
-    x=x_train,
-    y=y_train,
-    verbose=1,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[plateau_callback, es_callback],
-    validation_data=(x_test, y_test),
-)
-model.save_weights(filepath=MODEL_FILE_PATH)
+    model = build_model(
+        img_shape,
+        num_classes,
+        **params
+    )
 
-model.load_weights(filepath=MODEL_FILE_PATH)
-score = model.evaluate(
-    x_test,
-    y_test,
-    verbose=0,
-    batch_size=batch_size)
-print(f"Test performance: {score}")
+    plateau_callback = ReduceLROnPlateau(
+        monitor='val_accuracy',
+        factor=0.95,
+        patience=2,
+        verbose=1,
+        min_lr=1e-5
+    )
 
-get_heatmap(img=x_test[12], model=model)
+    es_callback = EarlyStopping(
+        monitor='val_accuracy',
+        patience=15,
+        verbose=1,
+        restore_best_weights=True
+    )
+
+    # model.fit(
+    #     train_dataset,
+    #     verbose=1,
+    #     batch_size=batch_size,
+    #     epochs=epochs,
+    #     callbacks=[plateau_callback, es_callback],
+    #     validation_data=val_dataset
+    # )
+    # model.save_weights(filepath=MODEL_FILE_PATH)
+
+    model.load_weights(filepath=MODEL_FILE_PATH)
+    score = model.evaluate(
+        val_dataset,
+        verbose=0,
+        batch_size=batch_size)
+    print(f"Test performance: {score}")
+
+    data_tuple = test_dataset.take(1).as_numpy_iterator().next()
+    img = data_tuple[0][0]
+
+    get_heatmap(img=img, model=model)

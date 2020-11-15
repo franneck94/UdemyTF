@@ -28,6 +28,19 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
+def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
+    error = tf.math.subtract(y_true, y_pred)
+    squared_error = tf.math.square(error)
+    numerator = tf.math.reduce_sum(squared_error)
+    y_true_mean = tf.math.reduce_mean(y_true)
+    mean_deviation = tf.math.subtract(y_true, y_true_mean)
+    squared_mean_deviation = tf.math.square(mean_deviation)
+    denominator = tf.reduce_sum(squared_mean_deviation)
+    r2 = tf.math.subtract(1.0, tf.math.divide(numerator, denominator))
+    r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
+    return r2_clipped
+
+
 def build_model(
     num_features: int,
     num_targets: int,
@@ -75,7 +88,7 @@ def build_model(
     model.compile(
         loss="mse",
         optimizer=opt,
-        metrics=[]
+        metrics=[r_squared]
     )
     model.summary()
 

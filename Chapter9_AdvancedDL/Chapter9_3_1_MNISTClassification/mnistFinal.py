@@ -20,7 +20,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from tf_utils.mnistData import MNIST
+from tf_utils.mnistDataAdvanced import MNIST
 
 
 np.random.seed(0)
@@ -246,12 +246,11 @@ class LRTensorBoard(TensorBoard):
 
 
 if __name__ == "__main__":
-    data = MNIST(with_normalization=True)
-    data.data_augmentation(augment_size=10000)
+    data = MNIST()
 
-    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
-    x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
 
     img_shape = data.img_shape
     num_classes = data.num_classes
@@ -317,18 +316,16 @@ if __name__ == "__main__":
     tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
     model.fit(
-        x=x_train,
-        y=y_train,
+        train_dataset,
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
         callbacks=[tb_callback, lrs_callback, es_callback],
-        validation_data=(x_test, y_test),
+        validation_data=val_dataset
     )
 
     score = model.evaluate(
-        x_test,
-        y_test,
+        val_dataset,
         verbose=0,
         batch_size=batch_size
     )
