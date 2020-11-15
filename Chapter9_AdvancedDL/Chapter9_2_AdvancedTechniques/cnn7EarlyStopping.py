@@ -1,5 +1,5 @@
 import os
-import random
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -31,6 +31,8 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -47,7 +49,7 @@ def build_model(
     use_bn: bool
 ) -> Model:
     # Input
-    input_img = Input(shape=x_train.shape[1:])
+    input_img = Input(shape=img_shape)
     # Conv Block 1
     x = Conv2D(
         filters=filter_block1,
@@ -233,11 +235,12 @@ class LRTensorBoard(TensorBoard):
 
 if __name__ == "__main__":
     data = DOGSCATS()
-    data.data_augmentation(augment_size=5_000)
-    data.data_preprocessing(preprocess_mode="MinMax")
-    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
-    x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
+
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
+
+    img_shape = data.img_shape
     num_classes = data.num_classes
 
     # Global params
@@ -266,7 +269,11 @@ if __name__ == "__main__":
         "use_bn": True,
     }
 
-    rand_model = build_model(**params)
+    model = build_model(
+        img_shape,
+        num_classes,
+        **params
+    )
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
@@ -289,21 +296,24 @@ if __name__ == "__main__":
     )
 
     model_log_dir = os.path.join(LOGS_DIR, "modelPlateauES")
-    tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
-    rand_model.fit(
-        x=x_train_,
-        y=y_train_,
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0
+    )
+
+    model.fit(
+        train_dataset,
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
-        callbacks=[tb_callback, plateau_callback, es_callback],
-        validation_data=(x_val, y_val),
+        callbacks=[tb_callback],
+        validation_data=val_dataset,
     )
 
-    score = rand_model.evaluate(
-        x_test,
-        y_test,
+    score = model.evaluate(
+        val_dataset,
         verbose=0,
         batch_size=batch_size
     )

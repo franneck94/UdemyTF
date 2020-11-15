@@ -1,5 +1,4 @@
 import os
-import random
 from typing import Tuple
 
 import numpy as np
@@ -14,7 +13,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from dogsCatsDataAdvanced import DOGSCATS
+from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
 np.random.seed(0)
@@ -39,44 +38,45 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
 ) -> Model:
-    # Input
     input_img = Input(shape=img_shape)
-    # Conv Block 1
+
     x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(input_img)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Conv Block 2
+
     x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Conv Block 3
+
     x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Dense Part
+
     x = Flatten()(x)
     x = Dense(units=dense_layer_size)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     y_pred = Activation("softmax")(x)
 
-    # Build the model
     model = Model(
         inputs=[input_img],
         outputs=[y_pred]
     )
+
     opt = optimizer(learning_rate=learning_rate)
+
     model.compile(
         loss="categorical_crossentropy",
         optimizer=opt,
         metrics=["accuracy"]
     )
+
     return model
 
 
@@ -91,20 +91,21 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 20
+    epochs = 30
     batch_size = 256
 
+    # Best model params
     optimizer = Adam
-    learning_rate = 0.001
+    learning_rate = 1e-3
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
-    filter_block3 = 128
-    kernel_size_block3 = 3
+    filter_block3 = 7
+    kernel_size_block3 = 64
     dense_layer_size = 512
 
-    rand_model = build_model(
+    model = build_model(
         img_shape,
         num_classes,
         optimizer,
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         kernel_size_block3,
         dense_layer_size,
     )
-    model_log_dir = os.path.join(LOGS_DIR, "modelCatsDogsStart")
+    model_log_dir = os.path.join(LOGS_DIR, "modelBest")
 
     tb_callback = TensorBoard(
         log_dir=model_log_dir,
@@ -125,7 +126,7 @@ if __name__ == "__main__":
         profile_batch=0
     )
 
-    rand_model.fit(
+    model.fit(
         train_dataset,
         verbose=1,
         batch_size=batch_size,
@@ -133,10 +134,9 @@ if __name__ == "__main__":
         callbacks=[tb_callback],
         validation_data=val_dataset,
     )
-
-    score = rand_model.evaluate(
+    score = model.evaluate(
         test_dataset,
         verbose=0,
         batch_size=batch_size
     )
-    print(f"Test performance: {score}")
+    print(f"Test performance best model: {score}")

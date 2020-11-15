@@ -5,9 +5,6 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.datasets import boston_housing
 
 
-np.random.seed(0)
-
-
 class BOSTON:
     def __init__(self, with_normalization: bool = True) -> None:
         (self.x_train, self.y_train), (self.x_test, self.y_test) = boston_housing.load_data()
@@ -23,9 +20,7 @@ class BOSTON:
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]
-        self.width = self.x_train.shape[1]
-        self.height = self.x_train.shape[2]
-        self.depth = self.x_train.shape[3]
+        self.num_features = self.x_train.shape[1]
         self.num_targets = 1
         # Preprocess y data
         self.y_train = np.reshape(self.y_train, (-1, 1))

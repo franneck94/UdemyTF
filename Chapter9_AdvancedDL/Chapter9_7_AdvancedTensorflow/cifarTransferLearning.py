@@ -6,9 +6,9 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from cifarData import IMG_SHAPE
-from cifarData import NUM_CLASSES
-from cifarData import Cifar10Data
+from tf_utils.cifarDataAdvanced import CIFAR10
+from tf_utils.cifarDataAdvanced import IMG_SHAPE
+from tf_utils.cifarDataAdvanced import NUM_CLASSES
 
 
 def build_model() -> Model:
@@ -42,7 +42,7 @@ def build_model() -> Model:
 
 if __name__ == "__main__":
     # Own model had accuracy of 0.85 on test set
-    data = Cifar10Data()
+    data = CIFAR10()
 
     train_dataset = data.get_train_set()
     test_dataset = data.get_test_set()

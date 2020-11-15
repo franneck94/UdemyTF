@@ -1,5 +1,5 @@
 import os
-import random
+from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,6 +27,7 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
+CUSTOM_IMAGE_PATH = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats/custom/")
 MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(MODELS_DIR):
     os.mkdir(MODELS_DIR)
@@ -37,6 +38,8 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -55,7 +58,7 @@ def build_model(
     use_additional_dense_layer: bool
 ) -> Model:
     # Input
-    input_img = Input(shape=x_train.shape[1:])
+    input_img = Input(shape=img_shape)
     # Conv Block 1
     x = Conv2D(
         filters=filter_block1,
@@ -237,11 +240,12 @@ def schedule_fn2(epoch: int) -> float:
 
 if __name__ == "__main__":
     data = DOGSCATS()
-    data.data_augmentation(augment_size=5_000)
-    data.data_preprocessing(preprocess_mode="MinMax")
-    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
-    x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
+
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
+
+    img_shape = data.img_shape
     num_classes = data.num_classes
 
     # Global params
@@ -274,7 +278,11 @@ if __name__ == "__main__":
         "use_additional_dense_layer": True,
     }
 
-    model = build_model(**params)
+    model = build_model(
+        img_shape,
+        num_classes,
+        **params
+    )
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
@@ -297,18 +305,20 @@ if __name__ == "__main__":
     )
 
     # model.fit(
-    #     x=x_train,
-    #     y=y_train,
+    #     train_dataset,
     #     verbose=1,
     #     batch_size=batch_size,
     #     epochs=epochs,
-    #     callbacks=[plateau_callback, es_callback],
-    #     validation_data=(x_test, y_test))
+    #     callbacks=[lrs_callback, plateau_callback, es_callback],
+    #     validation_data=val_dataset,
+    # )
+
     # model.save_weights(MODEL_FILE_PATH)
     model.load_weights(MODEL_FILE_PATH)
 
-    images_path = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats/custom/")
-    image_names = [f for f in os.listdir(images_path) if '.jpg' in f]
+    images_path = os.path.abspath(CUSTOM_IMAGE_PATH)
+    image_names = [f for f in os.listdir(images_path) if '.jpg' in f or '.jpeg' in f or '.png' in f]
+    class_names = ["cat", "dog"]
 
     for image_name in image_names:
         image_path = os.path.join(images_path, image_name)
@@ -317,5 +327,5 @@ if __name__ == "__main__":
         y_pred_class = np.argmax(y_pred)
         y_pred_prob = y_pred[y_pred_class]
         plt.imshow(x)
-        plt.title("Predicted class: %s, Prob: %f" % (data.CLASS_IDXS[y_pred_class], y_pred_prob))
+        plt.title(f"Predicted class: {class_names[y_pred_class]}, Prob: {y_pred_prob}")
         plt.show()

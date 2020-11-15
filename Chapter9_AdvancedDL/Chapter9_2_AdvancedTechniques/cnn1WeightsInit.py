@@ -143,7 +143,9 @@ if __name__ == "__main__":
     kernel_initializer = 'GlorotUniform'
     bias_initializer = 'zeros'
 
-    rand_model = build_model(
+    model = build_model(
+        img_shape,
+        num_classes,
         optimizer,
         learning_rate,
         filter_block1,
@@ -165,7 +167,7 @@ if __name__ == "__main__":
         profile_batch=0
     )
 
-    rand_model.fit(
+    model.fit(
         train_dataset,
         verbose=1,
         batch_size=batch_size,
@@ -174,8 +176,8 @@ if __name__ == "__main__":
         validation_data=val_dataset,
     )
 
-    score = rand_model.evaluate(
-        test_dataset,
+    score = model.evaluate(
+        val_dataset,
         verbose=0,
         batch_size=batch_size
     )

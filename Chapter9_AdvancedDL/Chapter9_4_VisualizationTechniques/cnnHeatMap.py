@@ -1,5 +1,6 @@
 import os
 import random
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -25,14 +26,6 @@ from tf_utils.plotting import get_heatmap
 np.random.seed(0)
 tf.random.set_seed(0)
 
-data = DOGSCATS()
-data.data_augmentation(augment_size=5_000)
-data.data_preprocessing(preprocess_mode="MinMax")
-(x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
-x_train, y_train = data.get_train_set()
-x_test, y_test = data.get_test_set()
-num_classes = data.num_classes
-
 
 MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(MODELS_DIR):
@@ -44,6 +37,8 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,

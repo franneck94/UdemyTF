@@ -1,6 +1,6 @@
 # TensorFlow Libraries
 tensorflow==2.3.1
-tensorflow-datasets==4.0.*
+tensorflow-datasets==4.1.*
 tensorflow-addons==0.11.*
 # Other Libraries
 scikit-learn==0.23.*

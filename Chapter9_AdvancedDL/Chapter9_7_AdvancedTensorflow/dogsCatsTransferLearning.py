@@ -6,9 +6,9 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from dogsCatsData import IMG_SHAPE
-from dogsCatsData import NUM_TARGETS
-from dogsCatsData import DogsCatsData
+from tf_utils.dogsCatsDataAdvanced import DOGSCATS
+from tf_utils.dogsCatsDataAdvanced import IMG_SHAPE
+from tf_utils.dogsCatsDataAdvanced import NUM_TARGETS
 
 
 def build_model() -> Model:
@@ -40,7 +40,7 @@ def build_model() -> Model:
 
 
 if __name__ == "__main__":
-    data = DogsCatsData()
+    data = DOGSCATS()
 
     train_dataset = data.get_train_set()
     test_dataset = data.get_test_set()

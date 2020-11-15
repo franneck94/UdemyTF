@@ -1,4 +1,5 @@
 import os
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -15,12 +16,12 @@ from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from bostonData import BOSTON
-from tensorflow_addons.metrics import r_square
+from tf_utils.bostonData import BOSTON
 
 
 np.random.seed(0)
 tf.random.set_seed(0)
+
 
 LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
@@ -28,6 +29,8 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
+    num_features: int,
+    num_targets: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     dense_layer_size1: int,
@@ -37,7 +40,7 @@ def build_model(
     use_bn: bool,
 ) -> Model:
     # Input
-    input_house = Input(shape=x_train.shape[1:])
+    input_house = Input(shape=num_features)
     # Dense Layer 1
     x = Dense(units=dense_layer_size1)(input_house)
     if use_bn:
@@ -62,14 +65,20 @@ def build_model(
     x = Dense(units=num_targets)(x)
     y_pred = Activation("linear")(x)
 
-    # Build the model
     model = Model(
         inputs=[input_house],
         outputs=[y_pred]
     )
+
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(loss="mse", optimizer=opt, metrics=[r_square])
+
+    model.compile(
+        loss="mse",
+        optimizer=opt,
+        metrics=[]
+    )
     model.summary()
+
     return model
 
 
@@ -109,6 +118,7 @@ if __name__ == "__main__":
     x_train, y_train = data.get_train_set()
     x_test, y_test = data.get_test_set()
 
+    num_features = data.num_features
     num_targets = data.num_targets
 
     # Global params
@@ -128,7 +138,11 @@ if __name__ == "__main__":
         "use_bn": True,
     }
 
-    rand_model = build_model(**params)
+    model = build_model(
+        num_features,
+        num_targets,
+        **params
+    )
 
     # Model 1: schedule_fn1
     # Model 2: schedule_fn2
@@ -153,10 +167,10 @@ if __name__ == "__main__":
         restore_best_weights=True
     )
 
-    model_log_dir = os.path.join(LOGS_DIR, "modelBostonFinal6")
+    model_log_dir = os.path.join(LOGS_DIR, "modelBostonFinal")
     tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
-    rand_model.fit(
+    model.fit(
         x=x_train,
         y=y_train,
         verbose=1,
@@ -166,7 +180,7 @@ if __name__ == "__main__":
         validation_data=(x_test, y_test),
     )
 
-    score = rand_model.evaluate(
+    score = model.evaluate(
         x_test,
         y_test,
         verbose=0,

@@ -13,7 +13,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import RMSprop
 
-from tf_utils.cifar10DataAdvanced import CIFAR10
+from tf_utils.cifarDataAdvanced import CIFAR10
 
 
 np.random.seed(0)
