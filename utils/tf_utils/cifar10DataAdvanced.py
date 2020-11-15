@@ -10,6 +10,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 class CIFAR10:
     def __init__(self, validation_size: float = 0.33) -> None:
         # User-definen constants

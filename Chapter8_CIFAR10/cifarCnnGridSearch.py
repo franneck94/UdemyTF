@@ -94,11 +94,11 @@ if __name__ == "__main__":
     param_grid = {
         "optimizer": [Adam, RMSprop],
         "learning_rate": [0.001],
-        "filters_block1": [32],
+        "filter_block1": [32],
         "kernel_size_block1": [3, 5],
-        "filters_block2": [32, 64],
+        "filter_block2": [32, 64],
         "kernel_size_block2": [3, 5],
-        "filters_block3": [64, 128],
+        "filter_block3": [64, 128],
         "kernel_size_block3": [7],
         "dense_layer_size": [512]
     }
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         tb_callback = TensorBoard(
             log_dir=model_log_dir,
             histogram_freq=0,
-            print_batch=0
+            profile_batch=0
         )
 
         model.fit(
@@ -160,5 +160,5 @@ if __name__ == "__main__":
     scores = results["val_scores"]
     params = results["params"]
 
-    for score, param in zip(scores, params):
-        print(f"Score: {score} with param: {param}")
+    for idx, (score, param) in enumerate(zip(scores, params)):
+        print(f"Idx: {idx} - Score: {score} with param: {param}")

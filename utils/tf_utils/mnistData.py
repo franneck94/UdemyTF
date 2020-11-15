@@ -7,6 +7,10 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import to_categorical
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 class MNIST:
     def __init__(self, with_normalization: bool = True) -> None:
         (x_train, y_train), (x_test, y_test) = mnist.load_data()

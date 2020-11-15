@@ -5,6 +5,10 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.datasets import boston_housing
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 class BOSTON:
     def __init__(self, with_normalization: bool = True) -> None:
         (self.x_train, self.y_train), (self.x_test, self.y_test) = boston_housing.load_data()

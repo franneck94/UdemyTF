@@ -1,10 +1,15 @@
 from typing import Tuple
 
 import numpy as np
+import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import to_categorical
+
+
+np.random.seed(0)
+tf.random.set_seed(0)
 
 
 class CIFAR10:

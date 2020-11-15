@@ -1,5 +1,4 @@
 import os
-import random
 from typing import Tuple
 
 import numpy as np
@@ -12,7 +11,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import RMSprop
 
 from tf_utils.cifar10DataAdvanced import CIFAR10
 
@@ -92,16 +91,16 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 50
+    epochs = 30
     batch_size = 256
 
     # Best model params
-    optimizer = Adam
+    optimizer = RMSprop
     learning_rate = 1e-3
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
-    kernel_size_block2 = 5
+    kernel_size_block2 = 3
     filter_block3 = 7
     kernel_size_block3 = 64
     dense_layer_size = 512
@@ -122,7 +121,9 @@ if __name__ == "__main__":
     model_log_dir = os.path.join(LOGS_DIR, "modelBest")
 
     tb_callback = TensorBoard(
-        log_dir=model_log_dir
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0
     )
 
     model.fit(
