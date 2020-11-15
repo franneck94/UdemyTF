@@ -99,7 +99,3 @@ class MNIST:
             )
 
         return dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
-
-
-if __name__ == "__main__":
-    data = MNIST()

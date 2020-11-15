@@ -24,9 +24,9 @@ class CIFAR10:
             test_size=validation_size
         )
         # Preprocess x data
-        self.x_train = np.expand_dims(self.x_train, axis=-1).astype(np.float32)
-        self.x_test = np.expand_dims(self.x_test, axis=-1).astype(np.float32)
-        self.x_val = np.expand_dims(self.x_val, axis=-1).astype(np.float32)
+        self.x_train = self.x_train.astype(np.float32)
+        self.x_test = self.x_test.astype(np.float32)
+        self.x_val = self.x_val.astype(np.float32)
         # Preprocess y data
         self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
@@ -99,7 +99,3 @@ class CIFAR10:
             )
 
         return dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
-
-
-if __name__ == "__main__":
-    data = CIFAR10()

@@ -76,19 +76,3 @@ class MNIST:
         self.x_train = np.concatenate((self.x_train, x_augmented))
         self.y_train = np.concatenate((self.y_train, y_augmented))
         self.train_size = self.x_train.shape[0]
-
-
-if __name__ == "__main__":
-    data = MNIST()
-    print(data.train_size)
-    print(data.test_size)
-
-    print(data.x_train.shape)
-    print(data.y_train.shape)
-
-    print(f"Min of x_train: {np.min(data.x_train)}")
-    print(f"Max of x_train: {np.max(data.x_train)}")
-
-    data.data_augmentation(augment_size=5_000)
-    print(data.x_train.shape)
-    print(data.y_train.shape)
