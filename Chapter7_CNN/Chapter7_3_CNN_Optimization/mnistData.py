@@ -34,8 +34,8 @@ class MNIST:
         self.img_shape = (self.width, self.height, self.depth)
         self.num_classes = 10
         # Preprocess y data
-        self.y_train = to_categorical(y_train, num_classes=self.num_classes, dtype=np.float32)
-        self.y_test = to_categorical(y_test, num_classes=self.num_classes, dtype=np.float32)
+        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
+        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
 
     def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train

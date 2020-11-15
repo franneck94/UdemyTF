@@ -20,7 +20,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from cifar10Data import CIFAR10
+from tf_utils.cifar10Data import CIFAR10
 
 
 np.random.seed(0)
@@ -240,10 +240,11 @@ class LRTensorBoard(TensorBoard):
 
 
 if __name__ == "__main__":
-    data = CIFAR10()
+    data = CIFAR10(with_normalization=True)
     data.data_augmentation(augment_size=5_000)
-    data.data_preprocessing(preprocess_mode="MinMax")
-    (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+
+    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
+
     x_train, y_train = data.get_train_set()
     x_test, y_test = data.get_test_set()
     num_classes = data.num_classes

@@ -1,5 +1,6 @@
 import os
 import random
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -13,7 +14,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from cifar10Data import CIFAR10
+from tf_utils.cifar10DataAdvanced import CIFAR10
 
 
 np.random.seed(0)
@@ -26,6 +27,8 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -36,60 +39,63 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
 ) -> Model:
-    # Input
-    input_img = Input(shape=x_train.shape[1:])
-    # Conv Block 1
+    input_img = Input(shape=img_shape)
+
     x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(input_img)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Conv Block 2
+
     x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Conv Block 3
+
     x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
     x = Activation("relu")(x)
     x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
-    # Dense Part
+
     x = Flatten()(x)
     x = Dense(units=dense_layer_size)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     y_pred = Activation("softmax")(x)
 
-    # Build the model
     model = Model(
         inputs=[input_img],
         outputs=[y_pred]
     )
+
     opt = optimizer(learning_rate=learning_rate)
+
     model.compile(
         loss="categorical_crossentropy",
         optimizer=opt,
         metrics=["accuracy"]
     )
+
     return model
 
 
 if __name__ == "__main__":
-    cifar = CIFAR10()
-    cifar.data_augmentation(augment_size=5_000)
-    cifar.data_preprocessing(preprocess_mode="MinMax")
-    x_train, y_train = cifar.get_train_set()
-    x_test, y_test = cifar.get_test_set()
-    num_classes = cifar.num_classes
+    data = CIFAR10()
+
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
+
+    img_shape = data.img_shape
+    num_classes = data.num_classes
 
     # Global params
     epochs = 50
     batch_size = 256
 
-    # Best grid search model
+    # Best model params
     optimizer = Adam
     learning_rate = 1e-3
     filter_block1 = 32
@@ -100,7 +106,9 @@ if __name__ == "__main__":
     kernel_size_block3 = 64
     dense_layer_size = 512
 
-    grid_model = build_model(
+    model = build_model(
+        img_shape,
+        num_classes,
         optimizer,
         learning_rate,
         filter_block1,
@@ -111,115 +119,23 @@ if __name__ == "__main__":
         kernel_size_block3,
         dense_layer_size,
     )
-    model_log_dir = os.path.join(LOGS_DIR, "modelBestGrid")
+    model_log_dir = os.path.join(LOGS_DIR, "modelBest")
 
     tb_callback = TensorBoard(
         log_dir=model_log_dir
     )
 
-    grid_model.fit(
-        x=x_train,
-        y=y_train,
+    model.fit(
+        train_dataset,
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
         callbacks=[tb_callback],
-        validation_data=(x_test, y_test),
+        validation_data=val_dataset,
     )
-    score = grid_model.evaluate(
-        x_test,
-        y_test,
+    score = model.evaluate(
+        test_dataset,
         verbose=0,
         batch_size=batch_size
     )
-    print(f"Test performance best grid model: {score}")
-
-    # Best random model
-    optimizer = Adam
-    learning_rate = 0.0006214855772522395
-    filter_block1 = 43
-    kernel_size_block1 = 3
-    filter_block2 = 50
-    kernel_size_block2 = 3
-    filter_block3 = 54
-    kernel_size_block3 = 4
-    dense_layer_size = 844
-
-    rand_model = build_model(
-        optimizer,
-        learning_rate,
-        filter_block1,
-        kernel_size_block1,
-        filter_block2,
-        kernel_size_block2,
-        filter_block3,
-        kernel_size_block3,
-        dense_layer_size,
-    )
-    model_log_dir = os.path.join(LOGS_DIR, "modelBestRand")
-
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir
-    )
-
-    rand_model.fit(
-        x=x_train,
-        y=y_train,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        callbacks=[tb_callback],
-        validation_data=(x_test, y_test),
-    )
-    score = rand_model.evaluate(
-        x_test,
-        y_test,
-        verbose=0,
-        batch_size=batch_size
-    )
-    print(f"Test performance best rand model: {score}")
-
-    # Huge model
-    optimizer = Adam
-    learning_rate = 0.0005
-    filter_block1 = 32
-    kernel_size_block1 = 35
-    filter_block2 = 64
-    kernel_size_block2 = 4
-    filter_block3 = 128
-    kernel_size_block3 = 3
-    dense_layer_size = 2048
-
-    rand_model = build_model(
-        optimizer,
-        learning_rate,
-        filter_block1,
-        kernel_size_block1,
-        filter_block2,
-        kernel_size_block2,
-        filter_block3,
-        kernel_size_block3,
-        dense_layer_size,
-    )
-    model_log_dir = os.path.join(LOGS_DIR, "modelHuge")
-
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir
-    )
-
-    rand_model.fit(
-        x=x_train,
-        y=y_train,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        callbacks=[tb_callback],
-        validation_data=(x_test, y_test),
-    )
-    score = rand_model.evaluate(
-        x_test,
-        y_test,
-        verbose=0,
-        batch_size=batch_size
-    )
-    print(f"Test performance best rand model: {score}")
+    print(f"Test performance best model: {score}")

@@ -24,7 +24,7 @@ tf.random.set_seed(0)
 data = DOGSCATS()
 data.data_augmentation(augment_size=5_000)
 data.data_preprocessing(preprocess_mode="MinMax")
-(x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+(x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
 x_train, y_train = data.get_train_set()
 x_test, y_test = data.get_test_set()
 num_classes = data.num_classes
@@ -187,8 +187,8 @@ tb_callback = TensorBoard(
 )
 
 rand_model.fit(
-    x=x_train_splitted,
-    y=y_train_splitted,
+    x=x_train_,
+    y=y_train_,
     verbose=1,
     batch_size=batch_size,
     epochs=epochs,

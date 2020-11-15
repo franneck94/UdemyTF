@@ -1,3 +1,4 @@
+import os
 from typing import Tuple
 
 from tensorflow.keras.layers import Activation
@@ -7,6 +8,7 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
 
 from mnistDataAdvanced import MNIST
 
@@ -42,29 +44,22 @@ def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
 
 if __name__ == "__main__":
     data = MNIST()
+
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
-    test_dataset = data.get_test_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    model = build_model(img_shape, num_classes)
+    model = build_model(data.img_shape, data.num_classes)
 
     model.compile(
         loss="categorical_crossentropy",
-        optimizer="Adam",
+        optimizer=Adam(learning_rate=0.0005),
         metrics=["accuracy"]
     )
 
     model.fit(
         train_dataset,
-        epochs=3,
+        epochs=10,
+        batch_size=128,
+        verbose=1,
         validation_data=val_dataset
     )
-
-    scores = model.evaluate(
-        test_dataset
-    )
-
-    print(f"Scores: {scores}")

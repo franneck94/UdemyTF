@@ -20,7 +20,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from mnistData import MNIST
+from tf_utils.mnistData import MNIST
 
 
 np.random.seed(0)
@@ -244,10 +244,10 @@ class LRTensorBoard(TensorBoard):
 
 
 if __name__ == "__main__":
-    data = MNIST()
+    data = MNIST(with_normalization=True)
     data.data_augmentation(augment_size=10000)
-    data.data_preprocessing(preprocess_mode="MinMax")
-    (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+
+    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
     x_train, y_train = data.get_train_set()
     x_test, y_test = data.get_test_set()
     num_classes = data.num_classes
@@ -282,7 +282,7 @@ if __name__ == "__main__":
         "use_additional_dense_layer": True,
     }
 
-    rand_model = build_model(**params)
+    model = build_model(**params)
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn3,
@@ -308,7 +308,7 @@ if __name__ == "__main__":
     model_log_dir = os.path.join(LOGS_DIR, "modelMnistFinal3")
     tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
-    rand_model.fit(
+    model.fit(
         x=x_train,
         y=y_train,
         verbose=1,
@@ -318,7 +318,7 @@ if __name__ == "__main__":
         validation_data=(x_test, y_test),
     )
 
-    score = rand_model.evaluate(
+    score = model.evaluate(
         x_test,
         y_test,
         verbose=0,

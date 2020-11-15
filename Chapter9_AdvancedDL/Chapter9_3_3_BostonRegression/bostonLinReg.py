@@ -5,11 +5,9 @@ from bostonData import BOSTON
 
 if __name__ == "__main__":
     boston = BOSTON()
-    x_train, y_train = boston.x_train, boston.y_train
-    x_test, y_test = boston.x_test, boston.y_test
-    num_features = boston.num_features
-    num_targets = boston.num_targets
+    x_train, y_train = boston.get_train_set()
+    x_test, y_test = boston.get_test_set()
 
     regr = LinearRegression()
-    regr.fit(x_train, y_train)  # Training
-    print(regr.score(x_test, y_test))  # Testing
+    regr.fit(x_train, y_train)
+    print(regr.score(x_test, y_test))

@@ -1,5 +1,4 @@
 import os
-import random
 
 import numpy as np
 import tensorflow as tf
@@ -17,6 +16,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from bostonData import BOSTON
+from tensorflow_addons.metrics import r_square
 
 
 np.random.seed(0)
@@ -25,19 +25,6 @@ tf.random.set_seed(0)
 LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
-
-
-def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
-    error = tf.math.subtract(y_true, y_pred)
-    squared_error = tf.math.square(error)
-    numerator = tf.math.reduce_sum(squared_error)
-    y_true_mean = tf.math.reduce_mean(y_true)
-    mean_deviation = tf.math.subtract(y_true, y_true_mean)
-    squared_mean_deviation = tf.math.square(mean_deviation)
-    denominator = tf.reduce_sum(squared_mean_deviation)
-    r2 = tf.math.subtract(1.0, tf.math.divide(numerator, denominator))
-    r2_clipped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
-    return r2_clipped
 
 
 def build_model(
@@ -81,19 +68,49 @@ def build_model(
         outputs=[y_pred]
     )
     opt = optimizer(learning_rate=learning_rate)
-    model.compile(loss="mse", optimizer=opt, metrics=[r_squared])
+    model.compile(loss="mse", optimizer=opt, metrics=[r_square])
     model.summary()
     return model
+
+
+def schedule_fn(epoch: int) -> float:
+    learning_rate = 1e-3
+    if epoch < 5:
+        learning_rate = 1e-3
+    elif epoch < 20:
+        learning_rate = 5e-4
+    else:
+        learning_rate = 1e-4
+    return learning_rate
+
+
+def schedule_fn2(epoch: int) -> float:
+    threshold = 500
+    if epoch < threshold:
+        return 1e-3
+    else:
+        return 1e-3 * np.exp(0.005 * (threshold - epoch))
+
+
+class LRTensorBoard(TensorBoard):
+    def __init__(self, log_dir: str, **kwargs: dict) -> None:
+        super().__init__(log_dir=log_dir, **kwargs)
+
+    def on_epoch_end(self, epoch: int, logs: dict) -> None:
+        logs.update({'learning_rate': self.model.optimizer.learning_rate})
+        super().on_epoch_end(epoch, logs)
 
 
 if __name__ == "__main__":
 
     data = BOSTON()
-    data.data_preprocessing(preprocess_mode="MinMax")
-    (x_train_splitted, x_val, y_train_splitted, y_val,) = data.get_splitted_train_validation_set()
+
+    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
     x_train, y_train = data.get_train_set()
     x_test, y_test = data.get_test_set()
+
     num_targets = data.num_targets
+
     # Global params
     epochs = 2000
     batch_size = 256
@@ -112,23 +129,6 @@ if __name__ == "__main__":
     }
 
     rand_model = build_model(**params)
-
-    def schedule_fn(epoch: int) -> float:
-        learning_rate = 1e-3
-        if epoch < 5:
-            learning_rate = 1e-3
-        elif epoch < 20:
-            learning_rate = 5e-4
-        else:
-            learning_rate = 1e-4
-        return learning_rate
-
-    def schedule_fn2(epoch: int) -> float:
-        threshold = 500
-        if epoch < threshold:
-            return 1e-3
-        else:
-            return 1e-3 * np.exp(0.005 * (threshold - epoch))
 
     # Model 1: schedule_fn1
     # Model 2: schedule_fn2
@@ -152,14 +152,6 @@ if __name__ == "__main__":
         verbose=1,
         restore_best_weights=True
     )
-
-    class LRTensorBoard(TensorBoard):
-        def __init__(self, log_dir: str, **kwargs: dict) -> None:
-            super().__init__(log_dir=log_dir, **kwargs)
-
-        def on_epoch_end(self, epoch: int, logs: dict) -> None:
-            logs.update({'learning_rate': self.model.optimizer.learning_rate})
-            super().on_epoch_end(epoch, logs)
 
     model_log_dir = os.path.join(LOGS_DIR, "modelBostonFinal6")
     tb_callback = LRTensorBoard(log_dir=model_log_dir)

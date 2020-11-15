@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.datasets import mnist
+from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.layers.experimental.preprocessing import RandomRotation
 from tensorflow.keras.layers.experimental.preprocessing import RandomTranslation
 from tensorflow.keras.layers.experimental.preprocessing import RandomZoom
@@ -10,13 +10,13 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
 
-class MNIST:
+class CIFAR10:
     def __init__(self, validation_size: float = 0.33) -> None:
         # User-definen constants
         self.num_classes = 10
         self.batch_size = 128
         # Load the data set
-        (self.x_train, self.y_train), (self.x_test, self.y_test) = mnist.load_data()
+        (self.x_train, self.y_train), (self.x_test, self.y_test) = cifar10.load_data()
         # Split the dataset
         self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(
             self.x_train,
@@ -102,4 +102,4 @@ class MNIST:
 
 
 if __name__ == "__main__":
-    data = MNIST()
+    data = CIFAR10()
