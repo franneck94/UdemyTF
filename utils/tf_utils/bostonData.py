@@ -6,7 +6,6 @@ from tensorflow.keras.datasets import boston_housing
 
 
 np.random.seed(0)
-tf.random.set_seed(0)
 
 
 class BOSTON:
