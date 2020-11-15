@@ -32,7 +32,7 @@ Model 1: 0.7413 in best epoch
 
 ## Final Performance
 
-Model: ...
+Model: 0.7200
 {
     'dense_layer_size': 512,
     'filter_block1': 32,
