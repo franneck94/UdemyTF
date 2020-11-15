@@ -15,7 +15,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from dogsCatsData import DOGSCATS
+from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
 np.random.seed(0)

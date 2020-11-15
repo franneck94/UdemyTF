@@ -14,7 +14,7 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from dogsCatsData import DOGSCATS
+from dogsCatsDataAdvanced import DOGSCATS
 
 
 np.random.seed(0)
@@ -120,7 +120,9 @@ if __name__ == "__main__":
     model_log_dir = os.path.join(LOGS_DIR, "modelCatsDogsStart")
 
     tb_callback = TensorBoard(
-        log_dir=model_log_dir
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0
     )
 
     rand_model.fit(
