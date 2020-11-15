@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
@@ -7,26 +9,27 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
-from tf_utils.dogsCatsDataAdvanced import IMG_SHAPE
-from tf_utils.dogsCatsDataAdvanced import NUM_TARGETS
 
 
-def build_model() -> Model:
+def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int
+) -> Model:
     base_model = MobileNetV2(
         include_top=False,
         weights='imagenet',
-        input_shape=IMG_SHAPE,
-        classes=NUM_TARGETS
+        input_shape=img_shape,
+        classes=num_classes
     )
 
     fine_tune_at_layer_idx = len(base_model.layers) - 10
     for layer in base_model.layers[:fine_tune_at_layer_idx]:
         layer.trainable = False
 
-    input_img = Input(shape=IMG_SHAPE)
+    input_img = Input(shape=img_shape)
     x = base_model(input_img)
     x = GlobalAveragePooling2D()(x)
-    x = Dense(units=NUM_TARGETS)(x)
+    x = Dense(units=num_classes)(x)
     y_pred = Activation("sigmoid")(x)
 
     model = Model(
@@ -46,7 +49,10 @@ if __name__ == "__main__":
     test_dataset = data.get_test_set()
     val_dataset = data.get_val_set()
 
-    model = build_model()
+    img_shape = data.img_shape
+    num_classes = data.num_classes
+
+    model = build_model(img_shape, num_classes)#
 
     optimizer = Adam(learning_rate=1e-5)
 

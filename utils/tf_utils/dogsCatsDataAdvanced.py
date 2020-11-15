@@ -84,21 +84,28 @@ class DOGSCATS:
         # Load the data set
         x = np.load(X_FILE_PATH)
         y = np.load(Y_FILE_PATH)
-        y = to_categorical(y, num_classes=self.num_classes)
+        # Split dataset
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
-        self.train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-        self.test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test))
-        self.val_dataset = tf.data.Dataset.from_tensor_slices((x_val, y_val))
+        # Preprocess x data
+        self.x_train = x_train.astype(np.float32)
+        self.x_test = x_test.astype(np.float32)
+        self.x_val = x_val.astype(np.float32)
+        # Preprocess y data
+        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
+        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
+        self.y_val = to_categorical(y_val, num_classes=self.num_classes)
         # Dataset attributes
-        self.train_size = x_train.shape[0]
-        self.test_size = x_test.shape[0]
-        self.val_size = x_val.shape[0]
-        self.width = x_train.shape[1]
-        self.height = x_train.shape[2]
-        self.depth = x_train.shape[3]
+        self.train_size = self.x_train.shape[0]
+        self.test_size = self.x_test.shape[0]
+        self.width = self.x_train.shape[1]
+        self.height = self.x_train.shape[2]
+        self.depth = self.x_train.shape[3]
         self.img_shape = (self.width, self.height, self.depth)
-        # Prepare datasets
+        # tf.data Datasets
+        self.train_dataset = tf.data.Dataset.from_tensor_slices((self.x_train, self.y_train))
+        self.test_dataset = tf.data.Dataset.from_tensor_slices((self.x_test, self.y_test))
+        self.val_dataset = tf.data.Dataset.from_tensor_slices((self.x_val, self.y_val))
         self.train_dataset = self._prepare_dataset(self.train_dataset, shuffle=True, augment=True)
         self.test_dataset = self._prepare_dataset(self.test_dataset)
         self.val_dataset = self._prepare_dataset(self.val_dataset)

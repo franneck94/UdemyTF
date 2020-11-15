@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from caliHousingData import CALIHOUSING
+from tf_utils.caliHousingData import CALIHOUSING
 
 
 if __name__ == "__main__":
@@ -11,5 +11,5 @@ if __name__ == "__main__":
     num_targets = cali_data.num_targets
 
     regr = LinearRegression()
-    regr.fit(x_train, y_train)  # Training
-    print(regr.score(x_test, y_test))  # Testing
+    regr.fit(x_train, y_train)
+    print(regr.score(x_test, y_test))

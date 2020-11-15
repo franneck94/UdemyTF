@@ -74,21 +74,23 @@ def extract_cats_vs_dogs() -> None:
 
 
 class MNIST:
-    def __init__(self, with_normalization: bool = True, test_size: float = 0.2, validation_size: float = 0.33) -> None:
+    def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # Helper variables
         self.num_classes = 2
         # Load the data set
         x = np.load(X_FILE_PATH)
         y = np.load(Y_FILE_PATH)
-        y = to_categorical(y, num_classes=self.num_classes)
+        # Split dataset
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
-        self.x_train = x_train
-        self.y_train = y_train
-        self.x_test = x_test
-        self.y_test = y_test
-        self.x_val = x_val
-        self.y_val = y_val
+        # Preprocess x data
+        self.x_train = x_train.astype(np.float32)
+        self.x_test = x_test.astype(np.float32)
+        self.x_val = x_val.astype(np.float32)
+        # Preprocess y data
+        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
+        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
+        self.y_val = to_categorical(y_val, num_classes=self.num_classes)
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]
@@ -96,26 +98,12 @@ class MNIST:
         self.height = self.x_train.shape[2]
         self.depth = self.x_train.shape[3]
         self.img_shape = (self.width, self.height, self.depth)
-        self.num_classes = 10
-        # Preprocess y data
-        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
-        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
 
     def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
     def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
-
-    def get_splitted_train_validation_set(self, validation_size: float = 0.33) -> tuple:
-        self.x_train_, self.x_val_, self.y_train_, self.y_val_ = train_test_split(
-            self.x_train,
-            self.y_train,
-            test_size=validation_size
-        )
-        self.val_size = self.x_val_.shape[0]
-        self.train_splitted_size = self.x_train_.shape[0]
-        return self.x_train_, self.x_val_, self.y_train_, self.y_val_
 
     def data_augmentation(self, augment_size: int = 5_000) -> None:
         image_generator = ImageDataGenerator(

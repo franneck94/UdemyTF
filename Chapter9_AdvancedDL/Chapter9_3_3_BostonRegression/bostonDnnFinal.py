@@ -16,7 +16,11 @@ from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
-from tf_utils.bostonData import BOSTON
+from tf_utils.bostonDataAdvanced import BOSTON
+from tf_utils.callbacks import LRTensorBoard
+from tf_utils.callbacks import schedule_fn
+from tf_utils.callbacks import schedule_fn2
+from tf_utils.callbacks import schedule_fn3
 
 
 np.random.seed(0)
@@ -95,41 +99,12 @@ def build_model(
     return model
 
 
-def schedule_fn(epoch: int) -> float:
-    learning_rate = 1e-3
-    if epoch < 5:
-        learning_rate = 1e-3
-    elif epoch < 20:
-        learning_rate = 5e-4
-    else:
-        learning_rate = 1e-4
-    return learning_rate
-
-
-def schedule_fn2(epoch: int) -> float:
-    threshold = 500
-    if epoch < threshold:
-        return 1e-3
-    else:
-        return 1e-3 * np.exp(0.005 * (threshold - epoch))
-
-
-class LRTensorBoard(TensorBoard):
-    def __init__(self, log_dir: str, **kwargs: dict) -> None:
-        super().__init__(log_dir=log_dir, **kwargs)
-
-    def on_epoch_end(self, epoch: int, logs: dict) -> None:
-        logs.update({'learning_rate': self.model.optimizer.learning_rate})
-        super().on_epoch_end(epoch, logs)
-
-
 if __name__ == "__main__":
-
     data = BOSTON()
 
-    (x_train_, x_val, y_train_, y_val,) = data.get_splitted_train_validation_set()
-    x_train, y_train = data.get_train_set()
-    x_test, y_test = data.get_test_set()
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
 
     num_features = data.num_features
     num_targets = data.num_targets
@@ -157,16 +132,8 @@ if __name__ == "__main__":
         **params
     )
 
-    # Model 1: schedule_fn1
-    # Model 2: schedule_fn2
-    lrs_callback = LearningRateScheduler(
-        schedule=schedule_fn2,
-        verbose=1
-    )
-
-    # Model 3: factor=0.95
     plateau_callback = ReduceLROnPlateau(
-        monitor='val_loss',
+        monitor='val_r_squared',
         factor=0.98,
         patience=50,
         verbose=1,
@@ -174,8 +141,8 @@ if __name__ == "__main__":
     )
 
     es_callback = EarlyStopping(
-        monitor='val_loss',
-        patience=200,
+        monitor='val_r_squared',
+        patience=500,
         verbose=1,
         restore_best_weights=True
     )
@@ -184,18 +151,16 @@ if __name__ == "__main__":
     tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
     model.fit(
-        x=x_train,
-        y=y_train,
+        train_dataset,
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
-        callbacks=[tb_callback, lrs_callback, es_callback],
-        validation_data=(x_test, y_test),
+        callbacks=[tb_callback, plateau_callback, es_callback],
+        validation_data=val_dataset
     )
 
     score = model.evaluate(
-        x_test,
-        y_test,
+        val_dataset,
         verbose=0,
         batch_size=batch_size
     )

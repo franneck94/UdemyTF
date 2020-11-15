@@ -8,32 +8,36 @@ from tensorflow.keras.utils import to_categorical
 
 
 class MNIST:
-    def __init__(self, with_normalization: bool = True) -> None:
+    def __init__(self, with_normalization: bool = True, validation_size: float = 0.33) -> None:
+        # User-definen constants
+        self.num_classes = 10
+        self.batch_size = 128
+        # Load the data set
         (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-        self.x_train_: np.ndarray = None
-        self.y_train_: np.ndarray = None
-        self.x_val_: np.ndarray = None
-        self.y_val_: np.ndarray = None
-        self.val_size = 0
-        self.train_splitted_size = 0
+        # Split the dataset
+        x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
+        self.x_test = x_test.astype(np.float32)
+        self.x_val = x_val.astype(np.float32)
         if with_normalization:
             self.x_train = self.x_train / 255.0
-        self.x_test = x_test.astype(np.float32)
         if with_normalization:
-            self.x_test = self.x_test / 255.0
+            self.x_train = self.x_train / 255.0
+        if with_normalization:
+            self.x_train = self.x_train / 255.0
+        # Preprocess y data
+        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
+        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
+        self.y_val = to_categorical(y_val, num_classes=self.num_classes)
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]
+        self.val_size = self.x_val.shape[0]
         self.width = self.x_train.shape[1]
         self.height = self.x_train.shape[2]
         self.depth = self.x_train.shape[3]
         self.img_shape = (self.width, self.height, self.depth)
-        self.num_classes = 10
-        # Preprocess y data
-        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
-        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
 
     def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
@@ -41,15 +45,8 @@ class MNIST:
     def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_splitted_train_validation_set(self, validation_size: float = 0.33) -> tuple:
-        self.x_train_, self.x_val_, self.y_train_, self.y_val_ = train_test_split(
-            self.x_train,
-            self.y_train,
-            test_size=validation_size
-        )
-        self.val_size = self.x_val_.shape[0]
-        self.train_splitted_size = self.x_train_.shape[0]
-        return self.x_train_, self.x_val_, self.y_train_, self.y_val_
+    def get_val_set(self) -> Tuple[np.ndarray, np.ndarray]:
+        return self.x_val, self.y_val
 
     def data_augmentation(self, augment_size: int = 5_000) -> None:
         image_generator = ImageDataGenerator(

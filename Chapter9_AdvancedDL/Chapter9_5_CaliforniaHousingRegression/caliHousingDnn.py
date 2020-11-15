@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
-from caliHousingData import CALIHOUSING
+from tf_utils.caliHousingData import CALIHOUSING
 
 
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:

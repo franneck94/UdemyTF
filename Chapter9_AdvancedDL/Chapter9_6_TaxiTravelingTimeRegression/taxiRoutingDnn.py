@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
-from taxiRoutingData import TAXIROUTING
+from tf_utils.taxiRoutingData import TAXIROUTING
 
 
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:

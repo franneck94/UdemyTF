@@ -16,21 +16,17 @@ class MNIST:
         self.num_classes = 10
         self.batch_size = 128
         # Load the data set
-        (self.x_train, self.y_train), (self.x_test, self.y_test) = mnist.load_data()
+        (x_train, y_train), (x_test, y_test) = mnist.load_data()
         # Split the dataset
-        self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(
-            self.x_train,
-            self.y_train,
-            test_size=validation_size
-        )
+        x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
         # Preprocess x data
-        self.x_train = np.expand_dims(self.x_train, axis=-1).astype(np.float32)
-        self.x_test = np.expand_dims(self.x_test, axis=-1).astype(np.float32)
-        self.x_val = np.expand_dims(self.x_val, axis=-1).astype(np.float32)
+        self.x_train = np.expand_dims(x_train, axis=-1).astype(np.float32)
+        self.x_test = np.expand_dims(x_test, axis=-1).astype(np.float32)
+        self.x_val = np.expand_dims(x_val, axis=-1).astype(np.float32)
         # Preprocess y data
-        self.y_train = to_categorical(self.y_train, num_classes=self.num_classes)
-        self.y_test = to_categorical(self.y_test, num_classes=self.num_classes)
-        self.y_val = to_categorical(self.y_val, num_classes=self.num_classes)
+        self.y_train = to_categorical(y_train, num_classes=self.num_classes)
+        self.y_test = to_categorical(y_test, num_classes=self.num_classes)
+        self.y_val = to_categorical(y_val, num_classes=self.num_classes)
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]

@@ -2,7 +2,7 @@ import os
 
 from sklearn.linear_model import LinearRegression
 
-from taxiRoutingData import TAXIROUTING
+from tf_utils.taxiRoutingData import TAXIROUTING
 
 
 if __name__ == "__main__":
