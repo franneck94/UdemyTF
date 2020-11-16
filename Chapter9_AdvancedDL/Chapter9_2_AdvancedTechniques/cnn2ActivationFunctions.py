@@ -40,18 +40,15 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
     kernel_initializer: tf.keras.initializers.Initializer,
-    bias_initializer: tf.keras.initializers.Initializer,
     activation_str: str
 ) -> Model:
-    # Input
     input_img = Input(shape=img_shape)
-    # Conv Block 1
+
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(input_img)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
@@ -61,21 +58,19 @@ def build_model(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
     x = MaxPool2D()(x)
-    # Conv Block 2
+
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
@@ -85,21 +80,19 @@ def build_model(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
     x = MaxPool2D()(x)
-    # Conv Block 3
+
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
@@ -109,22 +102,27 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
     x = MaxPool2D()(x)
-    # Dense Part
+
     x = Flatten()(x)
-    x = Dense(units=dense_layer_size)(x)
+    x = Dense(
+        units=dense_layer_size,
+        kernel_initializer=kernel_initializer
+    )(x)
     if activation_str == "LeakyReLU":
         x = LeakyReLU()(x)
     else:
         x = Activation(activation_str)(x)
-    x = Dense(units=num_classes)(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer
+    )(x)
     y_pred = Activation("softmax")(x)
 
     # Build the model
@@ -164,11 +162,13 @@ if __name__ == "__main__":
     filter_block3 = 128
     kernel_size_block3 = 3
     dense_layer_size = 512
-    # GlorotUniform, GlorotNormal, RandomNormal, RandomUniform, VarianceScaling
-    kernel_initializer = "GlorotUniform"
-    bias_initializer = "zeros"
+
+    # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
+    kernel_initializer = "LecunNormal"
     # relu, elu, LeakyReLU
-    activation_str = "LeakyReLU"
+    activation_str = "relu"
+    # 0.00, 0.05, 0.1, 0.2
+    dropout_rate = 0.20
 
     model = build_model(
         img_shape,
@@ -183,8 +183,7 @@ if __name__ == "__main__":
         kernel_size_block3,
         dense_layer_size,
         kernel_initializer,
-        bias_initializer,
-        activation_str,
+        activation_str
     )
     model_log_dir = os.path.join(LOGS_DIR, "modelLeakyReLU")
 

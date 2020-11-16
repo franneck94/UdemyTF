@@ -141,9 +141,9 @@ if __name__ == "__main__":
     filter_block3 = 7
     kernel_size_block3 = 64
     dense_layer_size = 512
-    # test kernel initializers
+
     # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
-    kernel_initializer = "HeUniform"
+    kernel_initializer = "LecunNormal"
 
     model = build_model(
         img_shape,

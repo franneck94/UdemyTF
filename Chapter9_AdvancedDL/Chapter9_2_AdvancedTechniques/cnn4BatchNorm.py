@@ -41,7 +41,6 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
     kernel_initializer: tf.keras.initializers.Initializer,
-    bias_initializer: tf.keras.initializers.Initializer,
     activation_str: str,
     dropout_rate: float,
     use_bn: bool
@@ -53,8 +52,7 @@ def build_model(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(input_img)
     if use_bn:
         x = BatchNormalization()(x)
@@ -68,8 +66,7 @@ def build_model(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -86,8 +83,7 @@ def build_model(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -101,8 +97,7 @@ def build_model(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -119,8 +114,7 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -134,8 +128,7 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -152,8 +145,7 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -167,8 +159,7 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
-        bias_initializer=bias_initializer,
+        kernel_initializer=kernel_initializer
     )(x)
     if use_bn:
         x = BatchNormalization()(x)
@@ -228,10 +219,8 @@ if __name__ == "__main__":
         "filter_block3": 128,
         "kernel_size_block3": 3,
         "dense_layer_size": 1024,
-        # GlorotUniform, GlorotNormal, RandomNormal
-        # RandomUniform, VarianceScaling
+        # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
         "kernel_initializer": "GlorotUniform",
-        "bias_initializer": "zeros",
         # relu, elu, LeakyReLU
         "activation_str": "relu",
         # 0.05, 0.1, 0.2
