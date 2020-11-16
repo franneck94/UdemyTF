@@ -13,19 +13,20 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
 
-DATA_DIR = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats")
+DATA_DIR = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
 X_FILE_PATH = os.path.join(DATA_DIR, "x.npy")
 Y_FILE_PATH = os.path.join(DATA_DIR, "y.npy")
 IMG_SIZE = 64
 IMG_DEPTH = 3
+IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
 
 
 def extract_cats_vs_dogs() -> None:
-    cats_dir = os.path.join(DATA_DIR, "cat")
-    dogs_dir = os.path.join(DATA_DIR, "dog")
+    cats_dir = os.path.join(DATA_DIR, "Cat")
+    dogs_dir = os.path.join(DATA_DIR, "Dog")
 
     dirs = [cats_dir, dogs_dir]
-    class_names = ["cats", "dogs"]
+    class_names = ["cat", "dog"]
 
     for d in dirs:
         for f in os.listdir(d):
@@ -42,31 +43,31 @@ def extract_cats_vs_dogs() -> None:
         dtype=np.float32
     )
     y = np.zeros(
-        shape=(num_images),
-        dtype=np.int8
+        shape=(num_images,),
+        dtype=np.float32
     )
 
     cnt = 0
     for d, class_name in zip(dirs, class_names):
         for f in os.listdir(d):
-            img_file = os.path.join(d, f)
+            img_file_path = os.path.join(d, f)
             try:
-                img = cv2.imread(img_file, cv2.IMREAD_COLOR)
+                img = cv2.imread(img_file_path, cv2.IMREAD_COLOR)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 x[cnt] = transform.resize(
                     image=img,
-                    output_shape=(IMG_SIZE, IMG_SIZE, IMG_DEPTH)
+                    output_shape=IMG_SHAPE
                 )
-                if class_name == "cats":
+                if class_name == "cat":
                     y[cnt] = 0
-                elif class_name == "dogs":
+                elif class_name == "dog":
                     y[cnt] = 1
                 else:
-                    raise ValueError
+                    print("Invalid class name!")
                 cnt += 1
             except:  # noqa: E722
-                print(f"Image {f} cannot be read!")
-                os.remove(img_file)
+                print(f"Image {f} cannt be read!")
+                os.remove(img_file_path)
 
     # Dropping not readable image idxs
     x = x[:cnt]
@@ -78,13 +79,13 @@ def extract_cats_vs_dogs() -> None:
 
 class DOGSCATS:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
-        # Helper variables
-        self.num_classes = 2
+        # User-definen constants
+        self.num_classes = 10
         self.batch_size = 128
         # Load the data set
         x = np.load(X_FILE_PATH)
         y = np.load(Y_FILE_PATH)
-        # Split dataset
+        # Split the dataset
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
         # Preprocess x data
@@ -98,6 +99,7 @@ class DOGSCATS:
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]
+        self.val_size = self.x_val.shape[0]
         self.width = self.x_train.shape[1]
         self.height = self.x_train.shape[2]
         self.depth = self.x_train.shape[3]
@@ -118,14 +120,6 @@ class DOGSCATS:
 
     def get_val_set(self) -> tf.data.Dataset:
         return self.val_dataset
-
-    @staticmethod
-    def _build_preprocessing() -> Sequential:
-        model = Sequential()
-
-        model.add(Rescaling(scale=(1.0 / 255.0), offset=0.0))
-
-        return model
 
     @staticmethod
     def _build_data_augmentation() -> Sequential:
@@ -157,12 +151,8 @@ class DOGSCATS:
 
         return dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
-    @staticmethod
-    def load_and_preprocess_custom_image(image_file_path: str):
-        img = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = transform.resize(
-            image=img,
-            output_shape=(IMG_SIZE, IMG_SIZE, IMG_DEPTH)
-        )
-        return img
+
+if __name__ == "__main__":
+    # extract_cats_vs_dogs()
+
+    data = DOGSCATS()
