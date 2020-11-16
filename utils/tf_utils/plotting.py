@@ -31,12 +31,12 @@ def display_digit(
     if isinstance(label, np.ndarray):
         label = np.argmax(label)
     if pred_label is None and label is not None:
-        plt.title(f'Label: {label}')
+        plt.title(f"Label: {label}")
     elif label is not None:
         if isinstance(pred_label, np.ndarray):
             pred_label = np.argmax(pred_label)
-        plt.title(f'Label: {label}, Pred: {pred_label}')
-    plt.imshow(image, cmap=plt.get_cmap('gray_r'))
+        plt.title(f"Label: {label}, Pred: {pred_label}")
+    plt.imshow(image, cmap=plt.get_cmap("gray_r"))
     plt.show()
 
 
@@ -61,11 +61,11 @@ def display_digit_and_predictions(
     _, axs = plt.subplots(1, 2)
     pred_one_hot = [[int(round(val * 100.0, 4)) for val in pred_one_hot[0]]]
     labels = [i for i in range(10)]
-    axs[0].axis('tight')
-    axs[0].axis('off')
+    axs[0].axis("tight")
+    axs[0].axis("off")
     axs[0].table(cellText=pred_one_hot, colLabels=labels, loc="center")
-    axs[1].imshow(image, cmap=plt.get_cmap('gray_r'))
-    plt.title('Label: %d, Pred: %d' % (label, pred))
+    axs[1].imshow(image, cmap=plt.get_cmap("gray_r"))
+    plt.title("Label: %d, Pred: %d" % (label, pred))
     plt.show()
 
 
@@ -86,8 +86,8 @@ def display_convergence_error(train_losses: list, valid_losses: list) -> None:
     else:
         plt.plot(len(train_losses), train_losses, color="red")
         plt.legend(["Train"])
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
     plt.show()
 
 
@@ -108,8 +108,8 @@ def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
     else:
         plt.plot(len(train_accs), train_accs, color="red")
         plt.legend(["Train"])
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
     plt.show()
 
 
@@ -134,14 +134,14 @@ def plot_confusion_matrix(
     """
     fig = plt.figure(figsize=(8, 8))
     cm = confusion_matrix(y_true, y_pred)
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    plt.title('Confusion matrix')
+    plt.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
+    plt.title("Confusion matrix")
     plt.colorbar()
     tick_marks = np.arange(len(classes_list))
     plt.xticks(tick_marks, classes_list, rotation=45)
     plt.yticks(tick_marks, classes_list)
     cm = np.around(
-        cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=4
+        cm.astype("float") / cm.sum(axis=1)[:, np.newaxis], decimals=4
     )
 
     thresh = cm.max() / 2.0
@@ -156,8 +156,8 @@ def plot_confusion_matrix(
             )
 
     plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
+    plt.ylabel("True label")
+    plt.xlabel("Predicted label")
     return fig
 
 
@@ -205,7 +205,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         else:
             self.classes_list = classes_list
         self.log_dir = log_dir
-        img_file = os.path.join(self.log_dir, 'images')
+        img_file = os.path.join(self.log_dir, "images")
         self.file_writer_images = tf.summary.create_file_writer(img_file)
         self.figure_fn = figure_fn
         if figure_title is None:

@@ -17,7 +17,7 @@ def build_model(
 ) -> Model:
     base_model = MobileNetV2(
         include_top=False,
-        weights='imagenet',
+        weights="imagenet",
         input_shape=img_shape,
         classes=num_classes
     )

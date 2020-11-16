@@ -133,7 +133,7 @@ if __name__ == "__main__":
     )
 
     plateau_callback = ReduceLROnPlateau(
-        monitor='val_r_squared',
+        monitor="val_r_squared",
         factor=0.98,
         patience=50,
         verbose=1,
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     )
 
     es_callback = EarlyStopping(
-        monitor='val_r_squared',
+        monitor="val_r_squared",
         patience=500,
         verbose=1,
         restore_best_weights=True

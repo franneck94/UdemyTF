@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 x = [[1, 4, 3, 9],
      [3, 1, 5, 2]]
 
-y = ['red', 'blue', 'blue', 'red']
+y = ["red", "blue", "blue", "red"]
 
-# P1 (x1=1, x2=3), Klasse='red'
-# P2 (x1=4, x2=1), Klasse='blue'
-# P3 (x1=3, x2=5), Klasse='blue'
-# P3 (x1=9, x2=2), Klasse='red'
+# P1 (x1=1, x2=3), Class="red"
+# P2 (x1=4, x2=1), Class="blue"
+# P3 (x1=3, x2=5), Class="blue"
+# P3 (x1=9, x2=2), Class="red"
 
 x1 = x[0]
 x2 = x[1]

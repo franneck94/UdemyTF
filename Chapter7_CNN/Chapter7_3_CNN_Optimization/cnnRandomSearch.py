@@ -1,5 +1,6 @@
 import numpy as np
 import tensorflow as tf
+from scipy.stats import randint
 from sklearn.model_selection import RandomizedSearchCV
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
@@ -11,7 +12,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 
 from mnistData import MNIST
-from scipy.stats import randint
 
 
 np.random.seed(0)
@@ -28,21 +28,21 @@ def build_model(
 ) -> Model:
     input_img = Input(shape=(28, 28, 1))
 
-    x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding='same')(input_img)
+    x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding="same")(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding='same')(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Conv2D(filters=filters_2, kernel_size=kernel_size_2, padding='same')(x)
-    x = Activation("relu")(x)
-    x = Conv2D(filters=filters_2, kernel_size=kernel_size_2, padding='same')(x)
+    x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
-    x = Conv2D(filters=filters_3, kernel_size=kernel_size_3, padding='same')(x)
+    x = Conv2D(filters=filters_2, kernel_size=kernel_size_2, padding="same")(x)
     x = Activation("relu")(x)
-    x = Conv2D(filters=filters_3, kernel_size=kernel_size_3, padding='same')(x)
+    x = Conv2D(filters=filters_2, kernel_size=kernel_size_2, padding="same")(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(filters=filters_3, kernel_size=kernel_size_3, padding="same")(x)
+    x = Activation("relu")(x)
+    x = Conv2D(filters=filters_3, kernel_size=kernel_size_3, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 

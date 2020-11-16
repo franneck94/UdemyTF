@@ -39,9 +39,9 @@ def load_taxi_dataset(excel_file_path) -> Dict[str, Any]:
     x = df.loc[:, feature_names].to_numpy()
     y = df["y"].to_numpy()
     return {
-        'feature_names': column_names,
-        'data': x,
-        'target': y
+        "feature_names": column_names,
+        "data": x,
+        "target": y
     }
 
 
@@ -49,9 +49,9 @@ class TAXIROUTING:
     def __init__(self, excel_file_path: str) -> None:
         # Load the dataset
         dataset = load_taxi_dataset(excel_file_path)
-        self.x = dataset['data']
-        self.y = dataset['target']
-        self.feature_names = dataset['feature_names']
+        self.x = dataset["data"]
+        self.y = dataset["target"]
+        self.feature_names = dataset["feature_names"]
         # Prepare x data
         self.x[:, 0] = [float(val[:2]) * 60 + float(val[3:5]) for val in self.x[:, 0]]
         self.x = self.x.astype(np.float32)

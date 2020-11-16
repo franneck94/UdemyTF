@@ -14,15 +14,15 @@ from mnistData import MNIST
 def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
     input_img = Input(shape=img_shape)
 
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(input_img)
+    x = Conv2D(filters=32, kernel_size=5, padding="same")(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=32, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=32, kernel_size=5, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=64, kernel_size=5, padding="same")(x)
     x = Activation("relu")(x)
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=64, kernel_size=5, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 

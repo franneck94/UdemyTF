@@ -40,21 +40,21 @@ def build_model(
 ) -> Model:
     input_img = Input(shape=img_shape)
 
-    x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(input_img)
+    x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding="same")(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding='same')(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
-    x = Activation("relu")(x)
-    x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding='same')(x)
+    x = Conv2D(filters=filter_block1, kernel_size=kernel_size_block1, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
-    x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
+    x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding="same")(x)
     x = Activation("relu")(x)
-    x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding='same')(x)
+    x = Conv2D(filters=filter_block2, kernel_size=kernel_size_block2, padding="same")(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding="same")(x)
+    x = Activation("relu")(x)
+    x = Conv2D(filters=filter_block3, kernel_size=kernel_size_block3, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 

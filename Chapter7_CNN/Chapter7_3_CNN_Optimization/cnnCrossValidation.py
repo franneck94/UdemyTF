@@ -21,21 +21,21 @@ tf.random.set_seed(0)
 def build_model() -> Model:
     input_img = Input(shape=(28, 28, 1))
 
-    x = Conv2D(filters=16, kernel_size=3, padding='same')(input_img)
+    x = Conv2D(filters=16, kernel_size=3, padding="same")(input_img)
     x = Activation("relu")(x)
-    x = Conv2D(filters=16, kernel_size=3, padding='same')(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Conv2D(filters=32, kernel_size=3, padding='same')(x)
-    x = Activation("relu")(x)
-    x = Conv2D(filters=32, kernel_size=3, padding='same')(x)
+    x = Conv2D(filters=16, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=32, kernel_size=3, padding="same")(x)
     x = Activation("relu")(x)
-    x = Conv2D(filters=64, kernel_size=5, padding='same')(x)
+    x = Conv2D(filters=32, kernel_size=3, padding="same")(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(filters=64, kernel_size=5, padding="same")(x)
+    x = Activation("relu")(x)
+    x = Conv2D(filters=64, kernel_size=5, padding="same")(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 

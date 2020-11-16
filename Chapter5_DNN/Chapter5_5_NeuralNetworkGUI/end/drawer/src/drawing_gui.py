@@ -13,12 +13,12 @@ from .preprocessing import get_image
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
-IMAGE_DIR = os.path.join(PROJECT_DIR, 'ressources', 'imgs')
-GUI_DIR = os.path.join(PROJECT_DIR, 'ressources', 'gui')
+IMAGE_DIR = os.path.join(PROJECT_DIR, "ressources", "imgs")
+GUI_DIR = os.path.join(PROJECT_DIR, "ressources", "gui")
 MODEL_FILE_PATH = os.path.join(PROJECT_DIR, "ressources", "weights", "dnn_mnist.h5")
 
 # Load the UI File
-GUI_MODEL = os.path.join(GUI_DIR, 'GUI.ui')
+GUI_MODEL = os.path.join(GUI_DIR, "GUI.ui")
 FORM, BASE = uic.loadUiType(GUI_MODEL)
 
 
@@ -124,7 +124,7 @@ class CreateUI(BASE, FORM):  # type: ignore
         # Set up main window and widgets
         super().__init__()
         self.setupUi(self)
-        self.setObjectName('Rig Helper')
+        self.setObjectName("Rig Helper")
         self.PaintPanel = Painter(self)
         self.PaintPanel.close()
         self.DrawingFrame.insertWidget(0, self.PaintPanel)

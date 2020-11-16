@@ -57,7 +57,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(input_img)
@@ -72,7 +72,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -90,7 +90,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -105,7 +105,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -123,7 +123,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -138,7 +138,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -156,7 +156,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -171,7 +171,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
-        padding='same',
+        padding="same",
         kernel_initializer=kernel_initializer,
         bias_initializer=bias_initializer,
     )(x)
@@ -235,8 +235,8 @@ if __name__ == "__main__":
         "dense_layer_size": 1024,
         # GlorotUniform, GlorotNormal, RandomNormal
         # RandomUniform, VarianceScaling
-        "kernel_initializer": 'GlorotUniform',
-        "bias_initializer": 'zeros',
+        "kernel_initializer": "GlorotUniform",
+        "bias_initializer": "zeros",
         # relu, elu, LeakyReLU
         "activation_str": "relu",
         # 0.05, 0.1, 0.2
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     )
 
     plateau_callback = ReduceLROnPlateau(
-        monitor='val_loss',
+        monitor="val_loss",
         factor=0.95,
         patience=3,
         verbose=1,

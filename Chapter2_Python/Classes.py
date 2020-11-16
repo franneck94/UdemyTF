@@ -8,7 +8,7 @@ class Car:
         print("The name of my car is: ", self.name)
 
     def print_hp(self):
-        print("The car has", self.hp, " hp's.")
+        print("The car has", self.hp, " hps.")
 
 
 my_car = Car("Audi A1 Sportback 40 TFSI", "2020", "200")

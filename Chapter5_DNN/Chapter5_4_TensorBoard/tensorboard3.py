@@ -1,8 +1,5 @@
 import os
 
-
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.datasets import mnist

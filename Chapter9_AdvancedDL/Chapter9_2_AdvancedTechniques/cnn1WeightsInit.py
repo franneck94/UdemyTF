@@ -143,7 +143,7 @@ if __name__ == "__main__":
     dense_layer_size = 512
     # test kernel initializers
     # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
-    kernel_initializer = "GlorotUniform"
+    kernel_initializer = "HeUniform"
 
     model = build_model(
         img_shape,

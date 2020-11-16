@@ -29,5 +29,5 @@ class LRTensorBoard(tf.keras.callbacks.TensorBoard):
         super().__init__(log_dir=log_dir, **kwargs)
 
     def on_epoch_end(self, epoch: int, logs: dict) -> None:
-        logs.update({'learning_rate': self.model.optimizer.learning_rate})
+        logs.update({"learning_rate": self.model.optimizer.learning_rate})
         super().on_epoch_end(epoch, logs)

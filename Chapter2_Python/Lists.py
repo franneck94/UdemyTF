@@ -13,9 +13,9 @@ print(grades)
 grades.pop()
 print(grades)
 
-print("Ben's grade: ", grades[0])
-print("Jan's grade: ", grades[1])
-print("Peter's grade: ", grades[2])
+print("Bens grade: ", grades[0])
+print("Jans grade: ", grades[1])
+print("Peters grade: ", grades[2])
 
 grades.pop(1)
 print(grades)
