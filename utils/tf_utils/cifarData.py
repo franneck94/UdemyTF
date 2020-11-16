@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import to_categorical
 
 
-class MNIST:
+class CIFAR10:
     def __init__(self, with_normalization: bool = True, validation_size: float = 0.33) -> None:
         # User-definen constants
         self.num_classes = 10

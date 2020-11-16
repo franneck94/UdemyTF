@@ -22,20 +22,7 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     return r2_clipped
 
 
-if __name__ == "__main__":
-    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
-    taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
-    x_train, y_train = taxi_data.x_train, taxi_data.y_train
-    x_test, y_test = taxi_data.x_test, taxi_data.y_test
-    num_features = taxi_data.num_features
-    num_targets = taxi_data.num_targets
-
-    # Model params
-    learning_rate = 0.001
-    optimizer = Adam(learning_rate=learning_rate)
-    epochs = 200
-    batch_size = 256
-
+def build_model(num_features: int, num_targets: int):
     model = Sequential()
 
     model.add(Dense(units=16, input_shape=(num_features,)))
@@ -45,6 +32,26 @@ if __name__ == "__main__":
     model.add(Dense(units=num_targets))
 
     model.summary()
+    return model
+
+
+if __name__ == "__main__":
+    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
+    taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
+
+    x_train, y_train = taxi_data.x_train, taxi_data.y_train
+    x_test, y_test = taxi_data.x_test, taxi_data.y_test
+
+    num_features = taxi_data.num_features
+    num_targets = taxi_data.num_targets
+
+    # Model params
+    learning_rate = 0.001
+    optimizer = Adam(learning_rate=learning_rate)
+    epochs = 200
+    batch_size = 256
+
+    model = build_model(num_features, num_targets)
 
     model.compile(
         loss="mse",

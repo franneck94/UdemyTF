@@ -1,18 +1,24 @@
+from typing import Tuple
+
 import numpy as np
 import tensorflow as tf
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 
 
-class BOSTON:
-    def __init__(self, validation_size: float = 0.33) -> None:
+class CALIHOUSING:
+    def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # User-definen constants
         self.num_targets = 1
         self.batch_size = 128
         # Load the data set
-        (x_train, y_train), (x_test, y_test) = boston_housing.load_data()
+        dataset = fetch_california_housing()
+        self.x, self.y = dataset.data, dataset.target
+        self.feature_names = dataset.feature_names
+        self.description = dataset.DESCR
         # Split the dataset
+        x_train, x_test, y_train, y_test = train_test_split(self.x, self.y, test_size=test_size)
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=validation_size)
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
@@ -52,10 +58,10 @@ class BOSTON:
         dataset: tf.data.Dataset,
         shuffle: bool = False
     ) -> tf.data.Dataset:
-        dataset = dataset.map(
-            map_func=lambda x, y: (self.normalization_layer(x, training=False), y),
-            num_parallel_calls=tf.data.experimental.AUTOTUNE
-        )
+        # dataset = dataset.map(
+        #     map_func=lambda x, y: (self.normalization_layer(x, training=False), y),
+        #     num_parallel_calls=tf.data.experimental.AUTOTUNE
+        # )
 
         if shuffle:
             dataset = dataset.shuffle(buffer_size=1_000)
@@ -66,4 +72,4 @@ class BOSTON:
 
 
 if __name__ == "__main__":
-    data = BOSTON()
+    data = CALIHOUSING()

@@ -73,7 +73,7 @@ def extract_cats_vs_dogs() -> None:
     np.save(Y_FILE_PATH, y)
 
 
-class MNIST:
+class DOGSCATS:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # Helper variables
         self.num_classes = 2

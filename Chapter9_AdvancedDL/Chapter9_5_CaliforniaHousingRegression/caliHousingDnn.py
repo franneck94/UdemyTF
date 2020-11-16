@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
-from tf_utils.caliHousingData import CALIHOUSING
+from tf_utils.caliHousingDataAdvanced import CALIHOUSING
 
 
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
@@ -20,18 +20,7 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     return r2_clipped
 
 
-if __name__ == "__main__":
-    cali_data = CALIHOUSING()
-    x_train, y_train = cali_data.x_train, cali_data.y_train
-    x_test, y_test = cali_data.x_test, cali_data.y_test
-    num_features = cali_data.num_features
-    num_targets = cali_data.num_targets
-    # Model params
-    learning_rate = 0.001
-    optimizer = Adam(learning_rate=learning_rate)
-    epochs = 200
-    batch_size = 256
-
+def build_model(num_features: int, num_targets: int) -> Sequential:
     model = Sequential()
 
     model.add(Dense(units=16, input_shape=(num_features,)))
@@ -43,6 +32,25 @@ if __name__ == "__main__":
     model.add(Dense(units=num_targets))
 
     model.summary()
+    return model
+
+
+if __name__ == "__main__":
+    data = CALIHOUSING()
+
+    train_dataset = data.get_train_set()
+    test_dataset = data.get_test_set()
+    val_dataset = data.get_val_set()
+
+    num_features = data.num_features
+    num_targets = data.num_targets
+    # Model params
+    learning_rate = 0.001
+    optimizer = Adam(learning_rate=learning_rate)
+    epochs = 200
+    batch_size = 256
+
+    model = build_model(num_features, num_targets)
 
     model.compile(
         loss="mse",
@@ -51,16 +59,14 @@ if __name__ == "__main__":
     )
 
     model.fit(
-        x=x_train,
-        y=y_train,
+        train_dataset,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_test, y_test),
+        validation_data=val_dataset
     )
 
     score = model.evaluate(
-        x=x_test,
-        y=y_test,
+        test_dataset,
         verbose=0
     )
     print(f"Score: {score}")
