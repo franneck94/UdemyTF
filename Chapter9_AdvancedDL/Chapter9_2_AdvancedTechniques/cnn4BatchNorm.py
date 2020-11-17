@@ -61,8 +61,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -171,10 +170,10 @@ if __name__ == "__main__":
     dense_layer_size = 128
     kernel_initializer = "GlorotUniform"
     activation_cls = ReLU()
-    dropout_rate = 0.0
+    dropout_rate = 0.3
 
-    # False, True
     use_batch_normalization = True
+
     batch_normalization_name = f"DROPOUT_{dropout_rate}_BATCH_NORM_{use_batch_normalization}"
 
     model = build_model(

@@ -55,8 +55,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     x = activation_cls(x)
     x = MaxPool2D()(x)
@@ -149,13 +148,13 @@ if __name__ == "__main__":
 
     activations = {
         "RELU": ReLU(),
-        "LEALY_RELU": LeakyReLU(alpha=0.3),
-        "ELU": ELU(alpha=1.0)
+        "LEAKY_RELU": LeakyReLU(),
+        "ELU": ELU()
     }
 
-    for activation in activations:
-        activation_cls = activations[activation]
-        activation_name = f"ACTIVATION_{activation}"
+    for activation_key in activations:
+        activation_cls = activations[activation_key]
+        activation_name = f"ACTIVATION_{activation_key}"
 
         model = build_model(
             img_shape,

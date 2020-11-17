@@ -30,6 +30,7 @@ from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 np.random.seed(0)
 tf.random.set_seed(0)
 
+
 LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
@@ -66,8 +67,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -164,7 +164,10 @@ if __name__ == "__main__":
     epochs = 40
     batch_size = 128
 
+    # Best model params
     params = {
+        "dense_layer_size": 128,
+        "kernel_initializer": "GlorotUniform",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -173,11 +176,9 @@ if __name__ == "__main__":
         "kernel_size_block2": 3,
         "filter_block3": 128,
         "kernel_size_block3": 3,
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
         "activation_cls": ReLU(),
-        "dropout_rate": 0.00,
-        "use_batch_normalization": True,
+        "dropout_rate": 0.0,
+        "use_batch_normalization": True
     }
 
     model = build_model(
@@ -189,14 +190,7 @@ if __name__ == "__main__":
     schedules = [schedule_fn, schedule_fn2, schedule_fn3, schedule_fn4]
     for schedule in schedules:
 
-        model_log_dir = os.path.join(LOGS_DIR, f"model_{schedule.__name__}")
-
-        tb_callback = TensorBoard(
-            log_dir=model_log_dir,
-            histogram_freq=0,
-            profile_batch=0,
-            write_graph=False
-        )
+        model_log_dir = os.path.join(LOGS_DIR, f"model{schedule.__name__}")
 
         lrs_callback = LearningRateScheduler(
             schedule=schedule,
@@ -204,7 +198,10 @@ if __name__ == "__main__":
         )
 
         lr_callback = LRTensorBoard(
-            log_dir=model_log_dir
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
+            write_graph=False
         )
 
         model.fit(
@@ -212,6 +209,6 @@ if __name__ == "__main__":
             verbose=1,
             batch_size=batch_size,
             epochs=epochs,
-            callbacks=[tb_callback, lr_callback, lrs_callback],
+            callbacks=[lrs_callback, lr_callback],
             validation_data=val_dataset,
         )

@@ -57,8 +57,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
@@ -177,7 +176,7 @@ if __name__ == "__main__":
             activation_cls,
             dropout_rate
         )
-        model_log_dir = os.path.join(LOGS_DIR, f"model_{dropout_name}")
+        model_log_dir = os.path.join(LOGS_DIR, f"model{dropout_name}")
 
         tb_callback = TensorBoard(
             log_dir=model_log_dir,

@@ -51,8 +51,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
@@ -144,11 +143,11 @@ if __name__ == "__main__":
 
     kernel_initializers = [
         "GlorotUniform",
-        "GlorotNormal",
+        "GlorotRandom",
         "HeUniform",
-        "HeNormal",
+        "HeRandom",
         "LecunUniform",
-        "LecunNormal"
+        "LecunNormal",
     ]
 
     for kernel_initializer in kernel_initializers:
