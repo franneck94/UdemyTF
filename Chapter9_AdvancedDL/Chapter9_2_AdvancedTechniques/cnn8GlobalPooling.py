@@ -7,6 +7,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import LearningRateScheduler
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import ELU
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Conv2D
@@ -17,6 +18,7 @@ from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.layers import MaxPool2D
+from tensorflow.keras.layers import ReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
@@ -48,164 +50,111 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
     kernel_initializer: tf.keras.initializers.Initializer,
-    activation_str: str,
+    activation_cls: tf.keras.layers.Activation,
     dropout_rate: float,
-    use_bn: bool,
-    use_global_pooling: bool,
-    use_additional_dense_layer: bool
+    use_batch_normalization: bool,
+    with_global_pooling: bool,
+    with_dense: bool
 ) -> Model:
-    # Input
     input_img = Input(shape=img_shape)
-    # Conv Block 1
+
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
         kernel_initializer=kernel_initializer
     )(input_img)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
+    if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    # Conv Block 2
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
+    if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    # Conv Block 3
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if use_bn:
+    if use_batch_normalization:
         x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
+    if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    # Conv Block 3
-    x = Conv2D(
-        filters=filter_block3,
-        kernel_size=kernel_size_block3,
-        padding="same",
-        kernel_initializer=kernel_initializer
-    )(x)
-    if use_bn:
-        x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
-    x = Conv2D(
-        filters=filter_block3,
-        kernel_size=kernel_size_block3,
-        padding="same",
-        kernel_initializer=kernel_initializer
-    )(x)
-    if use_bn:
-        x = BatchNormalization()(x)
-    if dropout_rate > 0.0:
-        x = Dropout(rate=dropout_rate)(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
-    x = MaxPool2D()(x)
-
-    # Dense Part
-    if use_global_pooling:
+    if with_global_pooling:
         x = GlobalAveragePooling2D()(x)
     else:
         x = Flatten()(x)
-    if use_additional_dense_layer:
-        x = Dense(units=dense_layer_size)(x)
-        if activation_str == "LeakyReLU":
-            x = LeakyReLU()(x)
-        else:
-            x = Activation(activation_str)(x)
-    x = Dense(units=num_classes)(x)
+    if with_dense:
+        x = Dense(
+            units=dense_layer_size,
+            kernel_initializer=kernel_initializer
+        )(x)
+        if use_batch_normalization:
+            x = BatchNormalization()(x)
+        x = activation_cls(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    # Build the model
     model = Model(
         inputs=[input_img],
         outputs=[y_pred]
     )
+
     opt = optimizer(learning_rate=learning_rate)
+
     model.compile(
         loss="categorical_crossentropy",
         optimizer=opt,
         metrics=["accuracy"]
     )
-    model.summary()
+
     return model
 
 
@@ -221,30 +170,24 @@ if __name__ == "__main__":
 
     # Global params
     epochs = 100
-    batch_size = 256
+    batch_size = 128
 
     params = {
         "optimizer": Adam,
-        "learning_rate": 0.001,
+        "learning_rate": 1e-3,
         "filter_block1": 32,
         "kernel_size_block1": 3,
         "filter_block2": 64,
         "kernel_size_block2": 3,
         "filter_block3": 128,
         "kernel_size_block3": 3,
-        "dense_layer_size": 1024,
-        # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
+        "dense_layer_size": 128,
         "kernel_initializer": "GlorotUniform",
-        # relu, elu, LeakyReLU
-        "activation_str": "relu",
-        # 0.05, 0.1, 0.2
+        "activation_cls": ReLU(),
         "dropout_rate": 0.00,
-        # True, False
-        "use_bn": True,
-        # True, False
-        "use_global_pooling": True,
-        # True, False
-        "use_additional_dense_layer": True,
+        "use_batch_normalization": True,
+        "with_global_pooling": True,
+        "with_dense": False
     }
 
     model = build_model(
@@ -253,32 +196,31 @@ if __name__ == "__main__":
         **params
     )
 
+    use_pool = params["with_global_pooling"]
+    use_dense = params["with_dense"]
+    model_log_dir = os.path.join(LOGS_DIR, f"model_Pooling_{use_pool}_Dense_{use_dense}")
+
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
+        write_graph=False
+    )
+
+    lr_callback = LRTensorBoard(
+        log_dir=model_log_dir
+    )
+
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
         verbose=1
     )
 
-    plateau_callback = ReduceLROnPlateau(
-        monitor="val_loss",
-        factor=0.90,
-        patience=2,
-        verbose=1,
-        min_lr=1e-5
-    )
-
     es_callback = EarlyStopping(
-        monitor="val_loss",
-        patience=15,
+        monitor="val_accuracy",
+        patience=30,
         verbose=1,
         restore_best_weights=True
-    )
-
-    model_log_dir = os.path.join(LOGS_DIR, "modelGlobalDense")
-
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0
     )
 
     model.fit(
@@ -286,13 +228,6 @@ if __name__ == "__main__":
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
-        callbacks=[tb_callback],
+        callbacks=[tb_callback, lr_callback, lrs_callback, es_callback],
         validation_data=val_dataset,
     )
-
-    score = model.evaluate(
-        val_dataset,
-        verbose=0,
-        batch_size=batch_size
-    )
-    print(f"Test performance: {score}")

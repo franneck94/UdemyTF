@@ -24,10 +24,14 @@ def schedule_fn3(epoch: int) -> float:
     return 1e-3 * np.exp(0.1 * (10 - epoch))
 
 
+def schedule_fn4(epoch: int) -> float:
+    return 1e-3 * np.exp(0.05 * (10 - epoch))
+
+
 class LRTensorBoard(tf.keras.callbacks.TensorBoard):
     def __init__(self, log_dir: str, **kwargs: dict) -> None:
         super().__init__(log_dir=log_dir, **kwargs)
 
     def on_epoch_end(self, epoch: int, logs: dict) -> None:
-        logs.update({"learning_rate": self.model.optimizer.learning_rate})
+        logs.update({"learning_rate": self.model.optimizer.learning_rate.numpy()})
         super().on_epoch_end(epoch, logs)

@@ -4,14 +4,15 @@ from typing import Tuple
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import ELU
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.layers import MaxPool2D
+from tensorflow.keras.layers import ReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
@@ -40,7 +41,7 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
     kernel_initializer: tf.keras.initializers.Initializer,
-    activation_str: str
+    activation_cls: tf.keras.layers.Activation
 ) -> Model:
     input_img = Input(shape=img_shape)
 
@@ -50,20 +51,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer
     )(input_img)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -72,20 +67,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -94,20 +83,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
@@ -115,27 +98,26 @@ def build_model(
         units=dense_layer_size,
         kernel_initializer=kernel_initializer
     )(x)
-    if activation_str == "LeakyReLU":
-        x = LeakyReLU()(x)
-    else:
-        x = Activation(activation_str)(x)
+    x = activation_cls(x)
     x = Dense(
         units=num_classes,
         kernel_initializer=kernel_initializer
     )(x)
     y_pred = Activation("softmax")(x)
 
-    # Build the model
     model = Model(
         inputs=[input_img],
         outputs=[y_pred]
     )
+
     opt = optimizer(learning_rate=learning_rate)
+
     model.compile(
         loss="categorical_crossentropy",
         optimizer=opt,
         metrics=["accuracy"]
     )
+
     return model
 
 
@@ -151,60 +133,59 @@ if __name__ == "__main__":
 
     # Global params
     epochs = 40
-    batch_size = 256
+    batch_size = 128
 
+    # Best model params
     optimizer = Adam
-    learning_rate = 0.001
+    learning_rate = 1e-3
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
     filter_block3 = 128
     kernel_size_block3 = 3
-    dense_layer_size = 512
+    dense_layer_size = 128
+    kernel_initializer = "GlorotUniform"
 
-    # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
-    kernel_initializer = "LecunNormal"
-    # relu, elu, LeakyReLU
-    activation_str = "relu"
-    # 0.00, 0.05, 0.1, 0.2
-    dropout_rate = 0.20
+    activations = {
+        "RELU": ReLU(),
+        "LEALY_RELU": LeakyReLU(alpha=0.3),
+        "ELU": ELU(alpha=1.0)
+    }
 
-    model = build_model(
-        img_shape,
-        num_classes,
-        optimizer,
-        learning_rate,
-        filter_block1,
-        kernel_size_block1,
-        filter_block2,
-        kernel_size_block2,
-        filter_block3,
-        kernel_size_block3,
-        dense_layer_size,
-        kernel_initializer,
-        activation_str
-    )
-    model_log_dir = os.path.join(LOGS_DIR, "modelLeakyReLU")
+    for activation in activations:
+        activation_cls = activations[activation]
+        activation_name = f"ACTIVATION_{activation}"
 
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0
-    )
+        model = build_model(
+            img_shape,
+            num_classes,
+            optimizer,
+            learning_rate,
+            filter_block1,
+            kernel_size_block1,
+            filter_block2,
+            kernel_size_block2,
+            filter_block3,
+            kernel_size_block3,
+            dense_layer_size,
+            kernel_initializer,
+            activation_cls
+        )
+        model_log_dir = os.path.join(LOGS_DIR, f"model{activation_name}")
 
-    model.fit(
-        train_dataset,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        callbacks=[tb_callback],
-        validation_data=val_dataset,
-    )
+        tb_callback = TensorBoard(
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
+            write_graph=False
+        )
 
-    score = model.evaluate(
-        val_dataset,
-        verbose=0,
-        batch_size=batch_size
-    )
-    print(f"Test performance: {score}")
+        model.fit(
+            train_dataset,
+            verbose=1,
+            batch_size=batch_size,
+            epochs=epochs,
+            callbacks=[tb_callback],
+            validation_data=val_dataset,
+        )

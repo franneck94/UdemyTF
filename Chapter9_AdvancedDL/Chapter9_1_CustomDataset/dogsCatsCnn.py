@@ -91,7 +91,7 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 30
+    epochs = 40
     batch_size = 256
 
     # Best model params

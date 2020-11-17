@@ -128,8 +128,8 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 10
-    batch_size = 256
+    epochs = 40
+    batch_size = 128
 
     # Best model params
     optimizer = Adam
@@ -138,46 +138,49 @@ if __name__ == "__main__":
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
-    filter_block3 = 7
-    kernel_size_block3 = 64
-    dense_layer_size = 512
+    filter_block3 = 128
+    kernel_size_block3 = 3
+    dense_layer_size = 128
 
-    # GlorotUniform, GlorotNormal, HeUniform, HeNormal, LecunUniform, LecunNormal
-    kernel_initializer = "LecunNormal"
+    kernel_initializers = [
+        "GlorotUniform",
+        "GlorotNormal",
+        "HeUniform",
+        "HeNormal",
+        "LecunUniform",
+        "LecunNormal"
+    ]
 
-    model = build_model(
-        img_shape,
-        num_classes,
-        optimizer,
-        learning_rate,
-        filter_block1,
-        kernel_size_block1,
-        filter_block2,
-        kernel_size_block2,
-        filter_block3,
-        kernel_size_block3,
-        dense_layer_size,
-        kernel_initializer
-    )
-    model_log_dir = os.path.join(LOGS_DIR, f"model{kernel_initializer}")
+    for kernel_initializer in kernel_initializers:
 
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0
-    )
+        model = build_model(
+            img_shape,
+            num_classes,
+            optimizer,
+            learning_rate,
+            filter_block1,
+            kernel_size_block1,
+            filter_block2,
+            kernel_size_block2,
+            filter_block3,
+            kernel_size_block3,
+            dense_layer_size,
+            kernel_initializer
+        )
+        model_log_dir = os.path.join(LOGS_DIR, f"model{kernel_initializer}")
 
-    model.fit(
-        train_dataset,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        callbacks=[tb_callback],
-        validation_data=val_dataset,
-    )
-    score = model.evaluate(
-        test_dataset,
-        verbose=0,
-        batch_size=batch_size
-    )
-    print(f"Test performance best model: {score}")
+        tb_callback = TensorBoard(
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
+            write_graph=False
+        )
+
+        model.fit(
+            train_dataset,
+            verbose=1,
+            batch_size=batch_size,
+            epochs=epochs,
+            callbacks=[tb_callback],
+            validation_data=val_dataset,
+        )
