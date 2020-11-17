@@ -1,22 +1,23 @@
 # TensorFlow Libraries
 tensorflow==2.3.1
-tensorflow-datasets==4.1.*
-tensorflow-addons==0.11.*
+tensorflow-datasets
+tensorflow-addons
+
 # Other Libraries
-scikit-learn==0.23.*
-seaborn==0.10.*
-scipy==1.4.*
-scikit-image==0.17.*
-numpy==1.18.*
-matplotlib==3.3.*
-pandas==1.1.*
-openpyxl==3.0.*
-xlrd==1.2.0.*
-keract==4.3.*
-opencv-python==4.4.*
-pygame==1.9.*
-gym==0.17.*
-pyqt5==5.15.*
+scikit-learn
+seaborn
+scipy
+scikit-image
+numpy
+matplotlib
+pandas
+openpyxl
+xlrd
+keract
+opencv-python
+pygame
+gym
+pyqt5
 
 # Linting/Tooling
 pylint
