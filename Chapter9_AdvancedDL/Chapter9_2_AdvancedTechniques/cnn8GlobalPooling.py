@@ -26,11 +26,13 @@ from tf_utils.callbacks import LRTensorBoard
 from tf_utils.callbacks import schedule_fn
 from tf_utils.callbacks import schedule_fn2
 from tf_utils.callbacks import schedule_fn3
+from tf_utils.callbacks import schedule_fn4
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
 np.random.seed(0)
 tf.random.set_seed(0)
+
 
 LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
@@ -53,8 +55,8 @@ def build_model(
     activation_cls: tf.keras.layers.Activation,
     dropout_rate: float,
     use_batch_normalization: bool,
-    with_global_pooling: bool,
-    with_dense: bool
+    use_dense: bool,
+    use_global_pooling: bool
 ) -> Model:
     input_img = Input(shape=img_shape)
 
@@ -70,8 +72,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -124,11 +125,11 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    if with_global_pooling:
+    if use_global_pooling:
         x = GlobalAveragePooling2D()(x)
     else:
         x = Flatten()(x)
-    if with_dense:
+    if use_dense:
         x = Dense(
             units=dense_layer_size,
             kernel_initializer=kernel_initializer
@@ -173,6 +174,8 @@ if __name__ == "__main__":
     batch_size = 128
 
     params = {
+        "dense_layer_size": 128,
+        "kernel_initializer": "GlorotUniform",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -181,13 +184,11 @@ if __name__ == "__main__":
         "kernel_size_block2": 3,
         "filter_block3": 128,
         "kernel_size_block3": 3,
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
         "activation_cls": ReLU(),
-        "dropout_rate": 0.00,
+        "dropout_rate": 0.0,
         "use_batch_normalization": True,
-        "with_global_pooling": True,
-        "with_dense": False
+        "use_dense": True,
+        "use_global_pooling": True
     }
 
     model = build_model(
@@ -196,31 +197,36 @@ if __name__ == "__main__":
         **params
     )
 
-    use_pool = params["with_global_pooling"]
-    use_dense = params["with_dense"]
-    model_log_dir = os.path.join(LOGS_DIR, f"model_Pooling_{use_pool}_Dense_{use_dense}")
-
-    tb_callback = TensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0,
-        write_graph=False
-    )
-
-    lr_callback = LRTensorBoard(
-        log_dir=model_log_dir
-    )
+    use_pool = params["use_global_pooling"]
+    use_dense = params["use_dense"]
+    model_log_dir = os.path.join(LOGS_DIR, f"model_Global_{use_pool}_Dense_{use_dense}")
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
         verbose=1
     )
 
+    plateau_callback = ReduceLROnPlateau(
+        monitor="val_accuracy",
+        factor=0.99,
+        patience=3,
+        verbose=1,
+        min_lr=1e-5
+    )
+
+    lr_callback = LRTensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
+        write_graph=False
+    )
+
     es_callback = EarlyStopping(
         monitor="val_accuracy",
         patience=30,
         verbose=1,
-        restore_best_weights=True
+        restore_best_weights=True,
+        min_delta=0.0005
     )
 
     model.fit(
@@ -228,6 +234,6 @@ if __name__ == "__main__":
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
-        callbacks=[tb_callback, lr_callback, lrs_callback, es_callback],
+        callbacks=[es_callback, lrs_callback, lr_callback],
         validation_data=val_dataset,
     )

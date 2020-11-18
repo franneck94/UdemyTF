@@ -12,7 +12,6 @@ numpy
 matplotlib
 pandas
 openpyxl
-xlrd
 keract
 opencv-python
 pygame

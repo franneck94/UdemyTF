@@ -165,7 +165,6 @@ if __name__ == "__main__":
     epochs = 40
     batch_size = 128
 
-    # Best model params
     params = {
         "dense_layer_size": 128,
         "kernel_initializer": "GlorotUniform",
