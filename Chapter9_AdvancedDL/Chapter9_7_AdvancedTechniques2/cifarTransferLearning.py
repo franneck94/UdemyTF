@@ -5,21 +5,20 @@ from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.layers import Input
+from tensorflow.keras.layers.experimental.preprocessing import Rescaling
+from tensorflow.keras.layers.experimental.preprocessing import Resizing
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from tf_utils.cifarDataAdvanced import CIFAR10
 
 
-def build_model(
-    img_shape: Tuple[int, int, int],
-    num_classes: int
-) -> Model:
+def build_model() -> Model:
     base_model = MobileNetV2(
         include_top=False,
         weights="imagenet",
-        input_shape=img_shape,
-        classes=num_classes
+        input_shape=(160, 160, 3),
+        classes=2
     )
 
     print(f"Number of layers in the base model: {len(base_model.layers)}")
@@ -28,7 +27,9 @@ def build_model(
         layer.trainable = False
 
     input_img = Input(shape=img_shape)
-    x = base_model(input_img, training=False)
+    x = Rescaling(scale=2.0, offset=-1.0)(input_img)
+    x = Resizing(height=160, width=160)(x)
+    x = base_model(x)
     x = GlobalAveragePooling2D()(x)
     x = Dense(units=num_classes)(x)
     y_pred = Activation("softmax")(x)
@@ -66,9 +67,11 @@ if __name__ == "__main__":
     model.fit(
         train_dataset,
         epochs=20,
-        validation_data=val_dataset
+        validation_data=val_dataset,
+        verbose=1
     )
 
     model.evaluate(
-        test_dataset
+        test_dataset,
+        verbose=0
     )

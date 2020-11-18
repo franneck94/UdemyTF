@@ -15,12 +15,15 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import RMSprop
 
 from tf_utils.bostonDataAdvanced import BOSTON
 from tf_utils.callbacks import LRTensorBoard
 from tf_utils.callbacks import schedule_fn
 from tf_utils.callbacks import schedule_fn2
 from tf_utils.callbacks import schedule_fn3
+from tf_utils.callbacks import schedule_fn4
+from tf_utils.callbacks import schedule_fn5
 
 
 np.random.seed(0)
@@ -100,7 +103,10 @@ def build_model(
 
 
 if __name__ == "__main__":
-    """Best model from chapter 5: 0.7287 R2
+    """
+    Chapter 5: 0.7287 R2
+    LinReg: 0.7174 R2
+    Model: 0.8197 R2
     """
     data = BOSTON()
 
@@ -113,19 +119,19 @@ if __name__ == "__main__":
 
     # Global params
     epochs = 2_000
-    batch_size = 256
+    batch_size = 64
 
     params = {
         "optimizer": Adam,
         "learning_rate": 0.001,
-        "dense_layer_size1": 128,
-        "dense_layer_size2": 64,
+        "dense_layer_size1": 256,
+        "dense_layer_size2": 128,
         # relu, elu, LeakyReLU
         "activation_str": "relu",
         # 0.05, 0.1, 0.2
         "dropout_rate": 0.00,
         # True, False
-        "use_batch_normalization": True,
+        "use_batch_normalization": True
     }
 
     model = build_model(
@@ -134,30 +140,34 @@ if __name__ == "__main__":
         **params
     )
 
-    plateau_callback = ReduceLROnPlateau(
-        monitor="val_r_squared",
-        factor=0.98,
-        patience=50,
-        verbose=1,
-        min_lr=1e-5
+    model_log_dir = os.path.join(LOGS_DIR, "model_Final_BOSTON")
+
+    lr_callback = LRTensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
+        write_graph=False
+    )
+
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn5,
+        verbose=0
     )
 
     es_callback = EarlyStopping(
-        monitor="val_r_squared",
-        patience=500,
-        verbose=1,
-        restore_best_weights=True
+        monitor="val_loss",
+        patience=30,
+        verbose=2,
+        restore_best_weights=True,
+        min_delta=0.0005
     )
-
-    model_log_dir = os.path.join(LOGS_DIR, "modelBostonFinal")
-    tb_callback = LRTensorBoard(log_dir=model_log_dir)
 
     model.fit(
         train_dataset,
         verbose=1,
         batch_size=batch_size,
         epochs=epochs,
-        callbacks=[tb_callback, plateau_callback, es_callback],
+        callbacks=[lr_callback, lrs_callback, es_callback],
         validation_data=val_dataset
     )
 

@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
     num_features = data.num_features
     num_targets = data.num_targets
+
     # Model params
     learning_rate = 0.001
     optimizer = Adam(learning_rate=learning_rate)

@@ -38,7 +38,7 @@ tf.random.set_seed(0)
 MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(MODELS_DIR):
     os.mkdir(MODELS_DIR)
-MODEL_FILE_PATH = os.path.join(MODELS_DIR, "dogs_cats_plot.h5")
+MODEL_FILE_PATH = os.path.join(MODELS_DIR, "dogs_cats.h5")
 LOGS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
@@ -203,17 +203,6 @@ if __name__ == "__main__":
         **params
     )
 
-    use_pool = params['use_global_pooling']
-    use_dense = params['use_dense']
-    model_log_dir = os.path.join(LOGS_DIR, f"model_Global_{use_pool}_Dense_{use_dense}")
-
-    lr_callback = LRTensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0,
-        write_graph=False
-    )
-
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
         verbose=1
@@ -226,16 +215,16 @@ if __name__ == "__main__":
         restore_best_weights=True
     )
 
-    model.fit(
-        train_dataset,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        callbacks=[lr_callback, lrs_callback, es_callback],
-        validation_data=val_dataset,
-    )
+    # model.fit(
+    #     train_dataset,
+    #     verbose=1,
+    #     batch_size=batch_size,
+    #     epochs=epochs,
+    #     callbacks=[lrs_callback, es_callback],
+    #     validation_data=val_dataset,
+    # )
 
-    model.save_weights(filepath=MODEL_FILE_PATH)
+    # model.save_weights(filepath=MODEL_FILE_PATH)
     model.load_weights(filepath=MODEL_FILE_PATH)
 
     score = model.evaluate(

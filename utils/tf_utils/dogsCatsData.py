@@ -76,7 +76,7 @@ def extract_cats_vs_dogs() -> None:
 class DOGSCATS:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # User-definen constants
-        self.num_classes = 10
+        self.num_classes = 2
         self.batch_size = 128
         # Load the data set
         x = np.load(X_FILE_PATH)
@@ -110,6 +110,16 @@ class DOGSCATS:
     def get_val_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_val, self.y_val
 
+    @staticmethod
+    def load_and_preprocess_custom_image(image_file_path: str) -> np.ndarray:
+        img = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = transform.resize(
+            image=img,
+            output_shape=IMG_SHAPE
+        )
+        return img
+
     def data_augmentation(self, augment_size: int = 5_000) -> None:
         image_generator = ImageDataGenerator(
             rotation_range=5,
@@ -137,5 +147,4 @@ class DOGSCATS:
 
 if __name__ == "__main__":
     # extract_cats_vs_dogs()
-
-    data = DOGSCATS()
+    pass

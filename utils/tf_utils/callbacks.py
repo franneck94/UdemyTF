@@ -28,6 +28,19 @@ def schedule_fn4(epoch: int) -> float:
     return 1e-3 * np.exp(0.05 * (10 - epoch))
 
 
+def schedule_fn5(epoch: int) -> float:
+    learning_rate = 1e-3
+    if epoch < 100:
+        learning_rate = 1e-3
+    elif epoch < 200:
+        learning_rate = 5e-4
+    elif epoch < 300:
+        learning_rate = 1e-4
+    else:
+        learning_rate = 5e-5
+    return learning_rate
+
+
 class LRTensorBoard(tf.keras.callbacks.TensorBoard):
     def __init__(self, log_dir: str, **kwargs: dict) -> None:
         super().__init__(log_dir=log_dir, **kwargs)

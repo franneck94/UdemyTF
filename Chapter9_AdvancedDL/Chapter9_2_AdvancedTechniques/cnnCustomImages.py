@@ -22,12 +22,12 @@ from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.layers import ReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.python.ops.gen_batch_ops import batch
 
 from tf_utils.callbacks import LRTensorBoard
 from tf_utils.callbacks import schedule_fn
 from tf_utils.callbacks import schedule_fn2
 from tf_utils.callbacks import schedule_fn3
+from tf_utils.callbacks import schedule_fn4
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
@@ -35,7 +35,7 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-CUSTOM_IMAGE_PATH = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats/custom/")
+CUSTOM_IMAGES_DIR = os.path.abspath("C:/Users/Jan/Documents/DogsAndCats/custom")
 MODELS_DIR = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/models/")
 if not os.path.exists(MODELS_DIR):
     os.mkdir(MODELS_DIR)
@@ -60,7 +60,9 @@ def build_model(
     kernel_initializer: tf.keras.initializers.Initializer,
     activation_cls: tf.keras.layers.Activation,
     dropout_rate: float,
-    use_batch_normalization: bool
+    use_batch_normalization: bool,
+    use_dense: bool,
+    use_global_pooling: bool
 ) -> Model:
     input_img = Input(shape=img_shape)
 
@@ -76,8 +78,7 @@ def build_model(
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
-        padding="same",
-        kernel_initializer=kernel_initializer
+        padding="same", kernel_initializer=kernel_initializer
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -130,7 +131,18 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    x = Flatten()(x)
+    if use_global_pooling:
+        x = GlobalAveragePooling2D()(x)
+    else:
+        x = Flatten()(x)
+    if use_dense:
+        x = Dense(
+            units=dense_layer_size,
+            kernel_initializer=kernel_initializer
+        )(x)
+        if use_batch_normalization:
+            x = BatchNormalization()(x)
+        x = activation_cls(x)
     x = Dense(
         units=num_classes,
         kernel_initializer=kernel_initializer
@@ -164,10 +176,12 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 40
+    epochs = 100
     batch_size = 128
 
     params = {
+        "dense_layer_size": 128,
+        "kernel_initializer": "GlorotUniform",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -176,11 +190,11 @@ if __name__ == "__main__":
         "kernel_size_block2": 3,
         "filter_block3": 128,
         "kernel_size_block3": 3,
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
         "activation_cls": ReLU(),
-        "dropout_rate": 0.00,
-        "use_batch_normalization": False,
+        "dropout_rate": 0.0,
+        "use_batch_normalization": True,
+        "use_dense": True,
+        "use_global_pooling": True
     }
 
     model = build_model(
@@ -189,27 +203,59 @@ if __name__ == "__main__":
         **params
     )
 
-    model.fit(
-        train_dataset,
-        verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
-        validation_data=val_dataset,
+    model_log_dir = os.path.join(LOGS_DIR, "modelFinal")
+
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1
     )
 
-    model.save_weights(MODEL_FILE_PATH)
+    plateau_callback = ReduceLROnPlateau(
+        monitor="val_accuracy",
+        factor=0.99,
+        patience=3,
+        verbose=1,
+        min_lr=1e-5
+    )
+
+    lr_callback = LRTensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
+        write_graph=False
+    )
+
+    es_callback = EarlyStopping(
+        monitor="val_accuracy",
+        patience=30,
+        verbose=1,
+        restore_best_weights=True,
+        min_delta=0.0005
+    )
+
+    # model.fit(
+    #     train_dataset,
+    #     verbose=1,
+    #     batch_size=batch_size,
+    #     epochs=epochs,
+    #     callbacks=[es_callback, lrs_callback, lr_callback],
+    #     validation_data=val_dataset,
+    # )
+
+    # model.save_weights(MODEL_FILE_PATH)
     model.load_weights(MODEL_FILE_PATH)
 
-    images_path = os.path.abspath(CUSTOM_IMAGE_PATH)
-    image_names = [f for f in os.listdir(images_path) if ".jpg" in f or ".jpeg" in f or ".png" in f]
+    image_names = [f for f in os.listdir(CUSTOM_IMAGES_DIR) if ".jpg" in f or ".jpeg" in f or ".png" in f]
     class_names = ["cat", "dog"]
 
-    # for image_name in image_names:
-    #     image_path = os.path.join(images_path, image_name)
-    #     x = data.load_and_preprocess_custom_image(image_path)
-    #     y_pred = model.predict(np.expand_dims(x, axis=0))[0]
-    #     y_pred_class = np.argmax(y_pred)
-    #     y_pred_prob = y_pred[y_pred_class]
-    #     plt.imshow(x)
-    #     plt.title(f"Predicted class: {class_names[y_pred_class]}, Prob: {y_pred_prob}")
-    #     plt.show()
+    for image_file_name in image_names:
+        image_file_path = os.path.join(CUSTOM_IMAGES_DIR, image_file_name)
+        x = data.load_and_preprocess_custom_image(image_file_path)
+        x = np.expand_dims(x, axis=0)
+        y_pred = model.predict(x)[0]
+        y_pred_class_idx = np.argmax(y_pred)
+        y_pred_prob = y_pred[y_pred_class_idx]
+        y_pred_class_name = class_names[y_pred_class_idx]
+        plt.imshow(x.reshape(64, 64, 3))
+        plt.title(f"Pred class: {y_pred_class_name}, Prob: {y_pred_prob}")
+        plt.show()

@@ -2,7 +2,6 @@ from typing import Tuple
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from tensorflow.keras.datasets import boston_housing
 
 
@@ -27,12 +26,6 @@ class BOSTON:
         self.test_size = self.x_test.shape[0]
         self.num_features = self.x_train.shape[1]
         self.num_targets = self.y_train.shape[1]
-        # Normalize data
-        scaler = StandardScaler()
-        scaler.fit(self.x_train)
-        self.x_train = scaler.transform(self.x_train)
-        self.x_test = scaler.transform(self.x_test)
-        self.x_val = scaler.transform(self.x_val)
 
     def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
@@ -42,7 +35,3 @@ class BOSTON:
 
     def get_val_set(self) -> Tuple[np.ndarray, np.ndarray]:
         return self.x_val, self.y_val
-
-
-if __name__ == "__main__":
-    data = BOSTON()

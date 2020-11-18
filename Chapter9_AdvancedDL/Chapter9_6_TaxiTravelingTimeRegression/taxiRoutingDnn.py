@@ -6,7 +6,10 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 
-from tf_utils.taxiRoutingData import TAXIROUTING
+from tf_utils.taxiRoutingDataAdvanced import TAXIROUTING
+
+
+EXCEL_FILE_PATH = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
 
 
 def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
@@ -36,14 +39,14 @@ def build_model(num_features: int, num_targets: int):
 
 
 if __name__ == "__main__":
-    excel_file_path = os.path.abspath("C:/Users/Jan/Dropbox/_Programmieren/UdemyTF/data/taxiDataset.xlsx")
-    taxi_data = TAXIROUTING(excel_file_path=excel_file_path)
+    data = TAXIROUTING(excel_file_path=EXCEL_FILE_PATH)
 
-    x_train, y_train = taxi_data.x_train, taxi_data.y_train
-    x_test, y_test = taxi_data.x_test, taxi_data.y_test
+    train_dataset = data.get_train_set()
+    test_dataset = data.get_test_set()
+    val_dataset = data.get_val_set()
 
-    num_features = taxi_data.num_features
-    num_targets = taxi_data.num_targets
+    num_features = data.num_features
+    num_targets = data.num_targets
 
     # Model params
     learning_rate = 0.001
@@ -60,16 +63,14 @@ if __name__ == "__main__":
     )
 
     model.fit(
-        x=x_train,
-        y=y_train,
+        train_dataset,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_test, y_test),
+        validation_data=val_dataset,
     )
 
     score = model.evaluate(
-        x=x_test,
-        y=y_test,
+        test_dataset,
         verbose=0
     )
     print(f"Score: {score}")

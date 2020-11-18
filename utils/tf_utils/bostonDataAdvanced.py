@@ -34,6 +34,7 @@ class BOSTON:
         self.train_dataset = tf.data.Dataset.from_tensor_slices((self.x_train, self.y_train))
         self.test_dataset = tf.data.Dataset.from_tensor_slices((self.x_test, self.y_test))
         self.val_dataset = tf.data.Dataset.from_tensor_slices((self.x_val, self.y_val))
+        # Dataset preparation
         self.train_dataset = self._prepare_dataset(self.train_dataset, shuffle=True)
         self.test_dataset = self._prepare_dataset(self.test_dataset)
         self.val_dataset = self._prepare_dataset(self.val_dataset)
@@ -53,7 +54,14 @@ class BOSTON:
         shuffle: bool = False
     ) -> tf.data.Dataset:
         dataset = dataset.map(
-            map_func=lambda x, y: (self.normalization_layer(x, training=False), y),
+            map_func=lambda x, y: (
+                tf.reshape(
+                    self.normalization_layer(
+                        tf.reshape(x, shape=(1, self.num_features)), training=False
+                    ),
+                    shape=(self.num_features,)
+                ), y
+            ),
             num_parallel_calls=tf.data.experimental.AUTOTUNE
         )
 
@@ -63,7 +71,3 @@ class BOSTON:
         dataset = dataset.batch(batch_size=self.batch_size)
 
         return dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
-
-
-if __name__ == "__main__":
-    data = BOSTON()

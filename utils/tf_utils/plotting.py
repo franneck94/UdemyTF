@@ -7,7 +7,6 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from numpy.lib.arraysetops import isin
 from sklearn.metrics import confusion_matrix
 
 
@@ -214,7 +213,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
             self.figure_title = figure_title
 
     def on_epoch_end(self, epoch: int, logs: dict = None):
-        y_pred_prob = self.model.predict(self.x_test)
+        y_pred_prob = self.model(self.x_test, training=False)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
 
@@ -272,9 +271,7 @@ def get_occlusion(
         for j in range(0, cols - box_size + 1, step_size):
             img_with_box = img.copy()
             img_with_box[i: i + box_size, j: j + box_size] = box
-            y_pred = model.predict(
-                img_with_box.reshape((1, rows, cols, depth))
-            )[0]
+            y_pred = model(img_with_box.reshape((1, rows, cols, depth)), training=False)[0]
             prob_right_class = y_pred[true_class_idx]
             occulsion_map[i: i + step_size, j: j + step_size] = np.full(
                 shape=(step_size, step_size), fill_value=prob_right_class
@@ -284,7 +281,7 @@ def get_occlusion(
     cmap = "Spectral"
     ax1.imshow(img)
     heatmap = ax2.imshow(occulsion_map, cmap=cmap)
-    cbar = plt.colorbar(heatmap)
+    _ = plt.colorbar(heatmap)
     plt.show()
 
 

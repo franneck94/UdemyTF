@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers.experimental.preprocessing import RandomRotation
 from tensorflow.keras.layers.experimental.preprocessing import RandomTranslation
 from tensorflow.keras.layers.experimental.preprocessing import RandomZoom
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
@@ -80,7 +79,7 @@ def extract_cats_vs_dogs() -> None:
 class DOGSCATS:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # User-definen constants
-        self.num_classes = 10
+        self.num_classes = 2
         self.batch_size = 128
         # Load the data set
         x = np.load(X_FILE_PATH)
@@ -122,6 +121,16 @@ class DOGSCATS:
         return self.val_dataset
 
     @staticmethod
+    def load_and_preprocess_custom_image(image_file_path: str) -> np.ndarray:
+        img = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = transform.resize(
+            image=img,
+            output_shape=IMG_SHAPE
+        )
+        return img
+
+    @staticmethod
     def _build_data_augmentation() -> Sequential:
         model = Sequential()
 
@@ -154,5 +163,4 @@ class DOGSCATS:
 
 if __name__ == "__main__":
     # extract_cats_vs_dogs()
-
-    data = DOGSCATS()
+    pass

@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from tf_utils.caliHousingData import CALIHOUSING
+from tf_utils.caliHousingDataAdvanced import CALIHOUSING
 
 
 if __name__ == "__main__":
