@@ -8,7 +8,7 @@ scikit-learn
 seaborn
 scipy
 scikit-image
-numpy
+numpy==1.18.*
 matplotlib
 pandas
 openpyxl
