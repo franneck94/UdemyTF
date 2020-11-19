@@ -5,6 +5,10 @@ from tensorflow.keras.datasets import boston_housing
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 class BOSTON:
     def __init__(self, validation_size: float = 0.33) -> None:
         # User-definen constants

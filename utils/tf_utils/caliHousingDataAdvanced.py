@@ -5,6 +5,10 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 class CALIHOUSING:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # User-definen constants

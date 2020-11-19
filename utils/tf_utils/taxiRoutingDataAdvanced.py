@@ -8,6 +8,10 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 def load_dataset(excel_file_path) -> Dict[str, Any]:
     # Load the excel file
     column_names = [

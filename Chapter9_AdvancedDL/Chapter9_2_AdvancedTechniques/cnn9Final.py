@@ -6,8 +6,6 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import LearningRateScheduler
 from tensorflow.keras.callbacks import ReduceLROnPlateau
-from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import ELU
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Conv2D
@@ -16,17 +14,13 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.layers import Input
-from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.layers import ReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
 from tf_utils.callbacks import LRTensorBoard
-from tf_utils.callbacks import schedule_fn
 from tf_utils.callbacks import schedule_fn2
-from tf_utils.callbacks import schedule_fn3
-from tf_utils.callbacks import schedule_fn4
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
@@ -160,6 +154,8 @@ def build_model(
 
 
 if __name__ == "__main__":
+    """Final Model: 0.9340
+    """
     data = DOGSCATS()
 
     train_dataset = data.get_train_set()

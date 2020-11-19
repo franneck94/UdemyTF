@@ -5,6 +5,9 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 
 
+np.random.seed(0)
+
+
 class CALIHOUSING:
     def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
         # User-definen constants

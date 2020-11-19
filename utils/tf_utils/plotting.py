@@ -1,4 +1,4 @@
-"""PLotting helper functions.
+"""Plotting helper functions.
 """
 
 import io
@@ -116,20 +116,6 @@ def plot_confusion_matrix(
     y_pred: np.ndarray, y_true: np.ndarray, classes_list: list
 ) -> plt.figure:
     """Compute and create a plt.figure for the confusion matrix.
-
-    Parameters
-    ----------
-    y_pred : np.ndarray
-        Predicted classes.
-    y_true : np.ndarray
-        True classes.
-    classes_list : list
-        List of class names.
-
-    Returns
-    -------
-    plt.figure
-        Figure of the confusion matrix.
     """
     fig = plt.figure(figsize=(8, 8))
     cm = confusion_matrix(y_true, y_pred)
@@ -162,16 +148,6 @@ def plot_confusion_matrix(
 
 def plot_to_image(fig: plt.figure) -> tf.Tensor:
     """Plt plot/figure to tensorflow image.
-
-    Parameters
-    ----------
-    fig : plt.figure
-        Plt plot/figure.
-
-    Returns
-    -------
-    tf.Tensor
-        Tensorflow image object.
     """
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
@@ -285,7 +261,10 @@ def get_occlusion(
     plt.show()
 
 
-def get_heatmap(img: np.ndarray, model: tf.keras.models.Model) -> None:
+def get_heatmap(
+    img: np.ndarray,
+    model: tf.keras.models.Model
+) -> None:
     """Plot the heatmap for a classifier.
     """
     rows, cols, depth = img.shape

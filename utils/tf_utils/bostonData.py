@@ -5,6 +5,9 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.datasets import boston_housing
 
 
+np.random.seed(0)
+
+
 class BOSTON:
     def __init__(self, validation_size: float = 0.33) -> None:
         # User-definen constants

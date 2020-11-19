@@ -3,7 +3,6 @@ models/
 .vscode/
 *.pptx
 *.txt
-*.png
 *.isorted
 !requirements.txt
 

@@ -5,8 +5,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import LearningRateScheduler
-from tensorflow.keras.callbacks import ReduceLROnPlateau
-from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.layers import Dense
@@ -15,14 +13,9 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import LeakyReLU
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.optimizers import RMSprop
 
 from tf_utils.bostonDataAdvanced import BOSTON
 from tf_utils.callbacks import LRTensorBoard
-from tf_utils.callbacks import schedule_fn
-from tf_utils.callbacks import schedule_fn2
-from tf_utils.callbacks import schedule_fn3
-from tf_utils.callbacks import schedule_fn4
 from tf_utils.callbacks import schedule_fn5
 
 

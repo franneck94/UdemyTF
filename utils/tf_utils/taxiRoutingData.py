@@ -7,6 +7,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
+np.random.seed(0)
+
+
 def load_dataset(excel_file_path) -> Dict[str, Any]:
     # Load the excel file
     column_names = [

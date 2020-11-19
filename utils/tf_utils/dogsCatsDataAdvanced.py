@@ -12,6 +12,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
 DATA_DIR = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
 X_FILE_PATH = os.path.join(DATA_DIR, "x.npy")
 Y_FILE_PATH = os.path.join(DATA_DIR, "y.npy")
