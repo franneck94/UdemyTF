@@ -26,8 +26,9 @@ def build_model(img_shape, num_classes) -> Model:
         input_shape=IMAGENET_SHAPE
     )
 
-    print(f"Number of layers in the base model: {len(base_model.layers)}")
-    fine_tune_at = len(base_model.layers) - 1
+    num_layers = len(base_model.layers)
+    print(f"Number of layers in the base model: {num_layers}")
+    fine_tune_at = num_layers - 10
     for layer in base_model.layers[:fine_tune_at]:
         layer.trainable = False
 
@@ -40,8 +41,8 @@ def build_model(img_shape, num_classes) -> Model:
     y_pred = Activation("softmax")(x)
 
     model = Model(
-        inputs=input_img,
-        outputs=y_pred
+        inputs=[input_img],
+        outputs=[y_pred]
     )
 
     model.summary()
@@ -51,29 +52,33 @@ def build_model(img_shape, num_classes) -> Model:
 
 if __name__ == "__main__":
     """
-    Best model from chapter 9_3: 0.9034 accuracy
-    Best model from here:        0.9559 accuracy
+    Best model from chapter 9_2: 0.9034 accuracy
+    Best model from chapter 9_7: 0.9614 accuracy
     """
     data = DOGSCATS()
 
     train_dataset = data.get_train_set()
-    test_dataset = data.get_test_set()
     val_dataset = data.get_val_set()
+    test_dataset = data.get_test_set()
 
     img_shape = data.img_shape
     num_classes = data.num_classes
 
-    model = build_model(img_shape, num_classes)
+    # Global params
+    epochs = 100
 
-    optimizer = Adam(learning_rate=5e-4)
+    model = build_model(
+        img_shape,
+        num_classes
+    )
+
+    opt = Adam(learning_rate=5e-4)
 
     model.compile(
         loss="categorical_crossentropy",
-        optimizer=optimizer,
+        optimizer=opt,
         metrics=["accuracy"]
     )
-
-    epochs = 100
 
     lrs_callback = LearningRateScheduler(
         schedule=schedule_fn2,
@@ -82,22 +87,21 @@ if __name__ == "__main__":
 
     es_callback = EarlyStopping(
         monitor="val_loss",
-        patience=15,
+        patience=30,
         verbose=1,
-        restore_best_weights=True,
-        min_delta=0.0005
+        restore_best_weights=True
     )
 
     model.fit(
         train_dataset,
-        epochs=epochs,
-        validation_data=val_dataset,
         verbose=1,
-        callbacks=[lrs_callback, es_callback]
+        epochs=epochs,
+        callbacks=[lrs_callback, es_callback],
+        validation_data=val_dataset,
     )
 
     scores = model.evaluate(
-        test_dataset,
+        val_dataset,
         verbose=0
     )
     print(f"Scores: {scores}")

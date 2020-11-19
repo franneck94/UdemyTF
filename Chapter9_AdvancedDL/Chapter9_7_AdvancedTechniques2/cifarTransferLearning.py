@@ -54,7 +54,7 @@ if __name__ == "__main__":
     """
     Best model from chapter 8:   0.7200 accuracy
     Best model from chapter 9_3: 0.8361 accuracy
-    Best model from chapter 9_7: xxxxxx accuracy
+    Best model from chapter 9_7: 0.8993 accuracy
     """
     data = CIFAR10()
 
