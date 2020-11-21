@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-from helper import regression_data
+from tf_utils.dummyData import regression_data
 
 
 if __name__ == "__main__":
