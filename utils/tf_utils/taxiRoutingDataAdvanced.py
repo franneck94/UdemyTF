@@ -34,10 +34,10 @@ def load_dataset(excel_file_path) -> Dict[str, Any]:
     df = pd.DataFrame(data=df, columns=column_names)
     feature_names = [
         "Uhrzeit",
-        "Lat Start",
-        "Lon Start",
-        "Lat Ziel",
-        "Lon Ziel",
+        # "Lat Start",
+        # "Lon Start",
+        # "Lat Ziel",
+        # "Lon Ziel",
         "OSRM Dauer",
         "OSRM Distanz",
     ]

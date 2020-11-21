@@ -29,7 +29,7 @@ def build_model(img_shape, num_classes) -> Model:
 
     num_layers = len(base_model.layers)
     print(f"Number of layers in the base model: {num_layers}")
-    fine_tune_at = num_layers - 1
+    fine_tune_at = num_layers - 10
     for layer in base_model.layers[:fine_tune_at]:
         layer.trainable = False
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     """
     Best model from chapter 7:   0.9916 accuracy
     Best model from chapter 9_3: 0.9947 accuracy
-    Best model from chapter 9_7: 0.xxxx accuracy
+    Best model from chapter 9_7: 0.9904 accuracy
     """
     data = MNIST()
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         num_classes
     )
 
-    opt = Adam(learning_rate=5e-4)
+    opt = Adam(learning_rate=7e-4)
 
     model.compile(
         loss="categorical_crossentropy",
