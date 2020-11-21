@@ -1,8 +1,6 @@
 """Plotting helper functions.
 """
-
 import io
-import os
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -112,6 +110,18 @@ def display_convergence_acc(train_accs: list, valid_accs: list) -> None:
     plt.show()
 
 
+def plot_to_image(fig: plt.figure) -> tf.Tensor:
+    """Plt plot/figure to tensorflow image.
+    """
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png")
+    plt.close(fig)
+    buffer.seek(0)
+    image = tf.io.decode_png(buffer.getvalue(), channels=4)
+    image = tf.expand_dims(image, 0)
+    return image
+
+
 def plot_confusion_matrix(
     y_pred: np.ndarray, y_true: np.ndarray, classes_list: list
 ) -> plt.figure:
@@ -144,89 +154,6 @@ def plot_confusion_matrix(
     plt.ylabel("True label")
     plt.xlabel("Predicted label")
     return fig
-
-
-def plot_to_image(fig: plt.figure) -> tf.Tensor:
-    """Plt plot/figure to tensorflow image.
-    """
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format="png")
-    plt.close(fig)
-    buffer.seek(0)
-    image = tf.io.decode_png(buffer.getvalue(), channels=4)
-    image = tf.expand_dims(image, 0)
-    return image
-
-
-class ImageCallback(tf.keras.callbacks.Callback):
-    """Custom tensorboard callback, to store images.
-    """
-
-    def __init__(
-        self,
-        model: tf.keras.Model,
-        x_test: np.ndarray,
-        y_test: np.ndarray,
-        log_dir: str = "./",
-        classes_list: list = None,
-        figure_fn: plt.Figure = None,
-        figure_title: str = None,
-    ):
-        self.model = model
-        self.x_test = x_test
-        self.y_test = y_test
-        if classes_list is None:
-            self.classes_list = [i for i in range(self.y_test[0])]
-        else:
-            self.classes_list = classes_list
-        self.log_dir = log_dir
-        img_file = os.path.join(self.log_dir, "images")
-        self.file_writer_images = tf.summary.create_file_writer(img_file)
-        self.figure_fn = figure_fn
-        if figure_title is None:
-            self.figure_title = str(self.figure_fn)
-        else:
-            self.figure_title = figure_title
-
-    def on_epoch_end(self, epoch: int, logs: dict = None):
-        y_pred_prob = self.model(self.x_test, training=False)
-        y_pred = np.argmax(y_pred_prob, axis=1)
-        y_true = np.argmax(self.y_test, axis=1)
-
-        if self.figure_fn:
-            fig = self.figure_fn(y_pred, y_true, self.classes_list)
-            tf_image = plot_to_image(fig)
-            figure_title_curr_epoch = self.figure_title + str(epoch)
-            with self.file_writer_images.as_default():
-                tf.summary.image(figure_title_curr_epoch, tf_image, step=epoch)
-
-
-class ConfusionMatrix(ImageCallback):
-    """Custom tensorbard callback, to store the confusion matrix figure.
-    """
-
-    def __init__(
-        self,
-        model: tf.keras.Model,
-        x_test: np.ndarray,
-        y_test: np.ndarray,
-        classes_list: list,
-        log_dir: str,
-    ):
-        self.figure_fn = plot_confusion_matrix
-        self.figure_title = "Confusion Matrix"
-        super().__init__(
-            model,
-            x_test,
-            y_test,
-            log_dir=log_dir,
-            classes_list=classes_list,
-            figure_fn=self.figure_fn,
-            figure_title=self.figure_title,
-        )
-
-    def on_epoch_end(self, epoch: int, logs: dict = None):
-        super().on_epoch_end(epoch, logs)
 
 
 def get_occlusion(

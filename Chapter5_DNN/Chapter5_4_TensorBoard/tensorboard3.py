@@ -11,7 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
-from tf_utils.plotting import ConfusionMatrix
+from tf_utils.callbacks import ConfusionMatrix
 
 
 MODEL_DIR = os.path.abspath("C:/Users/jan/Dropbox/_Programmieren/UdemyTF/models")
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     (x_train, y_train), (x_test, y_test) = prepare_dataset(num_features, num_classes)
 
     optimizer = Adam(learning_rate=0.001)
-    epochs = 1
+    epochs = 2
     batch_size = 256
 
     model = build_model(num_features, num_classes)
