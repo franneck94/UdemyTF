@@ -15,8 +15,11 @@ if __name__ == "__main__":
     regr.fit(x_train, y_train)
     score = regr.score(x_test, y_test)
     print(f"R2-Score: {score}")
+    print(f"Coefs: {regr.coef_}")
+    print(f"Intercept: {regr.intercept_}")
 
     y_pred = regr.predict(x_test)
+
     plt.scatter(x, y)
     plt.plot(x_test, y_pred)
     plt.show()
