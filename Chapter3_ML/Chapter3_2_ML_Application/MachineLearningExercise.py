@@ -1,8 +1,17 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 from tf_utils.dummyData import regression_data
+
+
+def mae(y_true, y_pred):
+    pass
+
+
+def mse(y_true, y_pred):
+    pass
 
 
 if __name__ == "__main__":
@@ -16,8 +25,12 @@ if __name__ == "__main__":
     y_pred = regr.predict(x_test)
 
     r2_score = regr.score(x_test, y_test)
+    mae_score = mae(y_test, y_pred)
+    mse_score = mse(y_test, y_pred)
 
     print(f"R2-Score: {r2_score}")
+    print(f"MAE: {mae_score}")
+    print(f"MSE: {mse_score}")
 
     plt.scatter(x, y)
     plt.plot(x_test, y_pred)
