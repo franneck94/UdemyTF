@@ -10,14 +10,16 @@ def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
-def to_one_hot(y: np.ndarray, num_classes: int) -> np.ndarray:
-    y_one_hot = np.zeros(shape=(len(y), num_classes))  # 4x2
-    for i, y_i in enumerate(y):
-        y_oh = np.zeros(shape=num_classes)
-        y_oh[y_i] = 1
-        y_one_hot[i] = y_oh
-    return y_one_hot
+def to_categorical(y: np.ndarray, num_classes: int) -> np.ndarray:
+    y_categorical = np.zeros(shape=(len(y), num_classes))
+    for i, yi in enumerate(y):
+        y_categorical[i, yi] = 1
+    return y_categorical
 
 
 if __name__ == "__main__":
-    pass
+    x, y = get_dataset()
+    print(y.shape)
+    y_categorical = to_categorical(y, num_classes=2)
+    print(y_categorical.shape)
+    print(y_categorical)

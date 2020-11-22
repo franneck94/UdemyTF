@@ -10,47 +10,38 @@ def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
-def to_one_hot(y: np.ndarray, num_classes: int) -> np.ndarray:
-    y_one_hot = np.zeros(shape=(len(y), num_classes))  # 4x2
-    for i, y_i in enumerate(y):
-        y_oh = np.zeros(shape=num_classes)
-        y_oh[y_i] = 1
-        y_one_hot[i] = y_oh
-    return y_one_hot
+def to_categorical(y: np.ndarray, num_classes: int) -> np.ndarray:
+    y_categorical = np.zeros(shape=(len(y), num_classes))
+    for i, yi in enumerate(y):
+        y_categorical[i, yi] = 1
+    return y_categorical
 
 
 def softmax(y_pred: np.ndarray) -> np.ndarray:
-    y_softmax = np.zeros(shape=y_pred.shape)
+    probabilities = np.zeros_like(y_pred)
     for i in range(len(y_pred)):
         exps = np.exp(y_pred[i])
-        y_softmax[i] = exps / np.sum(exps)
-    return y_softmax
+        probabilities[i] = exps / np.sum(exps)
+    return probabilities
 
 
 def cross_entropy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    num_samples = y_pred.shape[0]
-    num_classes = y_pred.shape[1]
-    loss = 0.0
-    for y_t, y_p in zip(y_true, y_pred):
-        for c in range(num_classes):
-            loss -= y_t[c] * np.log(y_p[c])
-    return loss / num_samples
+    num_samples = y_true.shape[0]
+    loss = -np.sum(y_true * np.log(y_pred)) / num_samples
+    return loss
 
 
 if __name__ == "__main__":
     x, y = get_dataset()
-    y = to_one_hot(y, num_classes=2)
     print(y)
 
-    p1 = np.array([0.223, 0.613])
-    p2 = np.array([-0.750, 0.500])
-    p3 = np.array([0.010, 0.200])
-    p4 = np.array([0.564, 0.234])
-    y_pred = np.array([p1, p2, p3, p4])
+    y_true = to_categorical(y, num_classes=2)
+    print(y_true)
 
-    print(y_pred)
-    y_pred = softmax(y_pred)
+    y_logits = np.array([[10.8, -3.3], [12.2, 21.8], [1.1, 4.9], [7.05, 3.95]])
+
+    y_pred = softmax(y_logits)
     print(y_pred)
 
-    loss = cross_entropy(y, y_pred)
+    loss = cross_entropy(y_true, y_pred)
     print(loss)
