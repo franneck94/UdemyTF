@@ -1,0 +1,23 @@
+pip>=23.*
+
+# Libraries
+scikit-learn
+scipy
+scikit-image
+numpy
+matplotlib
+pandas
+opencv-python
+pyqt5
+xlrd
+openpyxl
+optuna
+
+# Linting/Tooling
+autopep8>=2.0
+black>=23.0
+flake8>=6.0
+isort>=5.12
+mypy>=1.0
+pre-commit>=3.1
+pylint>=2.16
