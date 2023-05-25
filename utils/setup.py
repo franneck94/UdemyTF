@@ -21,14 +21,14 @@ MICRO = 0
 ISRELEASED = True
 VERSION = "%d.%d.%d" % (MAJOR, MINOR, MICRO)
 
-metadata = dict(
-    name=DISTNAME,
-    version=VERSION,
-    packages=["tf_utils"],
-    author=AUTHOR,
-    description=DESCRIPTION,
-    classifiers=[CLASSIFIERS],
-)
+metadata = {
+    "name": DISTNAME,
+    "version": VERSION,
+    "packages": ["tf_utils"],
+    "author": AUTHOR,
+    "description": DESCRIPTION,
+    "classifiers": [CLASSIFIERS],
+}
 
 
 def setup_package() -> None:

@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -61,7 +60,7 @@ def output_block(x: tf.Tensor, num_classes: int) -> tf.Tensor:
 
 
 def build_model_densenet(
-    img_shape: Tuple[int, int, int], num_classes: int
+    img_shape: tuple[int, int, int], num_classes: int
 ) -> Model:
     input_img = Input(shape=img_shape)
 

@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -106,13 +105,13 @@ class DOGSCATS:
         self.depth = self.x_train.shape[3]
         self.img_shape = (self.width, self.height, self.depth)
 
-    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_train_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_test_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_val_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_val_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_val, self.y_val
 
     @staticmethod

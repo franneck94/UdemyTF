@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 from keras.callbacks import TensorBoard
@@ -35,7 +34,7 @@ def prepare_dataset(num_classes: int) -> tuple:
 
 
 def build_model(
-    img_shape: Tuple[int, int, int], num_classes: int
+    img_shape: tuple[int, int, int], num_classes: int
 ) -> Sequential:
     model = Sequential()
 

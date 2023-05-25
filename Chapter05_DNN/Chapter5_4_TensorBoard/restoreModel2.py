@@ -2,13 +2,8 @@ import os
 
 import numpy as np
 from keras.datasets import mnist
-from keras.initializers import Constant
-from keras.initializers import TruncatedNormal
-from keras.layers import Activation
-from keras.layers import Dense
 from keras.models import Sequential
 from keras.models import load_model
-from keras.optimizers import Adam
 from keras.utils import to_categorical
 
 

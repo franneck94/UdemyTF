@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.layers import Activation
@@ -13,7 +11,7 @@ def f(x: float) -> float:
     return x**2 + x + 10
 
 
-def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
+def get_dataset() -> tuple[np.ndarray, np.ndarray]:
     x = np.linspace(start=-10.0, stop=10.0, num=1000).reshape(-1, 1)
     y = f(x)
     return x, y

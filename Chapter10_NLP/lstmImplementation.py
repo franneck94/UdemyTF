@@ -1,6 +1,3 @@
-import random
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
 from keras.layers import LSTM
@@ -47,7 +44,7 @@ class LSTMInference:
             self.h = np.zeros((self.time_steps, self.units))
         # output shape (units)
         else:
-            self.h = np.zeros((self.units))
+            self.h = np.zeros(self.units)
         h_t = np.zeros((1, self.units))
         c_t = np.zeros((1, self.units))
         for t, x_t in enumerate(x):
@@ -61,7 +58,7 @@ class LSTMInference:
 
     def forward_step(
         self, x_t: np.ndarray, c_t: np.ndarray, h_t: np.ndarray
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         i_t = sigmoid_fn(
             np.matmul(x_t, self.W_i) + np.matmul(h_t, self.U_i) + self.b_i
         )

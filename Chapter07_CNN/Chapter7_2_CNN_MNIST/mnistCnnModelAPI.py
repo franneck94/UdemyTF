@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 from keras.callbacks import TensorBoard
@@ -35,7 +34,7 @@ def prepare_dataset(num_classes: int) -> tuple:
     return (x_train, y_train), (x_test, y_test)
 
 
-def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
+def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
     input_img = Input(shape=img_shape)
 
     x = Conv2D(filters=32, kernel_size=3, padding="same")(input_img)

@@ -1,11 +1,8 @@
 import os
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import LearningRateScheduler
-from keras.callbacks import TensorBoard
-from keras.layers import ELU
 from keras.layers import Activation
 from keras.layers import BatchNormalization
 from keras.layers import Conv2D
@@ -13,7 +10,6 @@ from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import Flatten
 from keras.layers import Input
-from keras.layers import LeakyReLU
 from keras.layers import MaxPool2D
 from keras.layers import ReLU
 from keras.models import Model
@@ -37,7 +33,7 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
+    img_shape: tuple[int, int, int],
     num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,

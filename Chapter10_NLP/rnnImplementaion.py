@@ -34,7 +34,7 @@ class SimpleRNNInference:
             self.h = np.zeros((time_steps, self.num_units))
         # output shape (num_units)
         else:
-            self.h = np.zeros((self.num_units))
+            self.h = np.zeros(self.num_units)
         h_t = np.zeros((1, self.num_units))
         for t, x_t in enumerate(x):
             x_t = x_t.reshape(1, -1)  # (2) => (1, 2)

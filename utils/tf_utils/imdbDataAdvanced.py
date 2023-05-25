@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
 from keras.layers import TextVectorization
@@ -70,7 +68,7 @@ class IMDB:
 
     def _mask_to_categorical(
         self, x: tf.Tensor, y: tf.Tensor
-    ) -> Tuple[tf.Tensor, tf.Tensor]:
+    ) -> tuple[tf.Tensor, tf.Tensor]:
         y = tf.one_hot(tf.cast(y, tf.int32), depth=self.num_classes)
         y = tf.cast(y, tf.float32)
         return x, y

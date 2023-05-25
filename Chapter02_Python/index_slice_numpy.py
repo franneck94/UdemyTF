@@ -1,7 +1,7 @@
 import numpy as np
 
 
-l1 = [i for i in range(20)]
+l1 = list(range(20))
 print(l1)
 
 # Start, Stop, Step

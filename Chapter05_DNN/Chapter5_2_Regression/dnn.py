@@ -1,9 +1,5 @@
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
-from keras.layers import Activation
-from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
 from sklearn.datasets import load_diabetes
@@ -23,7 +19,7 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
 
 
 def get_dataset() -> (
-    Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]
+    tuple[tuple[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray]]
 ):
     dataset = load_diabetes()
     x: np.ndarray = dataset.data

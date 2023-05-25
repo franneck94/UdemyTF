@@ -26,7 +26,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         self.x_test = x_test
         self.y_test = y_test
         if classes_list is None:
-            self.classes_list = [i for i in range(self.y_test[0])]
+            self.classes_list = list(range(self.y_test[0]))
         else:
             self.classes_list = classes_list
         self.log_dir = log_dir

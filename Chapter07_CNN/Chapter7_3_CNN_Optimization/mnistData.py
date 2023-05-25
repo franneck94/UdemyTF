@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 from keras.datasets import mnist
 from keras.preprocessing.image import ImageDataGenerator
@@ -37,10 +35,10 @@ class MNIST:
         self.y_train = to_categorical(y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(y_test, num_classes=self.num_classes)
 
-    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_train_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_test_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
     def get_splitted_train_validation_set(

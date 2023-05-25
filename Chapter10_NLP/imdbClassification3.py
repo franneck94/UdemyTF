@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import EarlyStopping
@@ -24,7 +22,7 @@ tf.random.set_seed(0)
 
 
 def create_rnn_model(
-    input_shape: Tuple[int, int],
+    input_shape: tuple[int, int],
     num_classes: int,
     sequence_length: int,
     vocab_size: int,
@@ -57,7 +55,7 @@ def create_rnn_model(
 
 
 def create_gru_model(
-    input_shape: Tuple[int, int],
+    input_shape: tuple[int, int],
     num_classes: int,
     sequence_length: int,
     vocab_size: int,
@@ -90,7 +88,7 @@ def create_gru_model(
 
 
 def create_lstm_model(
-    input_shape: Tuple[int, int],
+    input_shape: tuple[int, int],
     num_classes: int,
     sequence_length: int,
     vocab_size: int,
@@ -144,13 +142,13 @@ def main() -> None:
             "dense_units": [60, 80],
             "dropout_rate": [0.0, 0.2],
         }
-        kwargs = dict(
-            input_shape=input_shape,
-            num_classes=num_classes,
-            sequence_length=sequence_length,
-            vocab_size=vocab_size,
-            embedding_dim=embedding_dim,
-        )
+        kwargs = {
+            "input_shape": input_shape,
+            "num_classes": num_classes,
+            "sequence_length": sequence_length,
+            "vocab_size": vocab_size,
+            "embedding_dim": embedding_dim,
+        }
 
         search = GridSearch(model_fn=model_fn, param_grid=param_grid, **kwargs)
 
@@ -160,12 +158,12 @@ def main() -> None:
             monitor="val_loss", patience=5, verbose=1, restore_best_weights=True
         )
 
-        fit_kwargs = dict(
-            verbose=1,
-            batch_size=batch_size,
-            epochs=epochs,
-            callbacks=[es_callback],
-        )
+        fit_kwargs = {
+            "verbose": 1,
+            "batch_size": batch_size,
+            "epochs": epochs,
+            "callbacks": [es_callback],
+        }
 
         search.fit(
             train_dataset=imdb_data.train_dataset,

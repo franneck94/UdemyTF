@@ -8,7 +8,6 @@ from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
 from keras.wrappers.scikit_learn import KerasClassifier
-from scipy.stats import randint
 from sklearn.model_selection import GridSearchCV
 
 from mnistData import MNIST

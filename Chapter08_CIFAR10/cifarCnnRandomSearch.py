@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import Tuple
+from typing import Union
 
 import numpy as np
 import tensorflow as tf
@@ -30,7 +30,7 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
+    img_shape: tuple[int, int, int],
     num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         "dense_layer_size": randint(128, 1024),
     }
 
-    results = {
+    results: dict[str, Union[float, list, dict]] = {
         "best_score": -np.inf,
         "best_params": {},
         "val_scores": [],

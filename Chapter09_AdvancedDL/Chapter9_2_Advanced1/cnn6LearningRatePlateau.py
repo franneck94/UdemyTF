@@ -1,13 +1,10 @@
 import os
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import LearningRateScheduler
 from keras.callbacks import ReduceLROnPlateau
-from keras.callbacks import TensorBoard
 from keras.initializers import Initializer
-from keras.layers import ELU
 from keras.layers import Activation
 from keras.layers import BatchNormalization
 from keras.layers import Conv2D
@@ -15,7 +12,6 @@ from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import Flatten
 from keras.layers import Input
-from keras.layers import LeakyReLU
 from keras.layers import MaxPool2D
 from keras.layers import ReLU
 from keras.models import Model
@@ -23,10 +19,7 @@ from keras.optimizers import Adam
 from keras.optimizers import Optimizer
 
 from tf_utils.callbacks import LRTensorBoard
-from tf_utils.callbacks import schedule_fn
 from tf_utils.callbacks import schedule_fn2
-from tf_utils.callbacks import schedule_fn3
-from tf_utils.callbacks import schedule_fn4
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
@@ -40,7 +33,7 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
+    img_shape: tuple[int, int, int],
     num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,

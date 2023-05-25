@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 from keras.datasets import mnist
 from keras.layers import Activation
@@ -11,7 +9,7 @@ from keras.utils import to_categorical
 
 def get_dataset(
     num_features: int, num_classes: int
-) -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
+) -> tuple[tuple[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray]]:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     x_train = x_train.reshape(-1, num_features).astype(np.float32)
     x_test = x_test.reshape(-1, num_features).astype(np.float32)

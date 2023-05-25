@@ -99,7 +99,7 @@ if __name__ == "__main__":
         log_dir=MODEL_LOG_DIR, histogram_freq=1, write_graph=True
     )
 
-    classes_list = [class_idx for class_idx in range(num_classes)]
+    classes_list = list(range(num_classes))
 
     cm_callback = ConfusionMatrix(
         model, x_test, y_test, classes_list=classes_list, log_dir=MODEL_LOG_DIR

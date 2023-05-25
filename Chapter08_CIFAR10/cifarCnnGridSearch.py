@@ -1,7 +1,5 @@
 import os
 import shutil
-from typing import Dict
-from typing import Tuple
 from typing import Union
 
 import numpy as np
@@ -30,7 +28,7 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
+    img_shape: tuple[int, int, int],
     num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
@@ -112,7 +110,7 @@ if __name__ == "__main__":
         "dense_layer_size": [512],
     }
 
-    results: Dict[str, Union[float, dict, list]] = {
+    results: dict[str, Union[float, dict, list]] = {
         "best_score": -np.inf,
         "best_params": {},
         "val_scores": [],

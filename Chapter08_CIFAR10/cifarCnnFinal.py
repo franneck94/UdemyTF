@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -26,7 +25,7 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
+    img_shape: tuple[int, int, int],
     num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,

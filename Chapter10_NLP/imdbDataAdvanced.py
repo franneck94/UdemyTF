@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-from keras.layers import TextVectorization
 from keras.models import Sequential
 
 import tensorflow_datasets as tfds

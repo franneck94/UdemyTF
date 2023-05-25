@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 
 
@@ -10,7 +8,7 @@ def f(x: np.ndarray) -> np.ndarray:
     return 2.0 * x + 5.0
 
 
-def classification_data(N: int = 30) -> Tuple[np.ndarray, np.ndarray]:
+def classification_data(N: int = 30) -> tuple[np.ndarray, np.ndarray]:
     N_class1 = N // 2
     N_class2 = N // 2
     x1 = np.random.multivariate_normal(
@@ -26,7 +24,7 @@ def classification_data(N: int = 30) -> Tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
-def regression_data(N: int = 100) -> Tuple[np.ndarray, np.ndarray]:
+def regression_data(N: int = 100) -> tuple[np.ndarray, np.ndarray]:
     x = np.random.uniform(low=-10.0, high=10.0, size=N)
     y = f(x) + np.random.normal(scale=2.0, size=100)
     return x, y

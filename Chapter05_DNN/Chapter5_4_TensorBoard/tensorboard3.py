@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 import numpy as np
 from keras.callbacks import TensorBoard
@@ -39,7 +38,7 @@ def prepare_dataset(num_features: int, num_targets: int) -> tuple:
 
 def build_model(
     num_features: int, num_targets: int, num_extra_layers: int = 2
-) -> Tuple[Sequential, TensorBoard]:
+) -> tuple[Sequential, TensorBoard]:
     log_name = get_model_log_dir("mnist", num_extra_layers)
     model = Sequential()
     model.add(Dense(units=500, input_shape=(num_features,)))

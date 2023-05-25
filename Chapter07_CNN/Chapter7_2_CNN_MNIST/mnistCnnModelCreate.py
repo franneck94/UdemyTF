@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 from keras.datasets import mnist
 from keras.layers import Activation
@@ -27,7 +25,7 @@ def prepare_dataset(num_classes: int) -> tuple:
 
 
 def build_model(
-    img_shape: Tuple[int, int, int], num_classes: int
+    img_shape: tuple[int, int, int], num_classes: int
 ) -> Sequential:
     model = Sequential()
 

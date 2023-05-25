@@ -1,22 +1,3 @@
-import requests  # type: ignore
-
-
-requests.packages.urllib3.disable_warnings()  # type: ignore
-import ssl
-
-
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    # Legacy Python that doesn't verify HTTPS certificates by default
-    pass
-else:
-    # Handle target environment that doesn't support HTTPS verification
-    ssl._create_default_https_context = _create_unverified_https_context
-
-
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
 from keras.datasets import cifar10
@@ -65,13 +46,13 @@ class CIFAR10:
         self.depth = self.x_train.shape[3]
         self.img_shape = (self.width, self.height, self.depth)
 
-    def get_train_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_train_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_train, self.y_train
 
-    def get_test_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_test_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_test, self.y_test
 
-    def get_val_set(self) -> Tuple[np.ndarray, np.ndarray]:
+    def get_val_set(self) -> tuple[np.ndarray, np.ndarray]:
         return self.x_val, self.y_val
 
     def data_augmentation(self, augment_size: int = 5_000) -> None:
@@ -97,3 +78,7 @@ class CIFAR10:
         self.x_train = np.concatenate((self.x_train, x_augmented))
         self.y_train = np.concatenate((self.y_train, y_augmented))
         self.train_size = self.x_train.shape[0]
+
+
+if __name__ == "__main__":
+    c = CIFAR10()

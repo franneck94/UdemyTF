@@ -1,12 +1,10 @@
-from typing import Tuple
-
 import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 
 
 def get_dataset() -> (
-    Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]
+    tuple[tuple[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray]]
 ):
     dataset = load_diabetes()
     x: np.ndarray = dataset.data

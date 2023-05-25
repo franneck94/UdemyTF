@@ -1,6 +1,4 @@
 import os
-from typing import List
-from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -18,9 +16,9 @@ LOGS_DIR = os.path.abspath(
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "gradient_model")
 
 
-def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
+def get_dataset() -> tuple[np.ndarray, np.ndarray]:
     x = np.array([[i, i] for i in range(100)], dtype=np.float32)
-    y = np.array([i for i in range(100)], dtype=np.float32).reshape(-1, 1)
+    y = np.array(list(range(100)), dtype=np.float32).reshape(-1, 1)
     return x, y
 
 
@@ -38,7 +36,7 @@ def get_gradients(
     y_test: np.ndarray,
     model: Sequential,
     loss_object: tf.keras.losses.Loss,
-) -> List[Tuple[np.ndarray, np.ndarray]]:
+) -> list[tuple[np.ndarray, np.ndarray]]:
     with tf.GradientTape() as tape:
         y_pred = model(x_test, training=True)
         loss_value = loss_object(y_test, y_pred)

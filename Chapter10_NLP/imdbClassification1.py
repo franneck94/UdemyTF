@@ -1,9 +1,5 @@
-from typing import Callable
-from typing import Tuple
-
 import numpy as np
 import tensorflow as tf
-from keras.callbacks import EarlyStopping
 from keras.layers import GRU
 from keras.layers import LSTM
 from keras.layers import Activation
@@ -20,7 +16,7 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def create_rnn_model(input_shape: Tuple[int, int], num_classes: int) -> Model:
+def create_rnn_model(input_shape: tuple[int, int], num_classes: int) -> Model:
     input_text = Input(shape=input_shape)
     x = SimpleRNN(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)
@@ -36,7 +32,7 @@ def create_rnn_model(input_shape: Tuple[int, int], num_classes: int) -> Model:
     return model
 
 
-def create_lstm_model(input_shape: Tuple[int, int], num_classes: int) -> Model:
+def create_lstm_model(input_shape: tuple[int, int], num_classes: int) -> Model:
     input_text = Input(shape=input_shape)
     x = LSTM(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)
@@ -52,7 +48,7 @@ def create_lstm_model(input_shape: Tuple[int, int], num_classes: int) -> Model:
     return model
 
 
-def create_gru_model(input_shape: Tuple[int, int], num_classes: int) -> Model:
+def create_gru_model(input_shape: tuple[int, int], num_classes: int) -> Model:
     input_text = Input(shape=input_shape)
     x = GRU(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)

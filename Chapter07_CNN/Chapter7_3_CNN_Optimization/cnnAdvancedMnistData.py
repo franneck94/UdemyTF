@@ -1,6 +1,3 @@
-import os
-from typing import Tuple
-
 from keras.layers import Activation
 from keras.layers import Conv2D
 from keras.layers import Dense
@@ -13,7 +10,7 @@ from keras.optimizers import Adam
 from mnistDataAdvanced import MNIST
 
 
-def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
+def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
     input_img = Input(shape=img_shape)
 
     x = Conv2D(filters=32, kernel_size=3, padding="same")(input_img)

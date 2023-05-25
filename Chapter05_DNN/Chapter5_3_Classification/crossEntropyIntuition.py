@@ -1,9 +1,7 @@
-from typing import Tuple
-
 import numpy as np
 
 
-def get_dataset() -> Tuple[np.ndarray, np.ndarray]:
+def get_dataset() -> tuple[np.ndarray, np.ndarray]:
     """OR dataset."""
     x = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
     y = np.array([[0], [1], [1], [1]])

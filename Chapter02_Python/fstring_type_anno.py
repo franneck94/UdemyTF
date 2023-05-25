@@ -11,7 +11,7 @@ class Car:
         )
 
 
-def main():
+def main() -> None:
     car1 = Car("RS3", "Audi", 400, 2022)
     info1 = car1.get_info()
     print(info1)

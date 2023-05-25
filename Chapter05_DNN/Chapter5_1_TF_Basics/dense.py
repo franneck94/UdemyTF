@@ -1,9 +1,7 @@
-from typing import Tuple
-
 import tensorflow as tf
 
 
-def get_dataset() -> Tuple[tf.Tensor, tf.Tensor]:
+def get_dataset() -> tuple[tf.Tensor, tf.Tensor]:
     """OR dataset."""
     x = tf.constant([[0, 0], [1, 0], [0, 1], [1, 1]], dtype=tf.float32)
     y = tf.constant([[0], [1], [1], [1]], dtype=tf.float32)

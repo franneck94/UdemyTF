@@ -7,7 +7,6 @@ from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
-from keras.optimizers import Adam
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 

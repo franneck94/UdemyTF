@@ -1,5 +1,4 @@
 import os
-from typing import Tuple
 
 from keras.callbacks import TensorBoard
 from keras.layers import Activation
@@ -20,7 +19,7 @@ if not os.path.exists(LOGS_DIR):
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "cnn_no_norm_no_augment")
 
 
-def build_model(img_shape: Tuple[int, int, int], num_classes: int) -> Model:
+def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
     input_img = Input(shape=img_shape)
 
     x = Conv2D(filters=32, kernel_size=3, padding="same")(input_img)
