@@ -7,12 +7,13 @@ from keras.initializers import TruncatedNormal
 from keras.layers import Activation
 from keras.layers import Dense
 from keras.models import Sequential
+from keras.models import save_model
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
 
 MODELS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/models")
-MODEL_FILE_PATH = os.path.join(MODELS_DIR, "mnist_model.h5")
+MODEL_FILE_PATH = os.path.join(MODELS_DIR, "full_mnist_model.h5")
 
 
 def prepare_dataset(num_features: int, num_targets: int) -> tuple:
@@ -83,24 +84,19 @@ if __name__ == "__main__":
         metrics=["accuracy"],
     )
 
-    # model.fit(
-    #     x=x_train,
-    #     y=y_train,
-    #     epochs=3,
-    #     batch_size=128,
-    #     verbose=1,
-    #     validation_data=(x_test, y_test)
-    # )
+    model.fit(
+        x=x_train,
+        y=y_train,
+        epochs=3,
+        batch_size=128,
+        verbose=1,
+        validation_data=(x_test, y_test),
+    )
 
-    # scores = model.evaluate(
-    #     x=x_test,
-    #     y=y_test,
-    #     verbose=0
-    # )
-    # print(f"Scores before saving: {scores}")
+    scores = model.evaluate(x=x_test, y=y_test, verbose=0)
+    print(f"Scores before saving: {scores}")
 
-    # model.save_weights(filepath=MODEL_FILE_PATH)
-    model.load_weights(filepath=MODEL_FILE_PATH)
+    save_model(model, MODEL_FILE_PATH)
 
     scores = model.evaluate(x=x_test, y=y_test, verbose=0)
     print(f"Scores after loading: {scores}")
