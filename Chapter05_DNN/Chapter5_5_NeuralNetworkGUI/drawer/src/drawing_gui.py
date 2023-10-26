@@ -4,6 +4,8 @@ import sys
 from typing import Any
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QPen
 
 from .dnn import build_model, nn_predict
 from .preprocessing import get_image
@@ -88,7 +90,7 @@ class Painter(QtWidgets.QWidget):
             if (self.LastPos.x != self.MouseLoc.x) and (
                 self.LastPos.y != self.MouseLoc.y
             ):
-                self.LastPos = Point(event.x(), event.y())
+                self.LastPos = Point(positions.x(), positions.y())
                 self.ParentLink.DrawingShapes.NewShape(
                     self.LastPos, self.ParentLink.ShapeNum
                 )
@@ -112,10 +114,15 @@ class Painter(QtWidgets.QWidget):
             T = self.ParentLink.DrawingShapes.GetShape(i)
             T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)
             if T.number == T1.number:
-                pen = QtGui.QPen(QtGui.QColor(0, 0, 0), 7, QtCore.Qt.SolidLine)
+                pen = QPen(QColor(0, 0, 0))
+                pen.setWidth(7)
+                pen.setStyle(Qt.PenStyle.SolidLine)
                 painter.setPen(pen)
                 painter.drawLine(
-                    T.location.x, T.location.y, T1.location.x, T1.location.y
+                    int(T.location.x),
+                    int(T.location.y),
+                    int(T1.location.x),
+                    int(T1.location.y),
                 )
 
 
@@ -175,4 +182,4 @@ def main_gui() -> int:
     app = QtWidgets.QApplication(sys.argv)
     main_window = CreateUI()
     main_window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

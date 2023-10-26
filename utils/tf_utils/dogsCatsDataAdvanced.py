@@ -3,14 +3,15 @@ import os
 import cv2
 import numpy as np
 import tensorflow as tf
-from keras.layers.experimental.preprocessing import RandomRotation
-from keras.layers.experimental.preprocessing import RandomTranslation
-from keras.layers.experimental.preprocessing import RandomZoom
+from keras.layers.experimental.preprocessing import (
+    RandomRotation,
+    RandomTranslation,
+    RandomZoom,
+)
 from keras.models import Sequential
 from keras.utils import to_categorical
 from skimage import transform
 from sklearn.model_selection import train_test_split
-
 
 np.random.seed(0)
 tf.random.set_seed(0)
@@ -172,5 +173,5 @@ class DOGSCATS:
 
 
 if __name__ == "__main__":
-    # extract_cats_vs_dogs()
-    pass
+    extract_cats_vs_dogs()
+    # pass
