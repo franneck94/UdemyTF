@@ -21,7 +21,10 @@ class Model:
         return self.current_loss_val
 
     def fit(self) -> None:
-        self.optimizer.minimize(self.loss, self.x)
+        with tf.GradientTape() as tape:
+            current_loss_val = self.loss()
+        gradients = tape.gradient(current_loss_val, self.x)
+        self.optimizer.apply_gradients(zip([gradients], [self.x]))
 
 
 def main() -> None:
