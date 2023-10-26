@@ -36,7 +36,11 @@ known_third_party = [
     "PyQt5",
     "pyqtgraph",
     "torch",
-    "tqdm"
+    "tqdm",
+    "cv2",
+    "skimage",
+    "tensorcross",
+    "tensorflow_datasets"
 ]
 known_first_party = []
 known_local_folder = []

@@ -1,16 +1,15 @@
 import os
 
+import cv2
 import numpy as np
 import tensorflow as tf
-from keras.layers.preprocessing.image_preprocessing import RandomRotation
-from keras.layers.preprocessing.image_preprocessing import RandomTranslation
-from keras.layers.preprocessing.image_preprocessing import RandomZoom
+from keras.layers.experimental.preprocessing import RandomRotation
+from keras.layers.experimental.preprocessing import RandomTranslation
+from keras.layers.experimental.preprocessing import RandomZoom
 from keras.models import Sequential
 from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
-import cv2
 from skimage import transform
+from sklearn.model_selection import train_test_split
 
 
 np.random.seed(0)

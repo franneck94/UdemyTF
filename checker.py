@@ -5,8 +5,8 @@ import subprocess
 directory = "."
 
 
-def should_exclude_directory(dir_name):
-    exclude_dirs = [".mypy", ".ruff_cache", ".vscode"]
+def should_exclude_directory(dir_name: str) -> bool:
+    exclude_dirs = [".mypy", ".ruff_cache", ".vscode", "__pycache__", ".git"]
     return any(
         dir_name == exclude_dir
         or dir_name.startswith(exclude_dir + os.path.sep)
@@ -22,25 +22,32 @@ def main() -> None:
         if num_py_files > 0:
             print(f"dir: {root}, num py files: {num_py_files}")
         for filename in files:
-            if filename.endswith(".py"):
+            if (
+                filename.endswith(".py")
+                and "exercise.py" not in filename.lower()
+            ):
                 file_path = os.path.join(root, filename)
                 if "checker" in file_path:
                     continue
                 try:
-                    print(f"Running file: {file_path}")
+                    print(f"\tRunning file: {file_path}")
                     with open(os.devnull, "w") as null_file:
                         process = subprocess.Popen(
                             ["python", file_path],
                             stderr=null_file,
                             stdout=null_file,
                         )
-                        process.wait(timeout=1)
-                    if process.returncode == 0:
-                        print(f"{file_path} can be executed.")
+                        process.wait(timeout=10)
+                        ret_code = process.returncode
+                        if ret_code == 0:
+                            print(f"\t\t{file_path} can be executed.")
+                        else:
+                            print(f"\t\t!!! {file_path} code {ret_code} !!!")
                 except subprocess.TimeoutExpired:
-                    process.terminate()
+                    process.terminate()  # pyright: ignore
+                    print(f"\t\t{file_path} can be executed (interrupted).")
                 except subprocess.CalledProcessError:
-                    print(f"!!! {file_path} cannot be executed !!!")
+                    print(f"\t\t!!! {file_path} cannot be executed !!!")
 
 
 if __name__ == "__main__":

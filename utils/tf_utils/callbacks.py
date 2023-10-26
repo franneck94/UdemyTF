@@ -126,3 +126,7 @@ class LRTensorBoard(tf.keras.callbacks.TensorBoard):
             {"learning_rate": self.model.optimizer.learning_rate.numpy()}
         )
         super().on_epoch_end(epoch, logs)
+
+
+if __name__ == "__main__":
+    lrtb = LRTensorBoard("")

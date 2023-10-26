@@ -1,13 +1,12 @@
 import os
 
+import cv2
 import numpy as np
 import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
-import cv2
 from skimage import transform
+from sklearn.model_selection import train_test_split
 
 
 np.random.seed(0)

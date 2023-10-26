@@ -5,8 +5,8 @@ from keras.layers import Activation
 from keras.layers import Dense
 from keras.layers import GlobalAveragePooling2D
 from keras.layers import Input
-from keras.layers.preprocessing.image_preprocessing import Rescaling
-from keras.layers.preprocessing.image_preprocessing import Resizing
+from keras.layers.experimental.preprocessing import Rescaling
+from keras.layers.experimental.preprocessing import Resizing
 from keras.models import Model
 from keras.optimizers import Adam
 
