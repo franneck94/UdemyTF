@@ -70,10 +70,9 @@ def save_embedding(vectorizer: TextVectorization, embedding_dim: int) -> int:
 
 
 def load_embedding() -> np.ndarray:
-    x = np.load(
+    return np.load(
         os.path.join(os.path.expanduser("~"), ".keras/datasets/embedding.npy")
     )
-    return x
 
 
 def create_rnn_model(

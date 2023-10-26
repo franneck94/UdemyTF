@@ -5,9 +5,7 @@ from keras.layers import Conv2D
 
 def conv2D(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     rows, cols = image.shape
-    conv_image = np.zeros(shape=(rows, cols), dtype=np.float32)
-
-    return conv_image
+    return np.zeros(shape=(rows, cols), dtype=np.float32)
 
 
 def main() -> None:

@@ -12,8 +12,7 @@ def r_squared(y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
     y_mean = tf.math.reduce_mean(y_true)
     total_sum_squares = tf.reduce_sum(tf.math.square(y_true - y_mean))
     r2 = 1.0 - tf.math.divide(res_sum_squares, total_sum_squares)
-    r2_cliped = tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
-    return r2_cliped
+    return tf.clip_by_value(r2, clip_value_min=0.0, clip_value_max=1.0)
 
 
 def get_dataset() -> (

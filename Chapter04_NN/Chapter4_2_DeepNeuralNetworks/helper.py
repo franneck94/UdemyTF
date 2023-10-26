@@ -1,35 +1,30 @@
-from typing import Union
-
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
 
 
-def f(
-    x0: Union[float, np.ndarray], x1: Union[float, np.ndarray]
-) -> Union[float, np.ndarray]:
+def f(x0: float | np.ndarray, x1: float | np.ndarray) -> float | np.ndarray:
     """Rosenbrock Function."""
-    result = 100.0 * (x0**2.0 - x1) ** 2.0 + (x0 - 1.0) ** 2.0
-    return result
+    return 100.0 * (x0**2.0 - x1) ** 2.0 + (x0 - 1.0) ** 2.0
 
 
 def f_prime_x0(
-    x0: Union[float, np.ndarray], x1: Union[float, np.ndarray]
-) -> Union[float, np.ndarray]:
+    x0: float | np.ndarray, x1: float | np.ndarray
+) -> float | np.ndarray:
     """Derivative of f w.r.t. x0."""
-    result = 2.0 * (200.0 * x0 * (x0**2.0 - x1) + x0 - 1.0)
-    return result
+    return 2.0 * (200.0 * x0 * (x0**2.0 - x1) + x0 - 1.0)
 
 
 def f_prime_x1(
-    x0: Union[float, np.ndarray], x1: Union[float, np.ndarray]
-) -> Union[float, np.ndarray]:
+    x0: float | np.ndarray, x1: float | np.ndarray
+) -> float | np.ndarray:
     """Derivative of f w.r.t. x0."""
-    result = -200.0 * (x0**2.0 - x1)
-    return result
+    return -200.0 * (x0**2.0 - x1)
 
 
-def plot_rosenbrock(x_start: np.ndarray, gradient_steps: list = None) -> None:
+def plot_rosenbrock(
+    x_start: np.ndarray, gradient_steps: list | None = None
+) -> None:
     """Plot the gradient steps."""
     fig = plt.figure(figsize=(12, 8))
     ax = plt.axes(projection="3d")

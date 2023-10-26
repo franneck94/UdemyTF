@@ -117,8 +117,7 @@ def plot_to_image(fig: plt.figure) -> tf.Tensor:
     plt.close(fig)
     buffer.seek(0)
     image = tf.io.decode_png(buffer.getvalue(), channels=4)
-    image = tf.expand_dims(image, 0)
-    return image
+    return tf.expand_dims(image, 0)
 
 
 def plot_confusion_matrix(

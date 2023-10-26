@@ -144,10 +144,7 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    if use_global_pooling:
-        x = GlobalAveragePooling2D()(x)
-    else:
-        x = Flatten()(x)
+    x = GlobalAveragePooling2D()(x) if use_global_pooling else Flatten()(x)
     if use_dense:
         x = Dense(
             units=dense_layer_size, kernel_initializer=kernel_initializer

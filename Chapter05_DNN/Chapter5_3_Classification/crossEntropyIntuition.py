@@ -25,8 +25,7 @@ def softmax(y_pred: np.ndarray) -> np.ndarray:
 
 def cross_entropy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     num_samples = y_true.shape[0]
-    loss = float(-np.sum(y_true * np.log(y_pred)) / num_samples)
-    return loss
+    return float(-np.sum(y_true * np.log(y_pred)) / num_samples)
 
 
 if __name__ == "__main__":

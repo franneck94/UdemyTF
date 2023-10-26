@@ -15,8 +15,7 @@ def accuracy_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 
 
 def step_function(input_signal: np.ndarray) -> np.ndarray:
-    output_signal = (input_signal > 0.0).astype(np.int_)
-    return output_signal
+    return (input_signal > 0.0).astype(np.int_)
 
 
 class Perceptron:
@@ -42,8 +41,7 @@ class Perceptron:
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         input_signal = np.dot(x, self.w)
-        output_signal = step_function(input_signal)
-        return output_signal
+        return step_function(input_signal)
 
     def evaluate(self, x: np.ndarray, y: np.ndarray) -> float:
         y_pred = self.predict(x)

@@ -136,8 +136,7 @@ class DOGSCATS:
     def load_and_preprocess_custom_image(image_file_path: str) -> np.ndarray:
         img = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = transform.resize(image=img, output_shape=IMG_SHAPE)
-        return img
+        return transform.resize(image=img, output_shape=IMG_SHAPE)
 
     @staticmethod
     def _build_data_augmentation() -> Sequential:

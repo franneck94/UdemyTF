@@ -74,8 +74,7 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
 def nn_predict(model: Sequential, image: np.ndarray = None) -> int:
     if image is not None:
         y_pred = model.predict(image.reshape(1, 784))[0]
-        y_pred_class_idx = np.argmax(y_pred, axis=0)
-        return y_pred_class_idx
+        return np.argmax(y_pred, axis=0)
     else:
         return -1
 

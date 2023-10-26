@@ -27,8 +27,7 @@ if not os.path.exists(LOGS_DIR):
 
 def relu_norm(x: tf.Tensor) -> tf.Tensor:
     x = Activation("relu")(x)
-    x = BatchNormalization()(x)
-    return x
+    return BatchNormalization()(x)
 
 
 def residual_block(
@@ -48,15 +47,13 @@ def residual_block(
     elif x.shape[-1] != filters:  # Channels changed
         x = Conv2D(kernel_size=1, strides=1, filters=filters, padding="same")(x)
     out = Add()([x, y])
-    out = relu_norm(out)
-    return out
+    return relu_norm(out)
 
 
 def output_block(x: tf.Tensor, num_classes: int) -> tf.Tensor:
     x = GlobalAveragePooling2D()(x)
     x = Dense(units=num_classes)(x)
-    x = Activation("softmax")(x)
-    return x
+    return Activation("softmax")(x)
 
 
 def build_model_resnet(

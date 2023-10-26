@@ -31,7 +31,7 @@ class Point:
 
     x, y = 0, 0
 
-    def __init__(self, nx: int = 0, ny: int = 0):
+    def __init__(self, nx: int = 0, ny: int = 0) -> None:
         self.x = nx
         self.y = ny
 
@@ -41,7 +41,7 @@ class Shape:
     location = Point()
     number = 0
 
-    def __init__(self, L: Any, S: Any):
+    def __init__(self, L: Any, S: Any) -> None:
         self.location = L
         self.number = S
 
@@ -50,7 +50,7 @@ class Shape:
 class Shapes:
     shapes: list = []
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.shapes = []
 
     # Returns the number of shapes
@@ -73,7 +73,7 @@ class Painter(QtWidgets.QWidget):
     MouseLoc = Point(0, 0)
     LastPos = Point(0, 0)
 
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__()
         self.ParentLink = parent
         self.MouseLoc = Point(0, 0)
@@ -130,7 +130,7 @@ class CreateUI(BASE, FORM):
     IsPainting = False
     ShapeNum = 0
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Set up main window and widgets
         super().__init__()
         self.setupUi(self)

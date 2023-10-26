@@ -13,13 +13,11 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 
 
 def load(image_path: str) -> np.ndarray:
-    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    return image
+    return cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
 
 def resize(image: np.ndarray) -> np.ndarray:
-    image = cv2.resize(image, (28, 28))
-    return image
+    return cv2.resize(image, (28, 28))
 
 
 def normalize(image: np.ndarray) -> np.ndarray:
@@ -33,8 +31,7 @@ def center(image: np.ndarray) -> np.ndarray:
     shiftx = np.round(cols / 2 - cx).astype(int)
     shifty = np.round(rows / 2 - cy).astype(int)
     M = np.array([[1, 0, shiftx], [0, 1, shifty]]).astype(np.float32)
-    image = cv2.warpAffine(image, M, (cols, rows))
-    return image
+    return cv2.warpAffine(image, M, (cols, rows))
 
 
 def get_image(DrawingFrame: Any, debug: bool = False) -> np.ndarray:
@@ -46,5 +43,4 @@ def get_image(DrawingFrame: Any, debug: bool = False) -> np.ndarray:
     image = load(temp_image_file_path)
     image = resize(image)
     image = normalize(image)
-    image = center(image)
-    return image
+    return center(image)

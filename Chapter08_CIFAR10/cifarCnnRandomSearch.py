@@ -1,6 +1,5 @@
 import os
 import shutil
-from typing import Union
 
 import numpy as np
 import tensorflow as tf
@@ -112,7 +111,7 @@ if __name__ == "__main__":
         "dense_layer_size": randint(128, 1024),
     }
 
-    results: dict[str, Union[float, list, dict]] = {
+    results: dict[str, float | list | dict] = {
         "best_score": -np.inf,
         "best_params": {},
         "val_scores": [],

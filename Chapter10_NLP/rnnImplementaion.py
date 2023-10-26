@@ -47,8 +47,7 @@ class SimpleRNNInference:
 
     def forward_step(self, x_t: np.ndarray, h_t: np.ndarray) -> np.ndarray:
         h_t = np.matmul(h_t, self.U) + np.matmul(x_t, self.W) + self.b
-        h_t = tanh_fn(h_t)  # (-1, 1)
-        return h_t
+        return tanh_fn(h_t)  # (-1, 1)
 
 
 if __name__ == "__main__":

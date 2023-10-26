@@ -51,10 +51,7 @@ def get_gradients(
         loss_value,
         model.trainable_variables,
     )
-    grad_var_tuples = [
-        (g, w) for (g, w) in zip(grads, model.trainable_variables)
-    ]
-    return grad_var_tuples
+    return [(g, w) for (g, w) in zip(grads, model.trainable_variables)]
 
 
 def main() -> None:

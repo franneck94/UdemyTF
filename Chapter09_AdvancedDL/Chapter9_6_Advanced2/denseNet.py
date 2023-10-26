@@ -28,8 +28,7 @@ if not os.path.exists(LOGS_DIR):
 
 def relu_norm(x: tf.Tensor) -> tf.Tensor:
     x = Activation("relu")(x)
-    x = BatchNormalization()(x)
-    return x
+    return BatchNormalization()(x)
 
 
 def dense_block(
@@ -55,8 +54,7 @@ def dense_block(
 def output_block(x: tf.Tensor, num_classes: int) -> tf.Tensor:
     x = GlobalAveragePooling2D()(x)
     x = Dense(units=num_classes)(x)
-    x = Activation("softmax")(x)
-    return x
+    return Activation("softmax")(x)
 
 
 def build_model_densenet(

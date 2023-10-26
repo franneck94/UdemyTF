@@ -18,10 +18,10 @@ class ImageCallback(tf.keras.callbacks.Callback):
         x_test: np.ndarray,
         y_test: np.ndarray,
         log_dir: str = "./",
-        classes_list: list = None,
+        classes_list: list | None = None,
         figure_fn: plt.Figure = None,
-        figure_title: str = None,
-    ):
+        figure_title: str | None = None,
+    ) -> None:
         self.model = model
         self.x_test = x_test
         self.y_test = y_test
@@ -38,7 +38,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         else:
             self.figure_title = figure_title
 
-    def on_epoch_end(self, epoch: int, logs: dict = None) -> None:
+    def on_epoch_end(self, epoch: int, logs: dict | None = None) -> None:
         y_pred_prob = self.model(self.x_test, training=False)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
@@ -61,7 +61,7 @@ class ConfusionMatrix(ImageCallback):
         y_test: np.ndarray,
         classes_list: list,
         log_dir: str,
-    ):
+    ) -> None:
         self.figure_fn = plot_confusion_matrix
         self.figure_title = "Confusion Matrix"
         super().__init__(
@@ -74,7 +74,7 @@ class ConfusionMatrix(ImageCallback):
             figure_title=self.figure_title,
         )
 
-    def on_epoch_end(self, epoch: int, logs: dict = None) -> None:
+    def on_epoch_end(self, epoch: int, logs: dict | None = None) -> None:
         super().on_epoch_end(epoch, logs)
 
 
