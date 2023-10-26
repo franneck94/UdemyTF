@@ -4,23 +4,23 @@ import numpy as np
 import tensorflow as tf
 from keras.callbacks import EarlyStopping
 from keras.initializers import Constant
-from keras.layers import GRU
-from keras.layers import LSTM
-from keras.layers import Activation
-from keras.layers import Bidirectional
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import Embedding
-from keras.layers import Input
-from keras.layers import Reshape
-from keras.layers import SimpleRNN
-from keras.layers import TextVectorization
+from keras.layers import (
+    GRU,
+    LSTM,
+    Activation,
+    Bidirectional,
+    Dense,
+    Dropout,
+    Embedding,
+    Input,
+    Reshape,
+    SimpleRNN,
+    TextVectorization,
+)
 from keras.models import Model
 from keras.optimizers import Adam
-
 from tensorcross.model_selection import GridSearch
 from tf_utils.imdbDataAdvanced import IMDB
-
 
 np.random.seed(0)
 tf.random.set_seed(0)

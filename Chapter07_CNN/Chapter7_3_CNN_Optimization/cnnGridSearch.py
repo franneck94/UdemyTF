@@ -1,17 +1,10 @@
 import numpy as np
 import tensorflow as tf
-from keras.layers import Activation
-from keras.layers import Conv2D
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import Input
-from keras.layers import MaxPool2D
+from keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from keras.models import Model
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import GridSearchCV
-
 from mnistData import MNIST
-
+from scikeras.wrappers import KerasClassifier
+from sklearn.model_selection import GridSearchCV
 
 np.random.seed(0)
 tf.random.set_seed(0)
@@ -77,7 +70,16 @@ if __name__ == "__main__":
     }
 
     keras_clf = KerasClassifier(
-        build_fn=build_model, epochs=3, batch_size=128, verbose=1
+        build_fn=build_model,
+        epochs=3,
+        batch_size=128,
+        verbose=1,
+        filters_1=16,
+        filters_2=32,
+        filters_3=64,
+        kernel_size_1=3,
+        kernel_size_2=3,
+        kernel_size_3=5,
     )
 
     grid_cv = GridSearchCV(

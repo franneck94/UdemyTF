@@ -32,15 +32,16 @@ known_third_party = [
     "seaborn",
     "numba",
     "gym",
-    "PyQt6",
     "PyQt5",
+    "PyQt6",
     "pyqtgraph",
     "torch",
     "tqdm",
     "cv2",
     "skimage",
     "tensorcross",
-    "tensorflow_datasets"
+    "tensorflow_datasets",
+    "scikeras"
 ]
 known_first_party = []
 known_local_folder = []

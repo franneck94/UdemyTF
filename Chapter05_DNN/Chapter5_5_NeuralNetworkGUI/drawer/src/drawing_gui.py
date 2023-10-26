@@ -3,15 +3,10 @@ import os
 import sys
 from typing import Any
 
-from PyQt5 import QtCore
-from PyQt5 import QtGui
-from PyQt5 import QtWidgets
-from PyQt5 import uic
+from PyQt6 import QtCore, QtGui, QtWidgets, uic
 
-from .dnn import build_model
-from .dnn import nn_predict
+from .dnn import build_model, nn_predict
 from .preprocessing import get_image
-
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
@@ -88,7 +83,8 @@ class Painter(QtWidgets.QWidget):
     # Mouse Move event
     def mouseMoveEvent(self, event=None):
         if self.ParentLink.IsPainting is True:
-            self.MouseLoc = Point(event.x(), event.y())
+            positions = event.position()
+            self.MouseLoc = Point(int(positions.x()), int(positions.y()))
             if (self.LastPos.x != self.MouseLoc.x) and (
                 self.LastPos.y != self.MouseLoc.y
             ):

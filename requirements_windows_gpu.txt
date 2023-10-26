@@ -26,3 +26,4 @@ keras==2.10.*
 tensorflow-datasets==4.8.*
 tensorflow-addons>=0.22.*
 tensorcross>=0.4.*
+scikeras==0.12.*

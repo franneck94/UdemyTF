@@ -2,11 +2,9 @@
 import os
 from typing import Any
 
+import cv2
 import numpy as np
 from scipy.ndimage import center_of_mass
-
-import cv2
-
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))

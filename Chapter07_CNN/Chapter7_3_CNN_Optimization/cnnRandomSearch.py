@@ -1,18 +1,11 @@
 import numpy as np
 import tensorflow as tf
-from keras.layers import Activation
-from keras.layers import Conv2D
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import Input
-from keras.layers import MaxPool2D
+from keras.layers import Activation, Conv2D, Dense, Flatten, Input, MaxPool2D
 from keras.models import Model
-from keras.wrappers.scikit_learn import KerasClassifier
+from mnistData import MNIST
+from scikeras.wrappers import KerasClassifier
 from scipy.stats import randint
 from sklearn.model_selection import RandomizedSearchCV
-
-from mnistData import MNIST
-
 
 np.random.seed(0)
 tf.random.set_seed(0)
