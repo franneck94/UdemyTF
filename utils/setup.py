@@ -15,8 +15,8 @@ DISTNAME = "tf_utils"
 AUTHOR = "Jan Schaffranek"
 DESCRIPTION = "Helper functions for the udemy course."
 
-MAJOR = 0
-MINOR = 2
+MAJOR = 1
+MINOR = 0
 MICRO = 0
 ISRELEASED = True
 VERSION = "%d.%d.%d" % (MAJOR, MINOR, MICRO)
