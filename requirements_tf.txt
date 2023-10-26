@@ -1,8 +1,0 @@
-tensorflow==2.10.*; platform_system == "Windows"
-tensorflow==2.10.*; platform_system == "Linux"
-tensorflow-macos==2.10.*; platform_system == "Darwin"
-tensorflow-metal; platform_system == "Darwin"
-keras==2.10.*
-tensorflow-datasets>=4.8.*
-tensorflow-addons>=0.19.*
-tensorcross>=0.4.*

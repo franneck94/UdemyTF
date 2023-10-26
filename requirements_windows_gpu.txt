@@ -16,7 +16,13 @@ numpy
 matplotlib
 pandas
 opencv-python
-pyqt5
+pyqt6
 xlrd
 openpyxl
 optuna
+
+tensorflow==2.10.*
+keras==2.10.*
+tensorflow-datasets>=4.8.*
+tensorflow-addons>=0.19.*
+tensorcross>=0.4.*
