@@ -1,13 +1,26 @@
+# pyright: ignore reportMissingImports
 import numpy as np
 import tensorflow as tf
 from keras.datasets import mnist
-from keras.layers.experimental.preprocessing import RandomRotation
-from keras.layers.experimental.preprocessing import RandomTranslation
-from keras.layers.experimental.preprocessing import RandomZoom
-from keras.layers.experimental.preprocessing import Rescaling
 from keras.models import Sequential
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
+
+from packaging import version
+
+
+required_version = version.parse("2.10")
+installed_version = version.parse(".".join(tf.__version__.split(".")[:2]))
+if installed_version > required_version:
+    from keras.layers.experimental.preprocessing import RandomRotation
+    from keras.layers.experimental.preprocessing import RandomTranslation
+    from keras.layers.experimental.preprocessing import RandomZoom
+    from keras.layers.experimental.preprocessing import Rescaling
+else:
+    from keras.layers.preprocessing.image_preprocessing import RandomRotation
+    from keras.layers.preprocessing.image_preprocessing import RandomTranslation
+    from keras.layers.preprocessing.image_preprocessing import RandomZoom
+    from keras.layers.preprocessing.image_preprocessing import Rescaling
 
 
 class MNIST:

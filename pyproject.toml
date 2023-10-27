@@ -41,8 +41,7 @@ known_third_party = [
     "skimage",
     "tensorcross",
     "tensorflow_datasets",
-    "scikeras",
-    "optuna"
+    "scikeras"
 ]
 known_first_party = []
 known_local_folder = []

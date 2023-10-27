@@ -6,12 +6,29 @@ directory = "."
 
 
 def should_exclude_directory(dir_name: str) -> bool:
-    exclude_dirs = [".mypy", ".ruff_cache", ".vscode", "__pycache__", ".git"]
-    return any(
-        dir_name == exclude_dir
-        or dir_name.startswith(exclude_dir + os.path.sep)
-        for exclude_dir in exclude_dirs
-    )
+    exclude_dirs = [
+        ".mypy",
+        ".ruff_cache",
+        ".vscode",
+        "__pycache__",
+        ".git",
+        "_Start",
+    ]
+    return dir_name in exclude_dirs
+
+
+def check_file_for_not_implemented(file_path: str) -> bool:
+    try:
+        with open(file_path) as file:
+            file_contents = file.read()
+            if (
+                "pass" in file_contents
+                or "NotImplementedError" in file_contents
+            ):
+                return True
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    return False
 
 
 def main() -> None:
@@ -20,7 +37,7 @@ def main() -> None:
             continue
         num_py_files = len([file for file in files if ".py" in file])
         if num_py_files > 0:
-            print(f"dir: {root}, num py files: {num_py_files}")
+            print(f"dir: {root}, number of python files: {num_py_files}")
         for filename in files:
             if (
                 filename.endswith(".py")
@@ -30,6 +47,9 @@ def main() -> None:
                 if "checker" in file_path:
                     continue
                 try:
+                    if check_file_for_not_implemented(file_path):
+                        print(rf"\File: {file_path} has unfinished code")
+                        continue
                     print(f"\tRunning file: {file_path}")
                     with open(os.devnull, "w") as null_file:
                         process = subprocess.Popen(
@@ -37,7 +57,7 @@ def main() -> None:
                             stderr=null_file,
                             stdout=null_file,
                         )
-                        process.wait(timeout=10)
+                        process.wait(timeout=2)
                         ret_code = process.returncode
                         if ret_code == 0:
                             print(f"\t\t{file_path} can be executed.")

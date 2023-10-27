@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from scipy.ndimage import center_of_mass
 
+
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 

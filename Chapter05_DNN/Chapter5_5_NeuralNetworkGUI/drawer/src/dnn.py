@@ -3,11 +3,14 @@ import os
 
 import numpy as np
 from keras.datasets import mnist
-from keras.initializers import Constant, TruncatedNormal
-from keras.layers import Activation, Dense
+from keras.initializers import Constant
+from keras.initializers import TruncatedNormal
+from keras.layers import Activation
+from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
 from keras.utils import to_categorical
+
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
