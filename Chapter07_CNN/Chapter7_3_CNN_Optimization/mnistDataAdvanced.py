@@ -29,9 +29,12 @@ class MNIST:
         self.num_classes = 10
         self.batch_size = 128
         # Load the data set
-        (self.x_train, self.y_train), (
-            self.x_test,
-            self.y_test,
+        (
+            (self.x_train, self.y_train),
+            (
+                self.x_test,
+                self.y_test,
+            ),
         ) = mnist.load_data()
         # Split the dataset
         self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(
