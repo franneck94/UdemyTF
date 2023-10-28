@@ -77,6 +77,7 @@ if __name__ == "__main__":
         "kernel_size_3": randint(3, 8),
     }
 
+    # Code has changed comapred to the videos: https://adriangb.com/scikeras/stable/migration.html
     keras_clf = KerasClassifier(
         build_fn=build_model, epochs=3, batch_size=128, verbose=1
     )

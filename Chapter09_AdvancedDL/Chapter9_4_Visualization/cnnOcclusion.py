@@ -4,7 +4,6 @@ import numpy as np
 import tensorflow as tf
 from keras.callbacks import EarlyStopping
 from keras.callbacks import LearningRateScheduler
-from keras.initializers import Initializer
 from keras.layers import Activation
 from keras.layers import BatchNormalization
 from keras.layers import Conv2D
@@ -49,7 +48,6 @@ def build_model(
     filter_block3: int,
     kernel_size_block3: int,
     dense_layer_size: int,
-    kernel_initializer: Initializer,
     activation_cls: Activation,
     dropout_rate: float,
     use_batch_normalization: bool,
@@ -62,7 +60,6 @@ def build_model(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(input_img)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -71,7 +68,6 @@ def build_model(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -84,7 +80,6 @@ def build_model(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -93,7 +88,6 @@ def build_model(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -106,7 +100,6 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -115,7 +108,6 @@ def build_model(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
     )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
@@ -127,12 +119,14 @@ def build_model(
     x = GlobalAveragePooling2D()(x) if use_global_pooling else Flatten()(x)
     if use_dense:
         x = Dense(
-            units=dense_layer_size, kernel_initializer=kernel_initializer
+            units=dense_layer_size,
         )(x)
         if use_batch_normalization:
             x = BatchNormalization()(x)
         x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=num_classes,
+    )(x)
     y_pred = Activation("softmax")(x)
 
     model = Model(inputs=[input_img], outputs=[y_pred])
@@ -157,12 +151,11 @@ if __name__ == "__main__":
     num_classes = data.num_classes
 
     # Global params
-    epochs = 100
+    epochs = 10
     batch_size = 128
 
     params = {
         "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -189,16 +182,16 @@ if __name__ == "__main__":
         restore_best_weights=True,
     )
 
-    # model.fit(
-    #     train_dataset,
-    #     verbose=1,
-    #     batch_size=batch_size,
-    #     epochs=epochs,
-    #     callbacks=[lrs_callback, es_callback],
-    #     validation_data=val_dataset,
-    # )
+    model.fit(
+        train_dataset,
+        verbose=1,
+        batch_size=batch_size,
+        epochs=epochs,
+        callbacks=[lrs_callback, es_callback],
+        validation_data=val_dataset,
+    )
 
-    # model.save_weights(filepath=MODEL_FILE_PATH)
+    model.save_weights(filepath=MODEL_FILE_PATH)
     model.load_weights(filepath=MODEL_FILE_PATH)
 
     score = model.evaluate(val_dataset, verbose=0, batch_size=batch_size)

@@ -76,17 +76,13 @@ if __name__ == "__main__":
         "kernel_size_3": [5],
     }
 
+    # Code has changed comapred to the videos: https://adriangb.com/scikeras/stable/migration.html
     keras_clf = KerasClassifier(
         build_fn=build_model,
         epochs=3,
         batch_size=128,
         verbose=1,
-        filters_1=16,
-        filters_2=32,
-        filters_3=64,
-        kernel_size_1=3,
-        kernel_size_2=3,
-        kernel_size_3=5,
+        **{k: v[0] for k, v in param_grid.items()},
     )
 
     grid_cv = GridSearchCV(

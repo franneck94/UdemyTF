@@ -1,5 +1,6 @@
 import os
 import shutil
+from typing import Any
 
 import numpy as np
 import tensorflow as tf
@@ -109,7 +110,7 @@ if __name__ == "__main__":
         "dense_layer_size": [512],
     }
 
-    results: dict[str, float | dict | list] = {
+    results: dict[str, float | list[float | Any] | dict[str, Any]] = {
         "best_score": -np.inf,
         "best_params": {},
         "val_scores": [],

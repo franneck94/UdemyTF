@@ -1,5 +1,7 @@
 import os
 import shutil
+from typing import Any
+from collections.abc import Collection
 
 import numpy as np
 import tensorflow as tf
@@ -111,7 +113,7 @@ if __name__ == "__main__":
         "dense_layer_size": randint(128, 1024),
     }
 
-    results: dict[str, float | list | dict] = {
+    results: dict[str, float | list[float | Any] | dict[str, Any]] = {
         "best_score": -np.inf,
         "best_params": {},
         "val_scores": [],
@@ -119,7 +121,9 @@ if __name__ == "__main__":
     }
 
     n_models = 32
-    dist = ParameterSampler(param_distribution, n_iter=n_models)
+    dist: Collection[dict[str, Any]] = ParameterSampler(
+        param_distribution, n_iter=n_models
+    )
 
     print(f"Parameter combinations in total: {len(dist)}")
 
@@ -146,7 +150,7 @@ if __name__ == "__main__":
             callbacks=[tb_callback],
         )
 
-        val_accuracy = model.evaluate(
+        val_accuracy: float = model.evaluate(
             val_dataset, batch_size=batch_size, verbose=0
         )[1]
         results["val_scores"].append(val_accuracy)
