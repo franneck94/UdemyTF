@@ -10,7 +10,7 @@ from keras.layers import MaxPool2D
 from keras.models import Model
 from keras.optimizers import Adam
 
-from mnistData import MNIST
+from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
 
 
 LOGS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/")

@@ -6,7 +6,7 @@ from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
 
-from mnistData import MNIST
+from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
 
 
 def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:

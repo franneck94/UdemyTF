@@ -11,7 +11,7 @@ from scikeras.wrappers import KerasClassifier
 from scipy.stats import randint
 from sklearn.model_selection import RandomizedSearchCV
 
-from mnistData import MNIST
+from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
 
 
 np.random.seed(0)

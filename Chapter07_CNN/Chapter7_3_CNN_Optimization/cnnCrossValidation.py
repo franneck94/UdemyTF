@@ -10,7 +10,7 @@ from keras.models import Model
 from scikeras.wrappers import KerasClassifier
 from sklearn.model_selection import cross_val_score
 
-from mnistData import MNIST
+from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
 
 
 np.random.seed(0)
