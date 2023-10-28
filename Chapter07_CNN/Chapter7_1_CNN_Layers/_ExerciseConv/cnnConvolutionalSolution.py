@@ -3,7 +3,10 @@ import numpy as np
 from keras.layers import Conv2D
 
 
-def conv2D(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
+def conv2D(  # noqa: N802
+    image: np.ndarray,
+    kernel: np.ndarray,
+) -> np.ndarray:
     rows, cols = image.shape
 
     conv_image = np.zeros(shape=(rows, cols), dtype=np.float32)
@@ -38,7 +41,7 @@ def main() -> None:
     print(f"Conved Image TF:\n{conv_image_tf.squeeze()}")
     assert np.allclose(conv_image.flatten(), conv_image_tf.flatten())
 
-    fig, axs = plt.subplots(nrows=1, ncols=3)
+    _, axs = plt.subplots(nrows=1, ncols=3)
     axs[0].imshow(image, cmap="gray")
     axs[1].imshow(conv_image, cmap="gray")
     axs[2].imshow(conv_image_tf.squeeze(), cmap="gray")

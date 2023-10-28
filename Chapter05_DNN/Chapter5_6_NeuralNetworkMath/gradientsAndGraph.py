@@ -51,7 +51,7 @@ def get_gradients(
         loss_value,
         model.trainable_variables,
     )
-    return [(g, w) for (g, w) in zip(grads, model.trainable_variables)]
+    return list(zip(grads, model.trainable_variables))
 
 
 def main() -> None:

@@ -4,7 +4,9 @@ from keras.datasets import mnist
 from keras.layers import MaxPool2D
 
 
-def max_pooling(image: np.ndarray) -> np.ndarray:
+def max_pooling(
+    image: np.ndarray,
+) -> np.ndarray:
     pass
 
 
@@ -24,7 +26,7 @@ def main() -> None:
     print(f"Pooled Image TF:\n{pooling_image_tf.squeeze()}")
     assert np.allclose(pooling_image.flatten(), pooling_image_tf.flatten())
 
-    fig, axs = plt.subplots(nrows=1, ncols=3)
+    _, axs = plt.subplots(nrows=1, ncols=3)
     axs[0].imshow(image, cmap="gray")
     axs[1].imshow(pooling_image, cmap="gray")
     axs[2].imshow(pooling_image_tf.squeeze(), cmap="gray")

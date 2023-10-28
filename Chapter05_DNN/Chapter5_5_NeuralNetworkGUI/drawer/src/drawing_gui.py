@@ -39,7 +39,6 @@ class Point:
         self.y = ny
 
 
-# Single shape class
 class Shape:
     location = Point()
     number = 0
@@ -49,47 +48,45 @@ class Shape:
         self.number = S
 
 
-# Container Class for all shapes
 class Shapes:
-    shapes: list = []
+    shapes: list = []  # noqa: RUF012
 
     def __init__(self) -> None:
         self.shapes = []
 
     # Returns the number of shapes
-    def NumberOfShapes(self):
+    def NumberOfShapes(self):  # noqa: N802, ANN201
         return len(self.shapes)
 
     # Add a shape to the database, recording its position
-    def NewShape(self, L: Any, S: Any):
+    def NewShape(self, L: Any, S: Any):  # noqa: N802, ANN201
         shape = Shape(L, S)
         self.shapes.append(shape)
 
     # Returns a shape of the requested data.
-    def GetShape(self, Index) -> Any:
+    def GetShape(self, Index) -> Any:  # noqa: N802, ANN001
         return self.shapes[Index]
 
 
-# Class for painting widget
 class Painter(QtWidgets.QWidget):
     ParentLink = 0
     MouseLoc = Point(0, 0)
     LastPos = Point(0, 0)
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent: Any) -> None:
         super().__init__()
         self.ParentLink = parent
         self.MouseLoc = Point(0, 0)
         self.LastPos = Point(0, 0)
 
     # Mouse down event
-    def mousePressEvent(self, event=None):
+    def mousePressEvent(self, event=None):  # noqa: N802, ANN001, ANN201, ARG002
         self.ParentLink.IsPainting = True
         self.ParentLink.ShapeNum += 1
         self.LastPos = Point(0, 0)
 
     # Mouse Move event
-    def mouseMoveEvent(self, event=None):
+    def mouseMoveEvent(self, event=None):  # noqa: N802, ANN001, ANN201
         if self.ParentLink.IsPainting is True:
             positions = event.position()
             self.MouseLoc = Point(int(positions.x()), int(positions.y()))
@@ -103,19 +100,21 @@ class Painter(QtWidgets.QWidget):
             self.repaint()
 
     # Mose Up Event
-    def mouseReleaseEvent(self, event=None):
+    def mouseReleaseEvent(  # noqa: N802, ANN201
+        self, event=None  # noqa: ARG002, ANN001
+    ):
         if self.ParentLink.IsPainting is True:
             self.ParentLink.IsPainting = False
 
     # Paint Event
-    def paintEvent(self, event):
+    def paintEvent(self, event):  # noqa: ANN001, ANN201, N802
         painter = QtGui.QPainter()
         painter.begin(self)
         self.drawLines(event, painter)
         painter.end()
 
     # Draw the line
-    def drawLines(self, event, painter):
+    def drawLines(self, event, painter):  # noqa: N802, ANN201, ANN001, ARG002
         for i in range(self.ParentLink.DrawingShapes.NumberOfShapes() - 1):
             T = self.ParentLink.DrawingShapes.GetShape(i)
             T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)
@@ -132,7 +131,6 @@ class Painter(QtWidgets.QWidget):
                 )
 
 
-# Main UI Class
 class CreateUI(BASE, FORM):
     DrawingShapes = Shapes()
     PaintPanel = 0
@@ -140,7 +138,6 @@ class CreateUI(BASE, FORM):
     ShapeNum = 0
 
     def __init__(self) -> None:
-        # Set up main window and widgets
         super().__init__()
         self.setupUi(self)
         self.setObjectName("Rig Helper")
@@ -166,7 +163,7 @@ class CreateUI(BASE, FORM):
             raise FileNotFoundError("Weights file not found!")
 
     # Reset Button
-    def ClearSlate(self):
+    def ClearSlate(self):  # noqa: N802, ANN201
         self.DrawingShapes = Shapes()
         self.PaintPanel.repaint()
         default_image_path = os.path.join(IMAGE_DIR, str(-1) + ".png")
@@ -174,7 +171,7 @@ class CreateUI(BASE, FORM):
         self.label.setPixmap(self.pixmap)
 
     # Predict Button
-    def PredictNumber(self):
+    def PredictNumber(self):  # noqa: N802, ANN201
         image = get_image(self.DrawingFrame)
         y_pred_class_idx = nn_predict(self.model, image=image)
         image_file_path = os.path.join(

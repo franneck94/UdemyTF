@@ -5,8 +5,7 @@ import numpy as np
 def relu(x: float) -> float:
     if x > 0:
         return x
-    else:
-        return 0
+    return 0
 
 
 def sigmoid(x: float) -> float:

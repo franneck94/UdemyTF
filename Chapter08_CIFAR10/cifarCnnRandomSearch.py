@@ -1,7 +1,7 @@
 import os
 import shutil
-from typing import Any
 from collections.abc import Collection
+from typing import Any
 
 import numpy as np
 import tensorflow as tf

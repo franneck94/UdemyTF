@@ -38,7 +38,7 @@ class IMDB:
             output_mode="int",
             output_sequence_length=self.sequence_length,
         )
-        text_data = self.train_dataset.map(lambda x, y: x)
+        text_data = self.train_dataset.map(lambda x, y: x)  # noqa: ARG005
         self.vectorization_layer.adapt(text_data)
         self.vocabulary = self.vectorization_layer.get_vocabulary()
         self.word_index = dict(

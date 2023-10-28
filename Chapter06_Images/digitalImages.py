@@ -4,14 +4,18 @@ from matplotlib import pyplot as plt
 
 def main() -> None:
     # Black/White Image (1d)
-    image = np.array([0, 1, 1, 1, 1, 1, 0, 0, 0], dtype=np.uint8)
+    image = np.array(
+        [0, 1, 1, 1, 1, 1, 0, 0, 0],
+        dtype=np.uint8,
+    )
     print(f"B/W (1D):\n{image}")
     plt.imshow(image.reshape((3, 3)), cmap="gray")
     plt.show()
 
     # Grayscale Image (2d)
     image = np.array(
-        [[0, 100, 100], [255, 255, 255], [100, 100, 0]], dtype=np.uint8
+        [[0, 100, 100], [255, 255, 255], [100, 100, 0]],
+        dtype=np.uint8,
     )
     print(f"Gray (2D):\n{image}")
     plt.imshow(image, cmap="gray")

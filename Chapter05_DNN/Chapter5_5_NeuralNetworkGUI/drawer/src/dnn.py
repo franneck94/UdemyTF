@@ -75,8 +75,7 @@ def nn_predict(model: Sequential, image: np.ndarray = None) -> int:
     if image is not None:
         y_pred = model.predict(image.reshape(1, 784))[0]
         return np.argmax(y_pred, axis=0)
-    else:
-        return -1
+    return -1
 
 
 def nn_train() -> None:

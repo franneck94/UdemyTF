@@ -13,8 +13,7 @@ def f(x: float) -> float:
 def relu(x: float) -> float:
     if x > 0:
         return x
-    else:
-        return 0
+    return 0
 
 
 def get_dataset() -> tuple[np.ndarray, np.ndarray]:

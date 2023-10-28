@@ -38,7 +38,11 @@ class ImageCallback(tf.keras.callbacks.Callback):
         else:
             self.figure_title = figure_title
 
-    def on_epoch_end(self, epoch: int, logs: dict | None = None) -> None:
+    def on_epoch_end(
+        self,
+        epoch: int,
+        logs: dict | None = None,  # noqa: ARG002
+    ) -> None:
         y_pred_prob = self.model(self.x_test, training=False)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
@@ -74,11 +78,17 @@ class ConfusionMatrix(ImageCallback):
             figure_title=self.figure_title,
         )
 
-    def on_epoch_end(self, epoch: int, logs: dict | None = None) -> None:
+    def on_epoch_end(
+        self,
+        epoch: int,
+        logs: dict | None = None,
+    ) -> None:
         super().on_epoch_end(epoch, logs)
 
 
-def schedule_fn(epoch: int) -> float:
+def schedule_fn(
+    epoch: int,
+) -> float:
     learning_rate = 1e-3
     if epoch < 5:
         learning_rate = 1e-3
@@ -89,22 +99,29 @@ def schedule_fn(epoch: int) -> float:
     return learning_rate
 
 
-def schedule_fn2(epoch: int) -> float:
+def schedule_fn2(
+    epoch: int,
+) -> float:
     if epoch < 10:
         return 1e-3
-    else:
-        return float(1e-3 * np.exp(0.1 * (10 - epoch)))
-
-
-def schedule_fn3(epoch: int) -> float:
     return float(1e-3 * np.exp(0.1 * (10 - epoch)))
 
 
-def schedule_fn4(epoch: int) -> float:
+def schedule_fn3(
+    epoch: int,
+) -> float:
+    return float(1e-3 * np.exp(0.1 * (10 - epoch)))
+
+
+def schedule_fn4(
+    epoch: int,
+) -> float:
     return float(1e-3 * np.exp(0.05 * (10 - epoch)))
 
 
-def schedule_fn5(epoch: int) -> float:
+def schedule_fn5(
+    epoch: int,
+) -> float:
     learning_rate = 1e-3
     if epoch < 100:
         learning_rate = 1e-3
@@ -118,10 +135,18 @@ def schedule_fn5(epoch: int) -> float:
 
 
 class LRTensorBoard(tf.keras.callbacks.TensorBoard):
-    def __init__(self, log_dir: str, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        log_dir: str,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(log_dir=log_dir, **kwargs)
 
-    def on_epoch_end(self, epoch: int, logs: dict) -> None:
+    def on_epoch_end(
+        self,
+        epoch: int,
+        logs: dict,
+    ) -> None:
         logs.update(
             {"learning_rate": self.model.optimizer.learning_rate.numpy()}
         )
