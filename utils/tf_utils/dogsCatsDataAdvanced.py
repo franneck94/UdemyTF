@@ -6,10 +6,9 @@ import numpy as np
 import tensorflow as tf
 from keras.models import Sequential
 from keras.utils import to_categorical
+from packaging import version
 from skimage import transform
 from sklearn.model_selection import train_test_split
-
-from packaging import version
 
 
 required_version = version.parse("2.10")

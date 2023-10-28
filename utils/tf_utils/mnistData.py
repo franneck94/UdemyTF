@@ -104,3 +104,8 @@ class MNIST:
             (self.y_train, y_augmented),
         )
         self.train_size = self.x_train.shape[0]
+
+
+if __name__ == "__main__":
+    m = MNIST()
+    print(m)

@@ -4,9 +4,8 @@ import tensorflow as tf
 from keras.datasets import cifar10
 from keras.models import Sequential
 from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
 from packaging import version
+from sklearn.model_selection import train_test_split
 
 
 required_version = version.parse("2.10")

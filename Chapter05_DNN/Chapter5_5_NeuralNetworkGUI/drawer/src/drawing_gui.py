@@ -101,7 +101,8 @@ class Painter(QtWidgets.QWidget):
 
     # Mose Up Event
     def mouseReleaseEvent(  # noqa: N802, ANN201
-        self, event=None  # noqa: ARG002, ANN001
+        self,
+        event=None,  # noqa: ARG002, ANN001
     ):
         if self.ParentLink.IsPainting is True:
             self.ParentLink.IsPainting = False
