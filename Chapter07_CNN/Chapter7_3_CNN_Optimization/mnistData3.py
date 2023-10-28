@@ -12,10 +12,6 @@ class MNIST:
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
         self.x_train_: np.ndarray = x_train
         self.y_train_: np.ndarray = y_train
-        self.x_val_: np.ndarray = x_test
-        self.y_val_: np.ndarray = y_test
-        self.val_size = 0
-        self.train_splitted_size = 0
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
         self.x_train = np.expand_dims(x_train, axis=-1)
@@ -85,3 +81,8 @@ class MNIST:
             (self.y_train, y_augmented),
         )
         self.train_size = self.x_train.shape[0]
+
+
+if __name__ == "__main__":
+    m = MNIST()
+    print(m)

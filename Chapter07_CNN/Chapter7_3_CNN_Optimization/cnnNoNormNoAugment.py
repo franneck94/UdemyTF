@@ -10,7 +10,7 @@ from keras.layers import MaxPool2D
 from keras.models import Model
 from keras.optimizers import Adam
 
-from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
+from tf_utils.mnistData import MNIST
 
 
 LOGS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/")
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     model.fit(
         x=x_train_,
         y=y_train_,
-        epochs=40,
+        epochs=20,
         batch_size=128,
         verbose=1,
         validation_data=(x_val_, y_val_),
