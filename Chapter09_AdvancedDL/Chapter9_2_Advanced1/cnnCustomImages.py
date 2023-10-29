@@ -143,14 +143,17 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
 
 
 if __name__ == "__main__":
-    data = DOGSCATS()
+    data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
+    data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
@@ -185,14 +188,23 @@ if __name__ == "__main__":
 
     model_log_dir = os.path.join(LOGS_DIR, "modelFinal")
 
-    lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1,
+    )
 
     plateau_callback = ReduceLROnPlateau(
-        monitor="val_accuracy", factor=0.99, patience=3, verbose=1, min_lr=1e-5
+        monitor="val_accuracy",
+        factor=0.99,
+        patience=3,
+        verbose=1,
+        min_lr=1e-5,
     )
 
     lr_callback = LRTensorBoard(
-        log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
     )
 
     es_callback = EarlyStopping(
@@ -221,15 +233,16 @@ if __name__ == "__main__":
         if ".jpg" in f or ".jpeg" in f or ".png" in f
     ]
     class_names = ["cat", "dog"]
+    img_shape = (64, 64, 3)
 
     for image_file_name in image_names:
         image_file_path = os.path.join(CUSTOM_IMAGES_DIR, image_file_name)
-        x = data.load_and_preprocess_custom_image(image_file_path)
+        x = data.load_and_preprocess_custom_image(image_file_path, img_shape)
         x = np.expand_dims(x, axis=0)
         y_pred = model.predict(x)[0]
         y_pred_class_idx = np.argmax(y_pred)
         y_pred_prob = y_pred[y_pred_class_idx]
         y_pred_class_name = class_names[y_pred_class_idx]
-        plt.imshow(x.reshape(64, 64, 3))
+        plt.imshow(x.reshape(img_shape))
         plt.title(f"Pred class: {y_pred_class_name}, Prob: {y_pred_prob}")
         plt.show()

@@ -147,7 +147,8 @@ def build_model(
 
 if __name__ == "__main__":
     """Final Model: 0.9340"""
-    data = DOGSCATS()
+    data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
+    data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
