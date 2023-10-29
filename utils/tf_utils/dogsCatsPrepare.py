@@ -74,7 +74,7 @@ def extract_cats_vs_dogs(
     dogs_dir = os.path.join(data_dir, "Dog")
 
     dirs = [cats_dir, dogs_dir]
-    class_names = ["cat", "dog"]
+    class_names = ["Cat", "Dog"]
 
     remove_non_jpeg_files(dirs)
     x, y = zero_init_arrays(cats_dir, dogs_dir, img_shape)

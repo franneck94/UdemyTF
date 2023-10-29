@@ -111,7 +111,9 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
@@ -165,10 +167,15 @@ if __name__ == "__main__":
             activation_cls,
             dropout_rate,
         )
-        model_log_dir = os.path.join(LOGS_DIR, f"model{dropout_name}")
+        model_log_dir = os.path.join(
+            LOGS_DIR,
+            f"model{dropout_name}",
+        )
 
         tb_callback = TensorBoard(
-            log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
         )
 
         model.fit(

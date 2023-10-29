@@ -156,10 +156,15 @@ if __name__ == "__main__":
             dense_layer_size,
             kernel_initializer,
         )
-        model_log_dir = os.path.join(LOGS_DIR, f"model{kernel_initializer}")
+        model_log_dir = os.path.join(
+            LOGS_DIR,
+            f"model{kernel_initializer}",
+        )
 
         tb_callback = TensorBoard(
-            log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
         )
 
         model.fit(

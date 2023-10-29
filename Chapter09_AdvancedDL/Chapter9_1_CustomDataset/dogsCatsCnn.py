@@ -26,8 +26,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -38,7 +36,7 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -85,7 +83,7 @@ def build_model(
     x = Flatten()(x)
     x = Dense(units=dense_layer_size)(x)
     x = Activation("relu")(x)
-    x = Dense(units=num_classes)(x)
+    x = Dense(units=2)(x)
     y_pred = Activation("softmax")(x)
 
     model = Model(inputs=[input_img], outputs=[y_pred])
@@ -101,34 +99,35 @@ def build_model(
     return model
 
 
-if __name__ == "__main__":
-    data = DOGSCATS()
+def main() -> None:
+    data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
+    data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
-    test_dataset = data.get_test_set()
-
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    # Global params
-    epochs = 40
-    batch_size = 256
 
     # Best model params
+    # Best score: 0.7430909276008606 using params:
+    #   'dense_layer_size': 512,
+    #   'filter_block1': 32,
+    #   'filter_block2': 64,
+    #   'filter_block3': 128,
+    #   'kernel_size_block1': 3,
+    #   'kernel_size_block2': 3,
+    #   'kernel_size_block3': 7,
+    #   'learning_rate': 0.001,
+    #   'optimizer': Adam
     optimizer = Adam
-    learning_rate = 1e-3
+    learning_rate = 0.001
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
-    filter_block3 = 7
-    kernel_size_block3 = 64
+    filter_block3 = 128
+    kernel_size_block3 = 7
     dense_layer_size = 512
 
     model = build_model(
-        img_shape,
-        num_classes,
         optimizer,
         learning_rate,
         filter_block1,
@@ -139,10 +138,7 @@ if __name__ == "__main__":
         kernel_size_block3,
         dense_layer_size,
     )
-    model_log_dir = os.path.join(
-        LOGS_DIR,
-        "modelBest",
-    )
+    model_log_dir = os.path.join(LOGS_DIR, "dogsCatsStart")
 
     tb_callback = TensorBoard(
         log_dir=model_log_dir,
@@ -153,14 +149,17 @@ if __name__ == "__main__":
     model.fit(
         train_dataset,
         verbose=1,
-        batch_size=batch_size,
-        epochs=epochs,
+        epochs=30,
         callbacks=[tb_callback],
         validation_data=val_dataset,
     )
     score = model.evaluate(
-        test_dataset,
+        val_dataset,
         verbose=0,
-        batch_size=batch_size,
+        batch_size=258,
     )
-    print(f"Test performance best model: {score}")
+    print(f"Val performance best model: {score}")
+
+
+if __name__ == "__main__":
+    main()
