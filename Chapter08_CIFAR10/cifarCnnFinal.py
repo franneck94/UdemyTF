@@ -11,6 +11,7 @@ from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
 from keras.optimizers import RMSprop
+from tensorcross.utils import dataset_join
 
 from tf_utils.cifarDataAdvanced import CIFAR10
 
@@ -25,8 +26,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -37,34 +36,46 @@ def build_model(
     kernel_size_block3: int,
     dense_layer_size: int,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(32, 32, 3))
 
     x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding="same",
     )(input_img)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
@@ -72,7 +83,7 @@ def build_model(
     x = Flatten()(x)
     x = Dense(units=dense_layer_size)(x)
     x = Activation("relu")(x)
-    x = Dense(units=num_classes)(x)
+    x = Dense(units=10)(x)
     y_pred = Activation("softmax")(x)
 
     model = Model(inputs=[input_img], outputs=[y_pred])
@@ -80,21 +91,21 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
 
 
-if __name__ == "__main__":
+def main() -> None:
     data = CIFAR10()
 
-    train_dataset = data.get_train_set()
+    train_dataset_ = data.get_train_set()
     val_dataset = data.get_val_set()
+    train_dataset = dataset_join(train_dataset_, val_dataset)
     test_dataset = data.get_test_set()
-
-    img_shape = data.img_shape
-    num_classes = data.num_classes
 
     # Global params
     epochs = 30
@@ -112,8 +123,6 @@ if __name__ == "__main__":
     dense_layer_size = 512
 
     model = build_model(
-        img_shape,
-        num_classes,
         optimizer,
         learning_rate,
         filter_block1,
@@ -127,7 +136,9 @@ if __name__ == "__main__":
     model_log_dir = os.path.join(LOGS_DIR, "modelBest")
 
     tb_callback = TensorBoard(
-        log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
     )
 
     model.fit(
@@ -136,7 +147,15 @@ if __name__ == "__main__":
         batch_size=batch_size,
         epochs=epochs,
         callbacks=[tb_callback],
-        validation_data=val_dataset,
+        validation_data=test_dataset,
     )
-    score = model.evaluate(test_dataset, verbose=0, batch_size=batch_size)
+    score = model.evaluate(
+        test_dataset,
+        verbose=0,
+        batch_size=batch_size,
+    )
     print(f"Test performance best model: {score}")
+
+
+if __name__ == "__main__":
+    main()
