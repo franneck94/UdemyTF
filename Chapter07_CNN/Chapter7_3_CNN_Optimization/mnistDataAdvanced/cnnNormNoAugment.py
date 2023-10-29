@@ -1,5 +1,6 @@
 import os
 
+from keras.callbacks import TensorBoard
 from keras.layers import Activation
 from keras.layers import Conv2D
 from keras.layers import Dense
@@ -61,10 +62,16 @@ if __name__ == "__main__":
         metrics=["accuracy"],
     )
 
+    tb_callback = TensorBoard(
+        log_dir=MODEL_LOG_DIR,
+        write_graph=True,
+    )
+
     model.fit(
         train_dataset,
-        epochs=10,
+        epochs=20,
         batch_size=128,
         verbose=1,
         validation_data=val_dataset,
+        callbacks=[tb_callback],
     )
