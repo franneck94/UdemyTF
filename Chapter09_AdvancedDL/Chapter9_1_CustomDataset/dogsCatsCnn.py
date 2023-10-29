@@ -41,31 +41,43 @@ def build_model(
     input_img = Input(shape=img_shape)
 
     x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding="same",
     )(input_img)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+        filters=filter_block1,
+        kernel_size=kernel_size_block1,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+        filters=filter_block2,
+        kernel_size=kernel_size_block2,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+        filters=filter_block3,
+        kernel_size=kernel_size_block3,
+        padding="same",
     )(x)
     x = Activation("relu")(x)
     x = MaxPool2D()(x)
@@ -81,7 +93,9 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
@@ -125,10 +139,15 @@ if __name__ == "__main__":
         kernel_size_block3,
         dense_layer_size,
     )
-    model_log_dir = os.path.join(LOGS_DIR, "modelBest")
+    model_log_dir = os.path.join(
+        LOGS_DIR,
+        "modelBest",
+    )
 
     tb_callback = TensorBoard(
-        log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
     )
 
     model.fit(
@@ -139,5 +158,9 @@ if __name__ == "__main__":
         callbacks=[tb_callback],
         validation_data=val_dataset,
     )
-    score = model.evaluate(test_dataset, verbose=0, batch_size=batch_size)
+    score = model.evaluate(
+        test_dataset,
+        verbose=0,
+        batch_size=batch_size,
+    )
     print(f"Test performance best model: {score}")

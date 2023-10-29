@@ -13,73 +13,21 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-DATA_DIR = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
-X_FILE_PATH = os.path.join(DATA_DIR, "x.npy")
-Y_FILE_PATH = os.path.join(DATA_DIR, "y.npy")
-IMG_SIZE = 64
-IMG_DEPTH = 3
-IMG_SHAPE = (IMG_SIZE, IMG_SIZE, IMG_DEPTH)
-
-
-def extract_cats_vs_dogs() -> None:
-    cats_dir = os.path.join(DATA_DIR, "Cat")
-    dogs_dir = os.path.join(DATA_DIR, "Dog")
-
-    dirs = [cats_dir, dogs_dir]
-    class_names = ["cat", "dog"]
-
-    for d in dirs:
-        for f in os.listdir(d):
-            if f.split(".")[-1] != "jpg":
-                print(f"Removing file: {f}")
-                os.remove(os.path.join(d, f))
-
-    num_cats = len(os.listdir(cats_dir))
-    num_dogs = len(os.listdir(dogs_dir))
-    num_images = num_cats + num_dogs
-
-    x = np.zeros(
-        shape=(num_images, IMG_SIZE, IMG_SIZE, IMG_DEPTH), dtype=np.float32
-    )
-    y = np.zeros(shape=(num_images,), dtype=np.float32)
-
-    cnt = 0
-    for d, class_name in zip(dirs, class_names):
-        for f in os.listdir(d):
-            img_file_path = os.path.join(d, f)
-            try:
-                img = cv2.imread(img_file_path, cv2.IMREAD_COLOR)
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                x[cnt] = transform.resize(image=img, output_shape=IMG_SHAPE)
-                if class_name == "cat":
-                    y[cnt] = 0
-                elif class_name == "dog":
-                    y[cnt] = 1
-                else:
-                    print("Invalid class name!")
-                cnt += 1
-            except:  # noqa: E722
-                print(f"Image {f} cannt be read!")
-                os.remove(img_file_path)
-
-    # Dropping not readable image idxs
-    x = x[:cnt]
-    y = y[:cnt]
-
-    np.save(X_FILE_PATH, x)
-    np.save(Y_FILE_PATH, y)
-
-
 class DOGSCATS:
     def __init__(
-        self, test_size: float = 0.2, validation_size: float = 0.33
+        self,
+        data_dir: str,
+        test_size: float = 0.2,
+        validation_size: float = 0.33,
     ) -> None:
         # User-definen constants
         self.num_classes = 2
         self.batch_size = 128
         # Load the data set
-        x = np.load(X_FILE_PATH)
-        y = np.load(Y_FILE_PATH)
+        x_filepath = os.path.join(data_dir, "x.npy")
+        y_filepath = os.path.join(data_dir, "y.npy")
+        x = np.load(x_filepath)
+        y = np.load(y_filepath)
         # Split the dataset
         x_train, x_test, y_train, y_test = train_test_split(
             x, y, test_size=test_size
@@ -114,12 +62,18 @@ class DOGSCATS:
         return self.x_val, self.y_val
 
     @staticmethod
-    def load_and_preprocess_custom_image(image_file_path: str) -> np.ndarray:
+    def load_and_preprocess_custom_image(
+        image_file_path: str,
+        img_shape: tuple[int, int, int],
+    ) -> np.ndarray:
         img = cv2.imread(image_file_path, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        return transform.resize(image=img, output_shape=IMG_SHAPE)
+        return transform.resize(image=img, output_shape=img_shape)
 
-    def data_augmentation(self, augment_size: int = 5_000) -> None:
+    def data_augmentation(
+        self,
+        augment_size: int = 5_000,
+    ) -> None:
         image_generator = ImageDataGenerator(
             rotation_range=5,
             zoom_range=0.08,
@@ -127,7 +81,10 @@ class DOGSCATS:
             height_shift_range=0.08,
         )
         # Fit the data generator
-        image_generator.fit(self.x_train, augment=True)
+        image_generator.fit(
+            self.x_train,
+            augment=True,
+        )
         # Get random train images for the data augmentation
         rand_idxs = np.random.randint(self.train_size, size=augment_size)
         x_augmented = self.x_train[rand_idxs].copy()
@@ -145,5 +102,5 @@ class DOGSCATS:
 
 
 if __name__ == "__main__":
-    # extract_cats_vs_dogs()
-    pass
+    data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
+    d = DOGSCATS(data_dir=data_dir)
