@@ -90,7 +90,7 @@ def main() -> None:
     grid_search.fit(
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        epochs=1,
+        epochs=5,
         verbose=1,
     )
 

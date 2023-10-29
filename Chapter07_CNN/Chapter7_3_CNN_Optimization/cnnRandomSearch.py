@@ -79,20 +79,20 @@ def main() -> None:
         "filters_2": randint(8, 64),
         "kernel_size_2": randint(3, 8),
         "filters_3": randint(8, 64),
-        "kernel_size_3": randint(3, 8),
+        "kernel_size_3": [5],
     }
 
     rand_search = RandomSearch(
         model_fn=build_model,
         param_distributions=param_distributions,
-        n_iter=2,
+        n_iter=32,
         verbose=1,
     )
 
     rand_search.fit(
         train_dataset=train_dataset,
         val_dataset=val_dataset,
-        epochs=3,
+        epochs=5,
         verbose=1,
     )
 
