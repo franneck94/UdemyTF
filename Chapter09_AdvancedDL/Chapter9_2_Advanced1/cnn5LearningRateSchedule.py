@@ -130,7 +130,9 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
@@ -169,14 +171,27 @@ if __name__ == "__main__":
 
     model = build_model(img_shape, num_classes, **params)
 
-    schedules = [schedule_fn, schedule_fn2, schedule_fn3, schedule_fn4]
+    schedules = [
+        schedule_fn,
+        schedule_fn2,
+        schedule_fn3,
+        schedule_fn4,
+    ]
     for schedule in schedules:
-        model_log_dir = os.path.join(LOGS_DIR, f"model{schedule.__name__}")
+        model_log_dir = os.path.join(
+            LOGS_DIR,
+            f"model{schedule.__name__}",
+        )
 
-        lrs_callback = LearningRateScheduler(schedule=schedule, verbose=1)
+        lrs_callback = LearningRateScheduler(
+            schedule=schedule,
+            verbose=1,
+        )
 
         lr_callback = LRTensorBoard(
-            log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
         )
 
         model.fit(

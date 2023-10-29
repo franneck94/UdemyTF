@@ -137,7 +137,9 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model
@@ -180,14 +182,23 @@ if __name__ == "__main__":
 
     model_log_dir = os.path.join(LOGS_DIR, "modelFinal")
 
-    lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1,
+    )
 
     plateau_callback = ReduceLROnPlateau(
-        monitor="val_accuracy", factor=0.99, patience=3, verbose=1, min_lr=1e-5
+        monitor="val_accuracy",
+        factor=0.99,
+        patience=3,
+        verbose=1,
+        min_lr=1e-5,
     )
 
     lr_callback = LRTensorBoard(
-        log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
     )
 
     es_callback = EarlyStopping(
