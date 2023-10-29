@@ -41,7 +41,6 @@ known_third_party = [
     "skimage",
     "tensorcross",
     "tensorflow_datasets",
-    "scikeras",
     "packaging"
 ]
 known_first_party = [

@@ -91,17 +91,28 @@ def build_model(
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
-    x = Dense(units=dense_layer_size, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=dense_layer_size,
+        kernel_initializer=kernel_initializer,
+    )(x)
     x = Activation("relu")(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model

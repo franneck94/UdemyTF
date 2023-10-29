@@ -19,11 +19,8 @@ opencv-python
 pyqt6
 xlrd
 openpyxl
-optuna
 
 tensorflow[and-cuda]==2.14.*
 keras==2.14.*
 tensorflow-datasets==4.8.*
-tensorflow-addons>=0.22.*
 tensorcross>=1.0.*
-scikeras==0.12.*
