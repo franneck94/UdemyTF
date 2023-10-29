@@ -26,7 +26,15 @@ tf.random.set_seed(0)
 
 
 class CIFAR10:
-    def __init__(self, validation_size: float = 0.33) -> None:
+    def __init__(
+        self,
+        validation_size: float = 0.33,
+        augment: bool = True,
+        shuffle: bool = True,
+    ) -> None:
+        self.validation_size = validation_size
+        self.augment = augment
+        self.shuffle = shuffle
         # User-definen constants
         self.num_classes = 10
         self.batch_size = 128
@@ -63,7 +71,9 @@ class CIFAR10:
             (self.x_val, self.y_val)
         )
         self.train_dataset = self._prepare_dataset(
-            self.train_dataset, shuffle=True, augment=True
+            self.train_dataset,
+            shuffle=self.shuffle,
+            augment=self.augment,
         )
         self.test_dataset = self._prepare_dataset(self.test_dataset)
         self.val_dataset = self._prepare_dataset(self.val_dataset)
