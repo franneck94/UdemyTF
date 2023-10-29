@@ -104,7 +104,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 1
+    epochs = 30
 
     data = CIFAR10(augment=True, shuffle=True)
 
@@ -132,7 +132,7 @@ def main() -> None:
     rand_search = RandomSearch(
         model_fn=build_model,
         param_distributions=param_distribution,
-        n_iter=32,
+        n_iter=64,
         verbose=1,
     )
 

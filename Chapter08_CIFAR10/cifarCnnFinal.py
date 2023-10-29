@@ -10,7 +10,7 @@ from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
-from keras.optimizers import RMSprop
+from keras.optimizers import Adam
 from tensorcross.utils import dataset_join
 
 from tf_utils.cifarDataAdvanced import CIFAR10
@@ -100,6 +100,8 @@ def build_model(
 
 
 def main() -> None:
+    epochs = 30
+
     data = CIFAR10()
 
     train_dataset_ = data.get_train_set()
@@ -107,19 +109,25 @@ def main() -> None:
     train_dataset = dataset_join(train_dataset_, val_dataset)
     test_dataset = data.get_test_set()
 
-    # Global params
-    epochs = 30
-    batch_size = 256
-
     # Best model params
-    optimizer = RMSprop
-    learning_rate = 1e-3
+    # Best score: 0.7430909276008606 using params:
+    #   'dense_layer_size': 512,
+    #   'filter_block1': 32,
+    #   'filter_block2': 64,
+    #   'filter_block3': 128,
+    #   'kernel_size_block1': 3,
+    #   'kernel_size_block2': 3,
+    #   'kernel_size_block3': 7,
+    #   'learning_rate': 0.001,
+    #   'optimizer': Adam
+    optimizer = Adam
+    learning_rate = 0.001
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
-    filter_block3 = 7
-    kernel_size_block3 = 64
+    filter_block3 = 128
+    kernel_size_block3 = 7
     dense_layer_size = 512
 
     model = build_model(
@@ -144,7 +152,6 @@ def main() -> None:
     model.fit(
         train_dataset,
         verbose=1,
-        batch_size=batch_size,
         epochs=epochs,
         callbacks=[tb_callback],
         validation_data=test_dataset,
@@ -152,7 +159,7 @@ def main() -> None:
     score = model.evaluate(
         test_dataset,
         verbose=0,
-        batch_size=batch_size,
+        batch_size=258,
     )
     print(f"Test performance best model: {score}")
 
