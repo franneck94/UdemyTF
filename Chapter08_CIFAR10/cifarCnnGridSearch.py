@@ -102,7 +102,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 1
+    epochs = 30
 
     data = CIFAR10(augment=True, shuffle=True)
 
@@ -111,7 +111,7 @@ def main() -> None:
 
     param_grid = {
         "optimizer": [Adam, RMSprop],
-        "learning_rate": [0.001],
+        "learning_rate": [0.001, 0.002],
         "filter_block1": [32],
         "kernel_size_block1": [3, 5],
         "filter_block2": [32, 64],
