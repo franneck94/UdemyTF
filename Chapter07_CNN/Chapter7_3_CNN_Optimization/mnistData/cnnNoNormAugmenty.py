@@ -19,7 +19,10 @@ if not os.path.exists(LOGS_DIR):
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "cnn_no_norm_augment")
 
 
-def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
+def build_model(
+    img_shape: tuple[int, int, int],
+    num_classes: int,
+) -> Model:
     input_img = Input(shape=img_shape)
 
     x = Conv2D(filters=32, kernel_size=3, padding="same")(input_img)
@@ -56,7 +59,10 @@ if __name__ == "__main__":
         y_val_,
     ) = data.get_splitted_train_validation_set()
 
-    model = build_model(data.img_shape, data.num_classes)
+    model = build_model(
+        data.img_shape,
+        data.num_classes,
+    )
 
     model.compile(
         loss="categorical_crossentropy",
@@ -64,7 +70,10 @@ if __name__ == "__main__":
         metrics=["accuracy"],
     )
 
-    tb_callback = TensorBoard(log_dir=MODEL_LOG_DIR, write_graph=True)
+    tb_callback = TensorBoard(
+        log_dir=MODEL_LOG_DIR,
+        write_graph=True,
+    )
 
     model.fit(
         x=x_train_,
