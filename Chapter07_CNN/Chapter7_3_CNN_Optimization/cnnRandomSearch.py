@@ -7,11 +7,10 @@ from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
-from scikeras.wrappers import KerasClassifier
 from scipy.stats import randint
-from sklearn.model_selection import RandomizedSearchCV
+from tensorcross.model_selection import RandomSearch
 
-from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
+from tf_utils.mnistDataAdvanced import MNIST
 
 
 np.random.seed(0)
@@ -54,19 +53,25 @@ def build_model(
     x = Dense(units=10)(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     model.compile(
-        loss="categorical_crossentropy", optimizer="Adam", metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer="Adam",
+        metrics=["accuracy"],
     )
 
     return model
 
 
-if __name__ == "__main__":
-    data = MNIST(with_normalization=True)
+def main() -> None:
+    data = MNIST(augment=True, shuffle=True)
 
-    x_train, y_train = data.get_train_set()
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
 
     param_distributions = {
         "filters_1": randint(8, 64),
@@ -77,27 +82,22 @@ if __name__ == "__main__":
         "kernel_size_3": randint(3, 8),
     }
 
-    # Code has changed comapred to the videos: https://adriangb.com/scikeras/stable/migration.html
-    keras_clf = KerasClassifier(
-        build_fn=build_model, epochs=3, batch_size=128, verbose=1
-    )
-
-    rand_cv = RandomizedSearchCV(
-        estimator=keras_clf,
+    rand_search = RandomSearch(
+        model_fn=build_model,
         param_distributions=param_distributions,
-        n_iter=10,
-        n_jobs=1,
-        verbose=0,
-        cv=3,
+        n_iter=2,
+        verbose=1,
     )
 
-    rand_result = rand_cv.fit(X=x_train, y=y_train)
+    rand_search.fit(
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
+        epochs=3,
+        verbose=1,
+    )
 
-    print(f"Best: {rand_result.best_score_} using {rand_result.best_params_}")
+    rand_search.summary()
 
-    means = rand_result.cv_results_["mean_test_score"]
-    stds = rand_result.cv_results_["std_test_score"]
-    params = rand_result.cv_results_["params"]
 
-    for mean, std, param in zip(means, stds, params):
-        print(f"Acc: {mean} (+/- {std * 2}) with: {param}")
+if __name__ == "__main__":
+    main()

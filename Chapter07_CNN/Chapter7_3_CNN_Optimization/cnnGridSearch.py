@@ -7,10 +7,9 @@ from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
 from keras.models import Model
-from scikeras.wrappers import KerasClassifier
-from sklearn.model_selection import GridSearchCV
+from tensorcross.model_selection import GridSearch
 
-from Chapter07_CNN.Chapter7_3_CNN_Optimization.mnistData4 import MNIST
+from tf_utils.mnistDataAdvanced import MNIST
 
 
 np.random.seed(0)
@@ -53,19 +52,25 @@ def build_model(
     x = Dense(units=10)(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     model.compile(
-        loss="categorical_crossentropy", optimizer="Adam", metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer="Adam",
+        metrics=["accuracy"],
     )
 
     return model
 
 
-if __name__ == "__main__":
-    data = MNIST(with_normalization=True)
+def main() -> None:
+    data = MNIST(augment=True, shuffle=True)
 
-    x_train, y_train = data.get_train_set()
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
 
     param_grid = {
         "filters_1": [16, 32],
@@ -76,26 +81,21 @@ if __name__ == "__main__":
         "kernel_size_3": [5],
     }
 
-    # Code has changed comapred to the videos: https://adriangb.com/scikeras/stable/migration.html
-    keras_clf = KerasClassifier(
-        build_fn=build_model,
-        epochs=3,
-        batch_size=128,
+    grid_search = GridSearch(
+        model_fn=build_model,
+        param_grid=param_grid,
         verbose=1,
-        **{k: v[0] for k, v in param_grid.items()},
     )
 
-    grid_cv = GridSearchCV(
-        estimator=keras_clf, param_grid=param_grid, n_jobs=1, verbose=0, cv=3
+    grid_search.fit(
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
+        epochs=1,
+        verbose=1,
     )
 
-    grid_result = grid_cv.fit(x_train, y_train)
+    grid_search.summary()
 
-    print(f"Best: {grid_result.best_score_} using {grid_result.best_params_}")
 
-    means = grid_result.cv_results_["mean_test_score"]
-    stds = grid_result.cv_results_["std_test_score"]
-    params = grid_result.cv_results_["params"]
-
-    for mean, std, param in zip(means, stds, params):
-        print(f"Acc: {mean} (+/- {std * 2}) with: {param}")
+if __name__ == "__main__":
+    main()
