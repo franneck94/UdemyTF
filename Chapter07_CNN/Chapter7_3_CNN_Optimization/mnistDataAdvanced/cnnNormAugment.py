@@ -1,3 +1,5 @@
+import os
+
 from keras.layers import Activation
 from keras.layers import Conv2D
 from keras.layers import Dense
@@ -7,7 +9,13 @@ from keras.layers import MaxPool2D
 from keras.models import Model
 from keras.optimizers import Adam
 
-from mnistDataAdvanced import MNIST
+from tf_utils.mnistDataAdvanced import MNIST
+
+
+LOGS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/")
+if not os.path.exists(LOGS_DIR):
+    os.mkdir(LOGS_DIR)
+MODEL_LOG_DIR = os.path.join(LOGS_DIR, "cnn_adv_norm_augment")
 
 
 def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
@@ -37,7 +45,7 @@ def build_model(img_shape: tuple[int, int, int], num_classes: int) -> Model:
 
 
 if __name__ == "__main__":
-    data = MNIST()
+    data = MNIST(augment=True, shuffle=True)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()

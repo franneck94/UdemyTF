@@ -44,7 +44,9 @@ known_third_party = [
     "scikeras",
     "packaging"
 ]
-known_first_party = []
+known_first_party = [
+    "tf_utils"
+]
 known_local_folder = []
 multi_line_output = 3
 lines_after_imports = 2

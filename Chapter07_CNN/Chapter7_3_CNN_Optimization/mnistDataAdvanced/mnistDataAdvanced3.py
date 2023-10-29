@@ -23,7 +23,15 @@ else:
 
 
 class MNIST:
-    def __init__(self, validation_size: float = 0.33) -> None:
+    def __init__(
+        self,
+        validation_size: float = 0.33,
+        augment: bool = True,
+        shuffle: bool = True,
+    ) -> None:
+        self.validation_size = validation_size
+        self.augment = augment
+        self.shuffle = shuffle
         # User-definen constants
         self.num_classes = 10
         self.batch_size = 128
@@ -39,7 +47,7 @@ class MNIST:
         self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(
             self.x_train,
             self.y_train,
-            test_size=validation_size,
+            test_size=self.validation_size,
         )
         # Preprocess x data
         self.x_train = np.expand_dims(
@@ -87,8 +95,8 @@ class MNIST:
         )
         self.train_dataset = self._prepare_dataset(
             self.train_dataset,
-            shuffle=True,
-            augment=True,
+            augment=self.augment,
+            shuffle=self.shuffle,
         )
         self.test_dataset = self._prepare_dataset(
             self.test_dataset,
