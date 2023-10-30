@@ -18,12 +18,15 @@ Scores: 0.9950
 
 ### Standard
 
-Scores: 0.99383
+Scores: 0.9023
+Total params: 659,618
 
 ### ResNet
 
-Scores: 0.9944
+Scores: 0.8761
+Total params: 670,178
 
 ### DenseNet
 
-Scores: 0.9950
+Scores: 0.9042
+Total params: 744,002

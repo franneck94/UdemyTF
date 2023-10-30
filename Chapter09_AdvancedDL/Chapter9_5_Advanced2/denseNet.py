@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     es_callback = EarlyStopping(
         monitor="val_accuracy",
-        patience=30,
+        patience=20,
         verbose=1,
         restore_best_weights=True,
         min_delta=0.0005,
