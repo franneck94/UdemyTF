@@ -12,7 +12,9 @@ tf.random.set_seed(0)
 
 class CIFAR10:
     def __init__(
-        self, with_normalization: bool = True, validation_size: float = 0.33
+        self,
+        with_normalization: bool = True,
+        validation_size: float = 0.33,
     ) -> None:
         # User-definen constants
         self.num_classes = 10
