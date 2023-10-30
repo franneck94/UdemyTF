@@ -16,49 +16,73 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def create_rnn_model(input_shape: tuple[int, int], num_classes: int) -> Model:
+def create_rnn_model(
+    input_shape: tuple[int, int],
+    num_classes: int,
+) -> Model:
     input_text = Input(shape=input_shape)
     x = SimpleRNN(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     opt = Adam(learning_rate=1e-4)
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
 
 
-def create_lstm_model(input_shape: tuple[int, int], num_classes: int) -> Model:
+def create_lstm_model(
+    input_shape: tuple[int, int],
+    num_classes: int,
+) -> Model:
     input_text = Input(shape=input_shape)
     x = LSTM(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     opt = Adam(learning_rate=1e-4)
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
 
 
-def create_gru_model(input_shape: tuple[int, int], num_classes: int) -> Model:
+def create_gru_model(
+    input_shape: tuple[int, int],
+    num_classes: int,
+) -> Model:
     input_text = Input(shape=input_shape)
     x = GRU(units=80, return_sequences=False)(input_text)
     x = Dense(units=80)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     opt = Adam(learning_rate=1e-4)
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
@@ -93,7 +117,11 @@ def main() -> None:
             epochs=epochs,
             validation_data=val_dataset,
         )
-        score = model.evaluate(x=test_dataset, verbose=0, batch_size=batch_size)
+        score = model.evaluate(
+            x=test_dataset,
+            verbose=0,
+            batch_size=batch_size,
+        )
         print(f"Test performance: {score}")
 
 

@@ -26,7 +26,10 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def save_embedding(vectorizer: TextVectorization, embedding_dim: int) -> int:
+def save_embedding(
+    vectorizer: TextVectorization,
+    embedding_dim: int,
+) -> int:
     """
     Glove:
     !wget http://nlp.stanford.edu/data/glove.6B.zip
@@ -42,8 +45,8 @@ def save_embedding(vectorizer: TextVectorization, embedding_dim: int) -> int:
     )
     with open(path_to_glove_file) as f:
         for line in f:
-            word, coefs = line.split(maxsplit=1)
-            coefs = np.fromstring(coefs, "f", sep=" ")
+            word, coefs_ = line.split(maxsplit=1)
+            coefs = np.fromstring(coefs_, "f", sep=" ")
             embeddings_index[word] = coefs
 
     print(f"Found {len(embeddings_index)} word vectors.")
@@ -96,17 +99,32 @@ def create_rnn_model(
         embeddings_initializer=Constant(embedding_matrix),
         trainable=True,
     )(x)
-    x = Bidirectional(SimpleRNN(units=rec_units1, return_sequences=True))(x)
-    x = Bidirectional(SimpleRNN(units=rec_units2, return_sequences=False))(x)
+    x = Bidirectional(
+        SimpleRNN(
+            units=rec_units1,
+            return_sequences=True,
+        )
+    )(x)
+    x = Bidirectional(
+        SimpleRNN(
+            units=rec_units2,
+            return_sequences=False,
+        )
+    )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     x = Dropout(rate=dropout_rate)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     optimizer = Adam(learning_rate=1e-3)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     # model.summary()
     return model
@@ -133,17 +151,32 @@ def create_gru_model(
         embeddings_initializer=Constant(embedding_matrix),
         trainable=True,
     )(x)
-    x = Bidirectional(GRU(units=rec_units1, return_sequences=True))(x)
-    x = Bidirectional(GRU(units=rec_units2, return_sequences=False))(x)
+    x = Bidirectional(
+        GRU(
+            units=rec_units1,
+            return_sequences=True,
+        )
+    )(x)
+    x = Bidirectional(
+        GRU(
+            units=rec_units2,
+            return_sequences=False,
+        )
+    )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
     x = Dropout(rate=dropout_rate)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     optimizer = Adam(learning_rate=1e-3)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     # model.summary()
     return model
@@ -170,8 +203,18 @@ def create_lstm_model(
         embeddings_initializer=Constant(embedding_matrix),
         trainable=True,
     )(x)
-    x = Bidirectional(LSTM(units=rec_units1, return_sequences=True))(x)
-    x = Bidirectional(LSTM(units=rec_units2, return_sequences=False))(x)
+    x = Bidirectional(
+        LSTM(
+            units=rec_units1,
+            return_sequences=True,
+        )
+    )(x)
+    x = Bidirectional(
+        LSTM(
+            units=rec_units2,
+            return_sequences=False,
+        )
+    )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
     x = Dense(units=num_classes)(x)
@@ -180,7 +223,9 @@ def create_lstm_model(
     model = Model(inputs=[input_text], outputs=[out])
     optimizer = Adam(learning_rate=1e-3)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     # model.summary()
     return model
@@ -223,12 +268,19 @@ def main() -> None:
             "embedding_matrix": embedding_matrix,
         }
 
-        search = GridSearch(model_fn=model_fn, param_grid=param_grid, **kwargs)
+        search = GridSearch(
+            model_fn=model_fn,
+            param_grid=param_grid,
+            **kwargs,
+        )
 
         batch_size = 512
         epochs = 100
         es_callback = EarlyStopping(
-            monitor="val_loss", patience=5, verbose=1, restore_best_weights=True
+            monitor="val_loss",
+            patience=5,
+            verbose=1,
+            restore_best_weights=True,
         )
 
         fit_kwargs = {

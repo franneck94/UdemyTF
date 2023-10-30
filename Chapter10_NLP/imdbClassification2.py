@@ -42,10 +42,15 @@ def create_rnn_model(
     x = Dense(units=num_classes)(x)
     x = Dropout(rate=dropout_rate)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     optimizer = Adam(learning_rate=1e-4)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
@@ -73,10 +78,15 @@ def create_gru_model(
     x = Dense(units=num_classes)(x)
     x = Dropout(rate=dropout_rate)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     optimizer = Adam(learning_rate=1e-4)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
@@ -104,10 +114,15 @@ def create_lstm_model(
     x = Dense(units=num_classes)(x)
     x = Dropout(rate=dropout_rate)(x)
     out = Activation("softmax")(x)
-    model = Model(inputs=[input_text], outputs=[out])
+    model = Model(
+        inputs=[input_text],
+        outputs=[out],
+    )
     optimizer = Adam(learning_rate=1e-4)
     model.compile(
-        loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+        loss="binary_crossentropy",
+        optimizer=optimizer,
+        metrics=["accuracy"],
     )
     model.summary()
     return model
@@ -142,12 +157,19 @@ def main() -> None:
             "embedding_dim": embedding_dim,
         }
 
-        search = GridSearch(model_fn=model_fn, param_grid=param_grid, **kwargs)
+        search = GridSearch(
+            model_fn=model_fn,
+            param_grid=param_grid,
+            **kwargs,
+        )
 
         batch_size = 512
         epochs = 100
         es_callback = EarlyStopping(
-            monitor="val_loss", patience=5, verbose=1, restore_best_weights=True
+            monitor="val_loss",
+            patience=5,
+            verbose=1,
+            restore_best_weights=True,
         )
 
         fit_kwargs = {

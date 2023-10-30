@@ -79,11 +79,15 @@ if __name__ == "__main__":
             input_shape=x.shape[1:],
         )
     )
-    model.compile(loss="mse", optimizer="Adam")
+    model.compile(
+        loss="mse",
+        optimizer="Adam",
+    )
     # model.summary()
 
     rnn = SimpleRNNInference(
-        rnn_layer=model.layers[0], return_sequences=return_sequences
+        rnn_layer=model.layers[0],
+        return_sequences=return_sequences,
     )
     output_rnn_own = rnn(x[0])  # 10.5
     print(output_rnn_own)

@@ -10,7 +10,10 @@ tf.random.set_seed(0)
 
 
 class IMDB:
-    def __init__(self, validation_size: float = 0.33) -> None:
+    def __init__(
+        self,
+        validation_size: float = 0.33,
+    ) -> None:
         # User-definen constants
         self.num_classes = 2
         self.batch_size = 128

@@ -18,7 +18,9 @@ def tanh_fn(x: np.ndarray) -> np.ndarray:
 
 class LSTMInference:
     def __init__(
-        self, lstm_layer: tf.keras.layers.LSTM, return_sequences: bool = False
+        self,
+        lstm_layer: tf.keras.layers.LSTM,
+        return_sequences: bool = False,
     ) -> None:
         self.return_sequences = return_sequences
         self.lstm_layer = lstm_layer
@@ -57,7 +59,10 @@ class LSTMInference:
         return self.h
 
     def forward_step(
-        self, x_t: np.ndarray, c_t: np.ndarray, h_t: np.ndarray
+        self,
+        x_t: np.ndarray,
+        c_t: np.ndarray,
+        h_t: np.ndarray,
     ) -> tuple[np.ndarray, np.ndarray]:
         i_t = sigmoid_fn(
             np.matmul(x_t, self.W_i) + np.matmul(h_t, self.U_i) + self.b_i
@@ -105,11 +110,15 @@ if __name__ == "__main__":
             input_shape=x.shape[1:],
         )
     )
-    model.compile(loss="mse", optimizer="Adam")
+    model.compile(
+        loss="mse",
+        optimizer="Adam",
+    )
     # model.summary()
 
     rnn = LSTMInference(
-        lstm_layer=model.layers[0], return_sequences=return_sequences
+        lstm_layer=model.layers[0],
+        return_sequences=return_sequences,
     )
     output_rnn_own = rnn(x[0])  # 10.5
     print(output_rnn_own)
