@@ -11,6 +11,7 @@ from keras.layers import Dense
 from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
+from keras.layers import ReLU
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.optimizers import Optimizer
@@ -49,14 +50,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(input_img)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -65,14 +66,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -81,14 +82,14 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
@@ -96,7 +97,7 @@ def build_model(
         units=dense_layer_size,
         kernel_initializer=kernel_initializer,
     )(x)
-    x = Activation("relu")(x)
+    x = ReLU()(x)
     x = Dense(
         units=num_classes,
         kernel_initializer=kernel_initializer,

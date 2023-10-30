@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 import tensorflow as tf
+from keras.callbacks import EarlyStopping
 from keras.callbacks import LearningRateScheduler
 from keras.layers import Activation
 from keras.layers import BatchNormalization
@@ -33,8 +34,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -49,7 +48,7 @@ def build_model(
     dropout_rate: float,
     use_batch_normalization: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -126,7 +125,7 @@ def build_model(
         x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Dense(
-        units=num_classes,
+        units=2,
         kernel_initializer=kernel_initializer,
     )(x)
     y_pred = Activation("softmax")(x)
@@ -156,13 +155,10 @@ def main() -> None:
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
     # Best model params
     params = {
         "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
+        "kernel_initializer": "LecunNormal",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -177,8 +173,6 @@ def main() -> None:
     }
 
     model = build_model(
-        img_shape,
-        num_classes,
         **params,
     )
 
@@ -205,11 +199,19 @@ def main() -> None:
             profile_batch=0,
         )
 
+        es_callback = EarlyStopping(
+            monitor="val_accuracy",
+            patience=30,
+            verbose=1,
+            restore_best_weights=True,
+            min_delta=0.0005,
+        )
+
         model.fit(
             train_dataset,
             verbose=1,
             epochs=epochs,
-            callbacks=[lrs_callback, lr_callback],
+            callbacks=[lrs_callback, lr_callback, es_callback],
             validation_data=val_dataset,
         )
         scores = model.evaluate(

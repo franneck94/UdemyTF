@@ -46,14 +46,14 @@ def build_model(
         padding="same",
         kernel_initializer="glorot_uniform",
     )(input_img)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -62,14 +62,14 @@ def build_model(
         padding="same",
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
@@ -78,14 +78,14 @@ def build_model(
         padding="same",
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
@@ -93,7 +93,7 @@ def build_model(
         units=dense_layer_size,
         kernel_initializer="glorot_uniform",
     )(x)
-    x = ReLU(x)
+    x = ReLU()(x)
     x = Dense(
         units=2,
         kernel_initializer="glorot_uniform",

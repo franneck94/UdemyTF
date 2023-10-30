@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 import tensorflow as tf
+from keras.callbacks import EarlyStopping
 from keras.callbacks import TensorBoard
 from keras.initializers import Initializer
 from keras.layers import ELU
@@ -120,7 +121,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 40
+    epochs = 100
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
@@ -141,7 +142,7 @@ def main() -> None:
     filter_block3 = 128
     kernel_size_block3 = 7
     dense_layer_size = 512
-    kernel_initializer = "LecunUniform"
+    kernel_initializer = "LecunNormal"
 
     activations = {
         "RELU": ReLU(),
@@ -179,11 +180,19 @@ def main() -> None:
             profile_batch=0,
         )
 
+        es_callback = EarlyStopping(
+            monitor="val_accuracy",
+            patience=30,
+            verbose=1,
+            restore_best_weights=True,
+            min_delta=0.0005,
+        )
+
         model.fit(
             train_dataset,
             verbose=1,
             epochs=epochs,
-            callbacks=[tb_callback],
+            callbacks=[tb_callback, es_callback],
             validation_data=val_dataset,
         )
         scores = model.evaluate(
