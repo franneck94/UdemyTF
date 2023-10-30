@@ -119,20 +119,17 @@ def build_model(
     return model
 
 
-if __name__ == "__main__":
+def main() -> None:
+    epochs = 40
+
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
-    test_dataset = data.get_test_set()
 
     img_shape = data.img_shape
     num_classes = data.num_classes
-
-    # Global params
-    epochs = 40
-    batch_size = 128
 
     # Best model params
     optimizer = Adam
@@ -182,8 +179,11 @@ if __name__ == "__main__":
         model.fit(
             train_dataset,
             verbose=1,
-            batch_size=batch_size,
             epochs=epochs,
             callbacks=[tb_callback],
             validation_data=val_dataset,
         )
+
+
+if __name__ == "__main__":
+    main()

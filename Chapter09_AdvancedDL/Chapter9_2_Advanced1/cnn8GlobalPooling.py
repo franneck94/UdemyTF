@@ -145,20 +145,17 @@ def build_model(
     return model
 
 
-if __name__ == "__main__":
+def main() -> None:
+    epochs = 100
+
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
-    test_dataset = data.get_test_set()
 
     img_shape = data.img_shape
     num_classes = data.num_classes
-
-    # Global params
-    epochs = 100
-    batch_size = 128
 
     params = {
         "dense_layer_size": 128,
@@ -192,7 +189,7 @@ if __name__ == "__main__":
         verbose=1,
     )
 
-    plateau_callback = ReduceLROnPlateau(
+    plateau_callback = ReduceLROnPlateau(  # noqa: F841
         monitor="val_accuracy",
         factor=0.99,
         patience=3,
@@ -217,8 +214,11 @@ if __name__ == "__main__":
     model.fit(
         train_dataset,
         verbose=1,
-        batch_size=batch_size,
         epochs=epochs,
         callbacks=[es_callback, lrs_callback, lr_callback],
         validation_data=val_dataset,
     )
+
+
+if __name__ == "__main__":
+    main()
