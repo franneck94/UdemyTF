@@ -147,7 +147,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 40
+    epochs = 100
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)

@@ -33,8 +33,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -49,7 +47,7 @@ def build_model(
     dropout_rate: float,
     use_batch_normalization: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -126,7 +124,7 @@ def build_model(
         x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Dense(
-        units=num_classes,
+        units=2,
         kernel_initializer=kernel_initializer,
     )(x)
     y_pred = Activation("softmax")(x)
@@ -148,7 +146,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 40
+    epochs = 100
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)

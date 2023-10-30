@@ -35,8 +35,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -53,7 +51,7 @@ def build_model(
     use_dense: bool,
     use_global_pooling: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -134,7 +132,7 @@ def build_model(
             x = BatchNormalization()(x)
         x = activation_cls(x)
     x = Dense(
-        units=num_classes,
+        units=2,
         kernel_initializer=kernel_initializer,
     )(x)
     y_pred = Activation("softmax")(x)
