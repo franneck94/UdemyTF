@@ -121,18 +121,28 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    x = GlobalAveragePooling2D()(x) if use_global_pooling else Flatten()(x)
+    if use_global_pooling:
+        x = GlobalAveragePooling2D()(x)
+    else:
+        Flatten()(x)
     if use_dense:
         x = Dense(
-            units=dense_layer_size, kernel_initializer=kernel_initializer
+            units=dense_layer_size,
+            kernel_initializer=kernel_initializer,
         )(x)
         if use_batch_normalization:
             x = BatchNormalization()(x)
         x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     opt = optimizer(learning_rate=learning_rate)
 
@@ -175,7 +185,11 @@ def main() -> None:
         "use_global_pooling": True,
     }
 
-    model = build_model(img_shape, num_classes, **params)
+    model = build_model(
+        img_shape,
+        num_classes,
+        **params,
+    )
 
     use_pool = params["use_global_pooling"]
     use_dense = params["use_dense"]
@@ -217,6 +231,14 @@ def main() -> None:
         epochs=epochs,
         callbacks=[es_callback, lrs_callback, lr_callback],
         validation_data=val_dataset,
+    )
+    scores = model.evaluate(
+        val_dataset,
+        verbose=0,
+        batch_size=258,
+    )
+    print(
+        f"Val performance: {scores[1]} with global pooling",
     )
 
 

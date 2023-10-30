@@ -95,9 +95,15 @@ def build_model(
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
-    x = Dense(units=dense_layer_size, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=dense_layer_size,
+        kernel_initializer=kernel_initializer,
+    )(x)
     x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
     model = Model(inputs=[input_img], outputs=[y_pred])
@@ -127,17 +133,21 @@ def main() -> None:
 
     # Best model params
     optimizer = Adam
-    learning_rate = 1e-3
+    learning_rate = 0.001
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
     filter_block3 = 128
-    kernel_size_block3 = 3
-    dense_layer_size = 128
+    kernel_size_block3 = 7
+    dense_layer_size = 512
     kernel_initializer = "GlorotUniform"
 
-    activations = {"RELU": ReLU(), "LEAKY_RELU": LeakyReLU(), "ELU": ELU()}
+    activations = {
+        "RELU": ReLU(),
+        "LEAKY_RELU": LeakyReLU(),
+        "ELU": ELU(),
+    }
 
     for activation_key in activations:
         activation_cls = activations[activation_key]
@@ -175,6 +185,14 @@ def main() -> None:
             epochs=epochs,
             callbacks=[tb_callback],
             validation_data=val_dataset,
+        )
+        scores = model.evaluate(
+            val_dataset,
+            verbose=0,
+            batch_size=258,
+        )
+        print(
+            f"Val performance: {scores[1]} for activaiton fn: {activation_key}",
         )
 
 

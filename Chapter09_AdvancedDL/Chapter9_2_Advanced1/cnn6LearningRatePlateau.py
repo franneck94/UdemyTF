@@ -118,14 +118,23 @@ def build_model(
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
-    x = Dense(units=dense_layer_size, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=dense_layer_size,
+        kernel_initializer=kernel_initializer,
+    )(x)
     if use_batch_normalization:
         x = BatchNormalization()(x)
     x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=num_classes,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     opt = optimizer(learning_rate=learning_rate)
 
@@ -166,14 +175,18 @@ def main() -> None:
         "use_batch_normalization": True,
     }
 
-    model = build_model(img_shape, num_classes, **params)
+    model = build_model(
+        img_shape,
+        num_classes,
+        **params,
+    )
 
     model_log_dir = os.path.join(
         LOGS_DIR,
         "model_Plateau1",
     )
 
-    lrs_callback = LearningRateScheduler(
+    lrs_callback = LearningRateScheduler(  # noqa: F841
         schedule=schedule_fn2,
         verbose=1,
     )
@@ -182,7 +195,7 @@ def main() -> None:
     # plateau 2: 0.99, 1e-5
     # plateau 3: 0.95, 1e-6
     # plateau 4: 0.99, 1e-6
-    plateau_callback = ReduceLROnPlateau(  # noqa: F841
+    plateau_callback = ReduceLROnPlateau(
         monitor="val_accuracy",
         factor=0.99,
         patience=3,
@@ -200,8 +213,16 @@ def main() -> None:
         train_dataset,
         verbose=1,
         epochs=epochs,
-        callbacks=[lrs_callback, lr_callback],
+        callbacks=[lr_callback, plateau_callback],
         validation_data=val_dataset,
+    )
+    scores = model.evaluate(
+        val_dataset,
+        verbose=0,
+        batch_size=258,
+    )
+    print(
+        f"Val performance: {scores[1]} with plateau callback",
     )
 
 

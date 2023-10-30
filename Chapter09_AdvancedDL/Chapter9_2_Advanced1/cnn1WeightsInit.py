@@ -132,20 +132,20 @@ def main() -> None:
 
     # Best model params
     optimizer = Adam
-    learning_rate = 1e-3
+    learning_rate = 0.001
     filter_block1 = 32
     kernel_size_block1 = 3
     filter_block2 = 64
     kernel_size_block2 = 3
     filter_block3 = 128
-    kernel_size_block3 = 3
-    dense_layer_size = 128
+    kernel_size_block3 = 7
+    dense_layer_size = 512
 
     kernel_initializers = [
         "GlorotUniform",
-        "GlorotRandom",
+        "GlorotNormal",
         "HeUniform",
-        "HeRandom",
+        "HeNormal",
         "LecunUniform",
         "LecunNormal",
     ]
@@ -182,6 +182,14 @@ def main() -> None:
             epochs=epochs,
             callbacks=[tb_callback],
             validation_data=val_dataset,
+        )
+        scores = model.evaluate(
+            val_dataset,
+            verbose=0,
+            batch_size=258,
+        )
+        print(
+            f"Val performance: {scores[1]} for init: {kernel_initializer}",
         )
 
 
