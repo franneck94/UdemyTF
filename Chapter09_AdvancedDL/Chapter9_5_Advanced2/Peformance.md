@@ -1,13 +1,29 @@
 # Performance
 
-## Standard
+## MNIST
 
-Scores: [0.02746533416211605, 0.993838369846344]
+### Standard
 
-## ResNet
+Scores: 0.9938
 
-Scores: [0.028705984354019165, 0.9944949746131897]
+### ResNet
 
-## DenseNet
+Scores: 0.99449
 
-Scores: [0.027661491185426712, 0.9950504899024963]
+### DenseNet
+
+Scores: 0.9950
+
+## DogsCats
+
+### Standard
+
+Scores: 0.99383
+
+### ResNet
+
+Scores: 0.9944
+
+### DenseNet
+
+Scores: 0.9950

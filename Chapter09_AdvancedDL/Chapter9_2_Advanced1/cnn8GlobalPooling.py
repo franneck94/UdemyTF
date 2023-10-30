@@ -3,7 +3,6 @@ import os
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import EarlyStopping
-from keras.callbacks import LearningRateScheduler
 from keras.callbacks import ReduceLROnPlateau
 from keras.initializers import Initializer
 from keras.layers import Activation
@@ -21,7 +20,6 @@ from keras.optimizers import Adam
 from keras.optimizers import Optimizer
 
 from tf_utils.callbacks import LRTensorBoard
-from tf_utils.callbacks import schedule_fn2
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
@@ -149,6 +147,7 @@ def build_model(
         optimizer=opt,
         metrics=["accuracy"],
     )
+    model.summary()
 
     return model
 
@@ -162,12 +161,9 @@ def main() -> None:
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
     params = {
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
+        "dense_layer_size": 512,
+        "kernel_initializer": "LecunNormal",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -175,17 +171,15 @@ def main() -> None:
         "filter_block2": 64,
         "kernel_size_block2": 3,
         "filter_block3": 128,
-        "kernel_size_block3": 3,
+        "kernel_size_block3": 7,
         "activation_cls": ReLU(),
         "dropout_rate": 0.0,
         "use_batch_normalization": True,
-        "use_dense": True,
+        "use_dense": False,
         "use_global_pooling": True,
     }
 
     model = build_model(
-        img_shape,
-        num_classes,
         **params,
     )
 
@@ -196,17 +190,12 @@ def main() -> None:
         f"model_Global_{use_pool}_Dense_{use_dense}",
     )
 
-    lrs_callback = LearningRateScheduler(
-        schedule=schedule_fn2,
-        verbose=1,
-    )
-
-    plateau_callback = ReduceLROnPlateau(  # noqa: F841
+    plateau_callback = ReduceLROnPlateau(
         monitor="val_accuracy",
-        factor=0.99,
         patience=3,
         verbose=1,
-        min_lr=1e-5,
+        factor=0.99,
+        min_lr=1e-6,
     )
 
     lr_callback = LRTensorBoard(
@@ -227,7 +216,7 @@ def main() -> None:
         train_dataset,
         verbose=1,
         epochs=epochs,
-        callbacks=[es_callback, lrs_callback, lr_callback],
+        callbacks=[es_callback, plateau_callback, lr_callback],
         validation_data=val_dataset,
     )
     scores = model.evaluate(

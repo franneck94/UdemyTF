@@ -30,14 +30,16 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
+MODELS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/models/")
+if not os.path.exists(MODELS_DIR):
+    os.mkdir(MODELS_DIR)
+MODEL_FILE_PATH = os.path.join(MODELS_DIR, "dogs_cats.h5")
 LOGS_DIR = os.path.abspath("C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/")
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -54,7 +56,7 @@ def build_model(
     use_dense: bool,
     use_global_pooling: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -135,7 +137,7 @@ def build_model(
             x = BatchNormalization()(x)
         x = activation_cls(x)
     x = Dense(
-        units=num_classes,
+        units=2,
         kernel_initializer=kernel_initializer,
     )(x)
     y_pred = Activation("softmax")(x)
@@ -157,7 +159,6 @@ def build_model(
 
 
 def main() -> None:
-    """Final Model: 0.9340"""
     epochs = 100
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
@@ -168,12 +169,9 @@ def main() -> None:
     train_dataset = dataset_join(train_dataset_, val_dataset)
     test_dataset = data.get_test_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
     params = {
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
+        "dense_layer_size": 512,
+        "kernel_initializer": "LecunNormal",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -181,17 +179,15 @@ def main() -> None:
         "filter_block2": 64,
         "kernel_size_block2": 3,
         "filter_block3": 128,
-        "kernel_size_block3": 3,
+        "kernel_size_block3": 7,
         "activation_cls": ReLU(),
         "dropout_rate": 0.0,
         "use_batch_normalization": True,
-        "use_dense": True,
+        "use_dense": False,
         "use_global_pooling": True,
     }
 
     model = build_model(
-        img_shape,
-        num_classes,
         **params,
     )
 
@@ -239,6 +235,8 @@ def main() -> None:
     print(
         f"Test performance: {scores[1]} for final model!",
     )
+
+    model.save_weights(MODEL_FILE_PATH)
 
 
 if __name__ == "__main__":

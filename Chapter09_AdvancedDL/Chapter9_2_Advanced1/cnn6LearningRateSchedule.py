@@ -157,7 +157,7 @@ def main() -> None:
 
     # Best model params
     params = {
-        "dense_layer_size": 128,
+        "dense_layer_size": 512,
         "kernel_initializer": "LecunNormal",
         "optimizer": Adam,
         "learning_rate": 1e-3,
@@ -166,7 +166,7 @@ def main() -> None:
         "filter_block2": 64,
         "kernel_size_block2": 3,
         "filter_block3": 128,
-        "kernel_size_block3": 3,
+        "kernel_size_block3": 7,
         "activation_cls": ReLU(),
         "dropout_rate": 0.0,
         "use_batch_normalization": True,

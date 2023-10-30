@@ -20,6 +20,7 @@ from keras.layers import ReLU
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.optimizers import Optimizer
+from tensorcross.utils import dataset_join
 
 from tf_utils.callbacks import LRTensorBoard
 from tf_utils.callbacks import schedule_fn2
@@ -41,8 +42,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -59,7 +58,7 @@ def build_model(
     use_dense: bool,
     use_global_pooling: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
@@ -127,18 +126,28 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    x = GlobalAveragePooling2D()(x) if use_global_pooling else Flatten()(x)
+    if use_global_pooling:
+        x = GlobalAveragePooling2D()(x)
+    else:
+        Flatten()(x)
     if use_dense:
         x = Dense(
-            units=dense_layer_size, kernel_initializer=kernel_initializer
+            units=dense_layer_size,
+            kernel_initializer=kernel_initializer,
         )(x)
         if use_batch_normalization:
             x = BatchNormalization()(x)
         x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=2,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     opt = optimizer(learning_rate=learning_rate)
 
@@ -147,28 +156,25 @@ def build_model(
         optimizer=opt,
         metrics=["accuracy"],
     )
+    model.summary()
 
     return model
 
 
 if __name__ == "__main__":
+    epochs = 100
+
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
 
-    train_dataset = data.get_train_set()
+    train_dataset_ = data.get_train_set()
     val_dataset = data.get_val_set()
+    train_dataset = dataset_join(train_dataset_, val_dataset)
     test_dataset = data.get_test_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    # Global params
-    epochs = 100
-    batch_size = 128
-
     params = {
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
+        "dense_layer_size": 512,
+        "kernel_initializer": "LecunNormal",
         "optimizer": Adam,
         "learning_rate": 1e-3,
         "filter_block1": 32,
@@ -176,15 +182,17 @@ if __name__ == "__main__":
         "filter_block2": 64,
         "kernel_size_block2": 3,
         "filter_block3": 128,
-        "kernel_size_block3": 3,
+        "kernel_size_block3": 7,
         "activation_cls": ReLU(),
         "dropout_rate": 0.0,
         "use_batch_normalization": True,
-        "use_dense": True,
+        "use_dense": False,
         "use_global_pooling": True,
     }
 
-    model = build_model(img_shape, num_classes, **params)
+    model = build_model(
+        **params,
+    )
 
     model_log_dir = os.path.join(LOGS_DIR, "modelFinal")
 
@@ -218,10 +226,17 @@ if __name__ == "__main__":
     # model.fit(
     #     train_dataset,
     #     verbose=1,
-    #     batch_size=batch_size,
     #     epochs=epochs,
     #     callbacks=[es_callback, lrs_callback, lr_callback],
-    #     validation_data=val_dataset,
+    #     validation_data=test_dataset,
+    # )
+    # scores = model.evaluate(
+    #     test_dataset,
+    #     verbose=0,
+    #     batch_size=258,
+    # )
+    # print(
+    #     f"Test performance: {scores[1]} for final model!",
     # )
 
     # model.save_weights(MODEL_FILE_PATH)

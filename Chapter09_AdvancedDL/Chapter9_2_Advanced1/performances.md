@@ -26,13 +26,31 @@
 - 0.2: 0.8437
 - 0.3: 0.8413
 
-# 5: Batch Norm
+## 5: Batch Norm
 
 - Active: 0.9020
 
-# 6: LR Schedule
+## 6: LR Schedule
 
-- 1: 0.8638
-- 2: 0.
-- 3: 0.
-- 4: 0.
+- 1: 0.8697
+- 2: 0.8885
+- 3: 0.8937
+- 4: 0.8908
+
+## 7: LR Plateau
+
+- 1: 0.8692
+- 2: 0.8836
+- 3: 0.9034
+- 4: 0.9020
+
+## 8: Global Pooling
+
+- Dense, GP: 0.9005
+  - Total params: 1,340,962
+- No Dense, GP: 0.9249
+  - Total params: 1,272,098
+
+## 9: Final
+
+- Test Performance: 0.928456
