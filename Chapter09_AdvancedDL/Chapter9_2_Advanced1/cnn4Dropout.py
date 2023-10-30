@@ -2,12 +2,9 @@ import os
 
 import numpy as np
 import tensorflow as tf
-from keras.callbacks import EarlyStopping
-from keras.callbacks import LearningRateScheduler
-from keras.callbacks import ReduceLROnPlateau
+from keras.callbacks import TensorBoard
 from keras.initializers import Initializer
 from keras.layers import Activation
-from keras.layers import BatchNormalization
 from keras.layers import Conv2D
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -19,8 +16,6 @@ from keras.models import Model
 from keras.optimizers import Adam
 from keras.optimizers import Optimizer
 
-from tf_utils.callbacks import LRTensorBoard
-from tf_utils.callbacks import schedule_fn2
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
@@ -48,7 +43,6 @@ def build_model(
     kernel_initializer: Initializer,
     activation_cls: Activation,
     dropout_rate: float,
-    use_batch_normalization: bool,
 ) -> Model:
     input_img = Input(shape=img_shape)
 
@@ -58,8 +52,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(input_img)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Conv2D(
         filters=filter_block1,
@@ -67,8 +59,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
     x = activation_cls(x)
@@ -80,8 +70,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Conv2D(
         filters=filter_block2,
@@ -89,8 +77,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
     x = activation_cls(x)
@@ -102,8 +88,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Conv2D(
         filters=filter_block3,
@@ -111,8 +95,6 @@ def build_model(
         padding="same",
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     if dropout_rate:
         x = Dropout(rate=dropout_rate)(x)
     x = activation_cls(x)
@@ -123,8 +105,6 @@ def build_model(
         units=dense_layer_size,
         kernel_initializer=kernel_initializer,
     )(x)
-    if use_batch_normalization:
-        x = BatchNormalization()(x)
     x = activation_cls(x)
     x = Dense(
         units=num_classes,
@@ -149,7 +129,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 100
+    epochs = 40
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
@@ -160,79 +140,71 @@ def main() -> None:
     img_shape = data.img_shape
     num_classes = data.num_classes
 
-    params = {
-        "dense_layer_size": 128,
-        "kernel_initializer": "GlorotUniform",
-        "optimizer": Adam,
-        "learning_rate": 1e-3,
-        "filter_block1": 32,
-        "kernel_size_block1": 3,
-        "filter_block2": 64,
-        "kernel_size_block2": 3,
-        "filter_block3": 128,
-        "kernel_size_block3": 3,
-        "activation_cls": ReLU(),
-        "dropout_rate": 0.0,
-        "use_batch_normalization": True,
-    }
+    # Best model params
+    optimizer = Adam
+    learning_rate = 0.001
+    filter_block1 = 32
+    kernel_size_block1 = 3
+    filter_block2 = 64
+    kernel_size_block2 = 3
+    filter_block3 = 128
+    kernel_size_block3 = 7
+    dense_layer_size = 512
+    kernel_initializer = "LecunUniform"
+    activation_cls = ReLU()
 
-    model = build_model(
-        img_shape,
-        num_classes,
-        **params,
-    )
+    dropout_rates = [
+        0.0,
+        0.1,
+        0.2,
+        0.3,
+    ]
 
-    model_log_dir = os.path.join(
-        LOGS_DIR,
-        "model_Plateau1",
-    )
+    for dropout_rate in dropout_rates:
+        dropout_name = f"DROPOUT_{dropout_rate}"
 
-    lrs_callback = LearningRateScheduler(
-        schedule=schedule_fn2,
-        verbose=1,
-    )
+        model = build_model(
+            img_shape,
+            num_classes,
+            optimizer,
+            learning_rate,
+            filter_block1,
+            kernel_size_block1,
+            filter_block2,
+            kernel_size_block2,
+            filter_block3,
+            kernel_size_block3,
+            dense_layer_size,
+            kernel_initializer,
+            activation_cls,
+            dropout_rate,
+        )
+        model_log_dir = os.path.join(
+            LOGS_DIR,
+            f"model{dropout_name}",
+        )
 
-    # plateau 1: 0.95, 1e-5
-    # plateau 2: 0.99, 1e-5
-    # plateau 3: 0.95, 1e-6
-    # plateau 4: 0.99, 1e-6
-    plateau_callback = ReduceLROnPlateau(  # noqa: F841
-        monitor="val_accuracy",
-        factor=0.99,
-        patience=3,
-        verbose=1,
-        min_lr=1e-5,
-    )
+        tb_callback = TensorBoard(
+            log_dir=model_log_dir,
+            histogram_freq=0,
+            profile_batch=0,
+        )
 
-    lr_callback = LRTensorBoard(
-        log_dir=model_log_dir,
-        histogram_freq=0,
-        profile_batch=0,
-    )
-
-    es_callback = EarlyStopping(
-        monitor="val_accuracy",
-        patience=30,
-        verbose=1,
-        restore_best_weights=True,
-        min_delta=0.0005,
-    )
-
-    model.fit(
-        train_dataset,
-        verbose=1,
-        epochs=epochs,
-        callbacks=[es_callback, lrs_callback, lr_callback],
-        validation_data=val_dataset,
-    )
-    scores = model.evaluate(
-        val_dataset,
-        verbose=0,
-        batch_size=258,
-    )
-    print(
-        f"Val performance: {scores[1]} with early stopping",
-    )
+        model.fit(
+            train_dataset,
+            verbose=1,
+            epochs=epochs,
+            callbacks=[tb_callback],
+            validation_data=val_dataset,
+        )
+        scores = model.evaluate(
+            val_dataset,
+            verbose=0,
+            batch_size=258,
+        )
+        print(
+            f"Val performance: {scores[1]} for dropout rate: {dropout_rate}",
+        )
 
 
 if __name__ == "__main__":

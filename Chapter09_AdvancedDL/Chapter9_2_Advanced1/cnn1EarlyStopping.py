@@ -2,12 +2,11 @@ import os
 
 import numpy as np
 import tensorflow as tf
+from keras.callbacks import EarlyStopping
 from keras.callbacks import TensorBoard
-from keras.initializers import Initializer
 from keras.layers import Activation
 from keras.layers import Conv2D
 from keras.layers import Dense
-from keras.layers import Dropout
 from keras.layers import Flatten
 from keras.layers import Input
 from keras.layers import MaxPool2D
@@ -29,8 +28,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -40,75 +37,66 @@ def build_model(
     filter_block3: int,
     kernel_size_block3: int,
     dense_layer_size: int,
-    kernel_initializer: Initializer,
-    activation_cls: Activation,
-    dropout_rate: float,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(64, 64, 3))
 
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(input_img)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = Conv2D(
         filters=filter_block1,
         kernel_size=kernel_size_block1,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    if dropout_rate:
-        x = Dropout(rate=dropout_rate)(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = Conv2D(
         filters=filter_block2,
         kernel_size=kernel_size_block2,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    if dropout_rate:
-        x = Dropout(rate=dropout_rate)(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = MaxPool2D()(x)
 
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = Conv2D(
         filters=filter_block3,
         kernel_size=kernel_size_block3,
         padding="same",
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    if dropout_rate:
-        x = Dropout(rate=dropout_rate)(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = MaxPool2D()(x)
 
     x = Flatten()(x)
     x = Dense(
         units=dense_layer_size,
-        kernel_initializer=kernel_initializer,
+        kernel_initializer="glorot_uniform",
     )(x)
-    x = activation_cls(x)
+    x = ReLU(x)
     x = Dense(
-        units=num_classes,
-        kernel_initializer=kernel_initializer,
+        units=2,
+        kernel_initializer="glorot_uniform",
     )(x)
     y_pred = Activation("softmax")(x)
 
@@ -129,7 +117,7 @@ def build_model(
 
 
 def main() -> None:
-    epochs = 40
+    epochs = 100
 
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
@@ -137,10 +125,6 @@ def main() -> None:
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    # Best model params
     optimizer = Adam
     learning_rate = 0.001
     filter_block1 = 32
@@ -150,61 +134,53 @@ def main() -> None:
     filter_block3 = 128
     kernel_size_block3 = 7
     dense_layer_size = 512
-    kernel_initializer = "GlorotUniform"
-    activation_cls = ReLU()
 
-    dropout_rates = [
-        0.0,
-        0.1,
-        0.2,
-        0.3,
-    ]
+    model = build_model(
+        optimizer,
+        learning_rate,
+        filter_block1,
+        kernel_size_block1,
+        filter_block2,
+        kernel_size_block2,
+        filter_block3,
+        kernel_size_block3,
+        dense_layer_size,
+    )
 
-    for dropout_rate in dropout_rates:
-        dropout_name = f"DROPOUT_{dropout_rate}"
+    model_log_dir = os.path.join(
+        LOGS_DIR,
+        "model_es",
+    )
 
-        model = build_model(
-            img_shape,
-            num_classes,
-            optimizer,
-            learning_rate,
-            filter_block1,
-            kernel_size_block1,
-            filter_block2,
-            kernel_size_block2,
-            filter_block3,
-            kernel_size_block3,
-            dense_layer_size,
-            kernel_initializer,
-            activation_cls,
-            dropout_rate,
-        )
-        model_log_dir = os.path.join(
-            LOGS_DIR,
-            f"model{dropout_name}",
-        )
+    tb_callback = TensorBoard(
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
+    )
 
-        tb_callback = TensorBoard(
-            log_dir=model_log_dir,
-            histogram_freq=0,
-            profile_batch=0,
-        )
+    es_callback = EarlyStopping(
+        monitor="val_accuracy",
+        patience=30,
+        verbose=1,
+        restore_best_weights=True,
+        min_delta=0.0005,
+    )
 
-        model.fit(
-            train_dataset,
-            verbose=1,
-            epochs=epochs,
-            callbacks=[tb_callback],
-            validation_data=val_dataset,
-        )
-        scores = model.evaluate(
-            val_dataset,
-            verbose=0,
-            batch_size=258,
-        )
-        print(
-            f"Val performance: {scores[1]} for dropout rate: {dropout_rate}",
-        )
+    model.fit(
+        train_dataset,
+        verbose=1,
+        epochs=epochs,
+        callbacks=[tb_callback, es_callback],
+        validation_data=val_dataset,
+    )
+    scores = model.evaluate(
+        val_dataset,
+        verbose=0,
+        batch_size=258,
+    )
+    print(
+        f"Val performance: {scores[1]} with ES",
+    )
 
 
 if __name__ == "__main__":

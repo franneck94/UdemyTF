@@ -141,7 +141,7 @@ def main() -> None:
     filter_block3 = 128
     kernel_size_block3 = 7
     dense_layer_size = 512
-    kernel_initializer = "GlorotUniform"
+    kernel_initializer = "LecunUniform"
 
     activations = {
         "RELU": ReLU(),
