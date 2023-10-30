@@ -1,4 +1,6 @@
 # pyright: reportMissingImports=false
+import os
+
 import tensorflow as tf
 from keras.applications import MobileNetV2
 from keras.callbacks import EarlyStopping
@@ -31,7 +33,9 @@ IMAGENET_SHAPE = (IMAGENET_SIZE, IMAGENET_SIZE, IMAGENET_DEPTH)
 
 def build_model(img_shape: tuple, num_classes: int) -> Model:
     base_model = MobileNetV2(
-        include_top=False, weights="imagenet", input_shape=IMAGENET_SHAPE
+        include_top=False,
+        weights="imagenet",
+        input_shape=IMAGENET_SHAPE,
     )
 
     num_layers = len(base_model.layers)
@@ -48,7 +52,10 @@ def build_model(img_shape: tuple, num_classes: int) -> Model:
     x = Dense(units=num_classes)(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     model.summary()
 
@@ -56,11 +63,10 @@ def build_model(img_shape: tuple, num_classes: int) -> Model:
 
 
 if __name__ == "__main__":
-    """
-    Best model from chapter 9_2: 0.9034 accuracy
-    Best model from chapter 9_7: 0.9614 accuracy
-    """
-    data = DOGSCATS()
+    epochs = 100
+
+    data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
+    data = DOGSCATS(data_dir=data_dir)
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
@@ -69,21 +75,26 @@ if __name__ == "__main__":
     img_shape = data.img_shape
     num_classes = data.num_classes
 
-    # Global params
-    epochs = 100
-
     model = build_model(img_shape, num_classes)
 
     opt = Adam(learning_rate=5e-4)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
-    lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1,
+    )
 
     es_callback = EarlyStopping(
-        monitor="val_loss", patience=30, verbose=1, restore_best_weights=True
+        monitor="val_loss",
+        patience=30,
+        verbose=1,
+        restore_best_weights=True,
     )
 
     model.fit(
@@ -94,5 +105,8 @@ if __name__ == "__main__":
         validation_data=val_dataset,
     )
 
-    scores = model.evaluate(val_dataset, verbose=0)
+    scores = model.evaluate(
+        val_dataset,
+        verbose=0,
+    )
     print(f"Scores: {scores}")

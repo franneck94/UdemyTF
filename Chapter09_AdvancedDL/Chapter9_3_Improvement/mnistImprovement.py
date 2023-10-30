@@ -34,8 +34,6 @@ if not os.path.exists(LOGS_DIR):
 
 
 def build_model(
-    img_shape: tuple[int, int, int],
-    num_classes: int,
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,
@@ -52,7 +50,7 @@ def build_model(
     use_dense: bool,
     use_global_pooling: bool,
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    input_img = Input(shape=(28, 28, 1))
 
     x = Conv2D(
         filters=filter_block1,
@@ -120,48 +118,49 @@ def build_model(
     x = activation_cls(x)
     x = MaxPool2D()(x)
 
-    x = GlobalAveragePooling2D()(x) if use_global_pooling else Flatten()(x)
+    if use_global_pooling:
+        x = GlobalAveragePooling2D()(x)
+    else:
+        Flatten()(x)
     if use_dense:
         x = Dense(
-            units=dense_layer_size, kernel_initializer=kernel_initializer
+            units=dense_layer_size,
+            kernel_initializer=kernel_initializer,
         )(x)
         if use_batch_normalization:
             x = BatchNormalization()(x)
         x = activation_cls(x)
-    x = Dense(units=num_classes, kernel_initializer=kernel_initializer)(x)
+    x = Dense(
+        units=10,
+        kernel_initializer=kernel_initializer,
+    )(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(
+        inputs=[input_img],
+        outputs=[y_pred],
+    )
 
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
+    model.summary()
 
     return model
 
 
 if __name__ == "__main__":
-    """Best model from chapter 7: 0.9916 accuracy
+    epochs = 100
 
-    Model1: 0.9947 accuracy
-        Params from Chapter 9.2
-    Model2: 0.9944 accuracy
-        "dense_layer_size": 64
-    """
     data = MNIST()
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
     test_dataset = data.get_test_set()
-
-    img_shape = data.img_shape
-    num_classes = data.num_classes
-
-    # Global params
-    epochs = 100
-    batch_size = 128
 
     params = {
         "dense_layer_size": 64,
@@ -181,15 +180,20 @@ if __name__ == "__main__":
         "use_global_pooling": True,
     }
 
-    model = build_model(img_shape, num_classes, **params)
+    model = build_model(**params)
 
     model_log_dir = os.path.join(LOGS_DIR, "model_Final_MNIST2")
 
     lr_callback = LRTensorBoard(
-        log_dir=model_log_dir, histogram_freq=0, profile_batch=0
+        log_dir=model_log_dir,
+        histogram_freq=0,
+        profile_batch=0,
     )
 
-    lrs_callback = LearningRateScheduler(schedule=schedule_fn2, verbose=1)
+    lrs_callback = LearningRateScheduler(
+        schedule=schedule_fn2,
+        verbose=1,
+    )
 
     es_callback = EarlyStopping(
         monitor="val_accuracy",
@@ -202,11 +206,14 @@ if __name__ == "__main__":
     model.fit(
         train_dataset,
         verbose=1,
-        batch_size=batch_size,
         epochs=epochs,
         callbacks=[lr_callback, lrs_callback, es_callback],
         validation_data=val_dataset,
     )
 
-    scores = model.evaluate(val_dataset, verbose=0, batch_size=batch_size)
+    scores = model.evaluate(
+        val_dataset,
+        verbose=0,
+        batch_size=256,
+    )
     print(f"Scores: {scores}")

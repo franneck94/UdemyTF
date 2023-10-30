@@ -66,10 +66,8 @@ def build_model(
 
 
 if __name__ == "__main__":
-    """
-    Best model from chapter 7:   0.9916 accuracy
-    Best model from chapter 9_3: 0.9947 accuracy
-    """
+    epochs = 100
+
     data = MNIST()
 
     train_dataset = data.get_train_set()
@@ -79,15 +77,12 @@ if __name__ == "__main__":
     img_shape = data.img_shape
     num_classes = data.num_classes
 
-    # Global params
-    epochs = 100
-
     model = build_model(
         img_shape,
         num_classes,
     )
 
-    opt = Adam(learning_rate=7e-4)
+    opt = Adam(learning_rate=1e-5)
 
     model.compile(
         loss="categorical_crossentropy",
@@ -102,7 +97,7 @@ if __name__ == "__main__":
 
     es_callback = EarlyStopping(
         monitor="val_loss",
-        patience=30,
+        patience=20,
         verbose=1,
         restore_best_weights=True,
     )
