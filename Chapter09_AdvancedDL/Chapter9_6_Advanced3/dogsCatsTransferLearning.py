@@ -1,3 +1,5 @@
+# pyright: reportMissingImports=false
+import tensorflow as tf
 from keras.applications import MobileNetV2
 from keras.callbacks import EarlyStopping
 from keras.callbacks import LearningRateScheduler
@@ -5,14 +7,22 @@ from keras.layers import Activation
 from keras.layers import Dense
 from keras.layers import GlobalAveragePooling2D
 from keras.layers import Input
-from keras.layers.experimental.preprocessing import Rescaling
-from keras.layers.experimental.preprocessing import Resizing
 from keras.models import Model
 from keras.optimizers import Adam
+from packaging import version
 
 from tf_utils.callbacks import schedule_fn2
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
+
+required_version = version.parse("2.10")
+installed_version = version.parse(".".join(tf.__version__.split(".")[:2]))
+if installed_version > required_version:
+    from keras.layers.experimental.preprocessing import Rescaling
+    from keras.layers.experimental.preprocessing import Resizing
+else:
+    from keras.layers.preprocessing.image_preprocessing import Rescaling
+    from keras.layers.preprocessing.image_preprocessing import Resizing
 
 IMAGENET_SIZE = 224
 IMAGENET_DEPTH = 3
