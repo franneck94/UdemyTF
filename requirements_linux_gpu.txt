@@ -1,0 +1,26 @@
+setuptools>=67.8.0
+
+# Linting/Tooling
+black>=23.7.0
+isort>=5.12.0
+mypy>=1.5.1
+pre-commit>=3.4.0
+ruff>=0.0.287
+pyright>=1.1.325
+
+# Libraries
+scikit-learn
+scipy
+scikit-image
+numpy
+matplotlib
+pandas
+opencv-python
+pyqt6
+xlrd
+openpyxl
+
+tensorflow[and-cuda]==2.14.*
+keras==2.14.*
+tensorflow-datasets==4.8.*
+tensorcross>=1.0.*
