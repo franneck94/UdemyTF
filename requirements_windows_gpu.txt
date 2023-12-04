@@ -1,13 +1,3 @@
-setuptools>=67.8.0
-
-# Linting/Tooling
-black>=23.7.0
-isort>=5.12.0
-mypy>=1.5.1
-pre-commit>=3.4.0
-ruff>=0.0.287
-pyright>=1.1.325
-
 # Libraries
 scikit-learn
 scipy
@@ -24,3 +14,5 @@ tensorflow==2.10.*
 keras==2.10.*
 tensorflow-datasets==4.8.*
 tensorcross>=1.0.*
+
+-r requirements-dev.txt
