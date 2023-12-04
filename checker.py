@@ -19,7 +19,7 @@ def should_exclude_directory(dir_name: str) -> bool:
 
 def check_file_for_not_implemented(file_path: str) -> bool:
     try:
-        with open(file_path) as file:
+        with open(file_path) as file:  # noqa
             file_contents = file.read()
             if (
                 "pass" in file_contents

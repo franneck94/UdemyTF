@@ -6,14 +6,14 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 
 
-def f(x: float) -> float:
+def f(x: np.ndarray) -> np.ndarray:
     return x**4 + -5 * x**3 + 14 * x**2 + x + 10
 
 
-def relu(x: float) -> float:
+def relu(x: np.ndarray) -> np.ndarray:
     if x > 0:
         return x
-    return 0
+    return np.zeros_like(x)
 
 
 def get_dataset() -> tuple[np.ndarray, np.ndarray]:
@@ -68,7 +68,7 @@ def main() -> None:
     model3.fit(x, y, epochs=30)
     y_pred_sigmoid = model3.predict(x)
 
-    fig, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(24, 12))
+    _, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(24, 12))
     plt.grid(True)
     ax1.plot(x, y, color="blue")
     ax1.plot(x.flatten(), y_pred_linear.flatten(), color="red")

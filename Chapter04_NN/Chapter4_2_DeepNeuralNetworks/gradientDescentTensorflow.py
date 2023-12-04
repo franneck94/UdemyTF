@@ -2,7 +2,7 @@ import tensorflow as tf
 from keras.optimizers import SGD
 from keras.optimizers import Optimizer
 
-from helper import plot_rosenbrock
+from .helper import plot_rosenbrock
 
 
 class Model:

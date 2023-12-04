@@ -81,7 +81,7 @@ class IMDB:
         )
 
         dataset = dataset.map(
-            map_func=lambda x, y: self._mask_to_categorical(x, y),
+            map_func=self._mask_to_categorical,
             num_parallel_calls=tf.data.experimental.AUTOTUNE,
         )
 

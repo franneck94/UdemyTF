@@ -7,7 +7,7 @@ from keras.layers import MaxPool2D
 def max_pooling(
     image: np.ndarray,  # noqa: ARG001
 ) -> np.ndarray:
-    pass
+    return np.array([])
 
 
 def main() -> None:

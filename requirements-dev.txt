@@ -1,0 +1,28 @@
+setuptools>=69.0.2
+build>=1.0.3
+twine>=4.0.2
+
+ipython>=8.18.0
+ipykernel>=6.26.0
+
+# Linting/Tooling
+black>=23.11.0
+isort>=5.12.0
+mypy>=1.7.1
+pre-commit>=3.5.0
+ruff>=0.1.6
+pyright>=1.1.337
+
+# Testing
+pytest>=7.4.3
+codecov>=2.1.13
+pytest-cov>=4.1.0
+pytest-benchmark>=4.0.0
+tox>=4.11.3
+
+# Documentation
+mkdocs>=1.5.3
+mkdocstrings>=0.24.0
+mkdocstrings-python>=1.7.5
+mkdocs-material>=9.4.14
+Pygments>=2.17.2

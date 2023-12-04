@@ -1,9 +1,9 @@
 import numpy as np
 
-from helper import f
-from helper import f_prime_x0
-from helper import f_prime_x1
-from helper import plot_rosenbrock
+from .helper import f
+from .helper import f_prime_x0
+from .helper import f_prime_x1
+from .helper import plot_rosenbrock
 
 
 np.random.seed(0)

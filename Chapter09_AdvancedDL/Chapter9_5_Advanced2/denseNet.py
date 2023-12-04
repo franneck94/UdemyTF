@@ -15,7 +15,7 @@ from keras.models import Model
 from keras.optimizers import Adam
 
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
-from tf_utils.mnistDataAdvanced import MNIST
+from tf_utils.mnistDataAdvanced import MNIST  # noqa
 
 
 np.random.seed(0)
@@ -133,7 +133,7 @@ def build_model_densenet(
 if __name__ == "__main__":
     epochs = 100
 
-    data = MNIST()
+    # data = MNIST()
     data_dir = os.path.join("C:/Users/Jan/Documents/DogsAndCats")
     data = DOGSCATS(data_dir=data_dir)
 

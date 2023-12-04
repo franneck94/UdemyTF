@@ -6,14 +6,14 @@ from keras.models import Sequential
 from keras.optimizers import Adam
 
 
-def f(x: float) -> float:
+def f(x: np.ndarray) -> np.ndarray:
     return x**2 + x + 10
 
 
-def relu(x: float) -> float:
+def relu(x: np.ndarray) -> np.ndarray:
     if x > 0:
         return x
-    return 0
+    return np.zeros_like(x)
 
 
 def get_dataset() -> tuple[np.ndarray, np.ndarray]:
@@ -53,7 +53,7 @@ def main() -> None:
         y_relu = np.array([[relu(yhi) for yhi in yh] for yh in y_hidden])
         y_output = np.array([np.dot(W2[:i], yri) + b2 for yri in y_relu])
 
-        fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
+        _, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
         plt.title("Num weights: " + str(i))
         plt.grid(True)
         ax1.plot(x, y, color="blue")

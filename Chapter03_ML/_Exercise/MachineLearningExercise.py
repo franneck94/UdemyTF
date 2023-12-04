@@ -8,11 +8,11 @@ from tf_utils.dummyData import regression_data
 
 
 def mae(y_true: np.ndarray, y_pred: np.ndarray) -> np.ndarray:  # noqa: ARG001
-    pass
+    return np.array([])
 
 
 def mse(y_true: np.ndarray, y_pred: np.ndarray) -> np.ndarray:  # noqa: ARG001
-    pass
+    return np.array([])
 
 
 def main() -> None:

@@ -7,7 +7,7 @@ from keras.optimizers import RMSprop
 from sklearn.metrics import mean_squared_error
 
 
-def f(x: float) -> float:
+def f(x: np.ndarray) -> np.ndarray:
     return x**2 + x + 10
 
 

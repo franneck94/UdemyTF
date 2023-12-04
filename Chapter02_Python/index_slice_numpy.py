@@ -15,7 +15,7 @@ print(l3)
 my_array = np.zeros(shape=(2, 2), dtype=np.int32)
 print(my_array)
 
-my_reshaped_array = np.reshape(my_array, new_shape=(4,))
+my_reshaped_array = np.reshape(my_array, new_shape=(4,))  # type: ignore
 print(my_reshaped_array)
 
 #                    [0, 10]

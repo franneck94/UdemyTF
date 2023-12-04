@@ -30,12 +30,12 @@ def display_digit(
     if image.shape == (784,):
         image = image.reshape((28, 28))
     if isinstance(label, np.ndarray):
-        label = np.argmax(label)
+        label = np.argmax(label)  # type: ignore
     if pred_label is None and label is not None:
         plt.title(f"Label: {label}")
     elif label is not None:
         if isinstance(pred_label, np.ndarray):
-            pred_label = np.argmax(pred_label)
+            pred_label = np.argmax(pred_label)  # type: ignore
         plt.title(f"Label: {label}, Pred: {pred_label}")
     plt.imshow(image, cmap=plt.get_cmap("gray_r"))
     plt.show()
@@ -180,7 +180,7 @@ def plot_confusion_matrix(
     plt.imshow(
         cm,
         interpolation="nearest",
-        cmap=plt.cm.Blues,
+        cmap=plt.cm.Blues,  # type: ignore
     )
     plt.title("Confusion matrix")
     plt.colorbar()
@@ -249,7 +249,7 @@ def get_occlusion(
                 fill_value=prob_right_class,
             )
 
-    fig, (ax1, ax2) = plt.subplots(
+    _, (ax1, ax2) = plt.subplots(
         nrows=1,
         ncols=2,
         figsize=(16, 6),

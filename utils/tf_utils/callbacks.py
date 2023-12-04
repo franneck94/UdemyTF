@@ -1,7 +1,7 @@
 import os
+from collections.abc import Callable
 from typing import Any
 
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
@@ -9,7 +9,7 @@ from .plotting import plot_confusion_matrix
 from .plotting import plot_to_image
 
 
-class ImageCallback(tf.keras.callbacks.Callback):
+class ImageCallback(tf.keras.callbacks.Callback):  # type: ignore
     """Custom tensorboard callback, to store images."""
 
     def __init__(
@@ -19,7 +19,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         y_test: np.ndarray,
         log_dir: str = "./",
         classes_list: list | None = None,
-        figure_fn: plt.Figure = None,
+        figure_fn: Callable | None = None,
         figure_title: str | None = None,
     ) -> None:
         self.model = model
@@ -134,7 +134,7 @@ def schedule_fn5(
     return learning_rate
 
 
-class LRTensorBoard(tf.keras.callbacks.TensorBoard):
+class LRTensorBoard(tf.keras.callbacks.TensorBoard):  # type: ignore
     def __init__(
         self,
         log_dir: str,
