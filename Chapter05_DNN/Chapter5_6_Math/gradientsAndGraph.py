@@ -3,12 +3,10 @@ import os
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import TensorBoard
-from keras.layers import Activation
-from keras.layers import Dense
+from keras.layers import Activation, Dense
 from keras.losses import MeanSquaredError
 from keras.models import Sequential
 from keras.optimizers import Adam
-
 
 LOGS_DIR = os.path.abspath(
     "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/computation/"
