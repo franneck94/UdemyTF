@@ -19,8 +19,8 @@ my_reshaped_array = np.reshape(my_array, new_shape=(4,))  # type: ignore
 print(my_reshaped_array)
 
 #                    [0, 10]
-my_random_array = np.random.randint(low=0, high=11, size=20)
+my_random_array = np.random.randint(low=0, high=11, size=20)  # noqa: NPY002
 print(my_random_array)
 
-my_random_array2 = np.random.uniform(low=0.0, high=10.0, size=20)
+my_random_array2 = np.random.uniform(low=0.0, high=10.0, size=20)  # noqa: NPY002
 print(my_random_array2)

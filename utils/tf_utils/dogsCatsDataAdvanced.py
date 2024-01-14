@@ -22,7 +22,7 @@ else:
     from keras.layers.preprocessing.image_preprocessing import RandomTranslation
     from keras.layers.preprocessing.image_preprocessing import RandomZoom
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

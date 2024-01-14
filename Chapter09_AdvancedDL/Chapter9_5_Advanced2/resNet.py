@@ -17,7 +17,7 @@ from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 from tf_utils.mnistDataAdvanced import MNIST  # noqa
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

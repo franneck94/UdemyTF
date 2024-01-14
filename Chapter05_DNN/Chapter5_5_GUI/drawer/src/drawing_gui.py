@@ -3,19 +3,28 @@ import os
 import sys
 from typing import Any
 
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt6 import QtCore
+from PyQt6 import QtGui
+from PyQt6 import QtWidgets
+from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QPen
+from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QPen
 
-from .dnn import build_model, nn_predict
+from .dnn import build_model
+from .dnn import nn_predict
 from .preprocessing import get_image
+
 
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 IMAGE_DIR = os.path.join(PROJECT_DIR, "ressources", "imgs")
 GUI_DIR = os.path.join(PROJECT_DIR, "ressources", "gui")
 MODEL_FILE_PATH = os.path.join(
-    PROJECT_DIR, "ressources", "weights", "dnn_mnist.h5"
+    PROJECT_DIR,
+    "ressources",
+    "weights",
+    "dnn_mnist.h5",
 )
 
 # Load the UI File
@@ -89,7 +98,8 @@ class Painter(QtWidgets.QWidget):
             ):
                 self.LastPos = Point(positions.x(), positions.y())
                 self.ParentLink.DrawingShapes.NewShape(
-                    self.LastPos, self.ParentLink.ShapeNum
+                    self.LastPos,
+                    self.ParentLink.ShapeNum,
                 )
             self.repaint()
 
@@ -170,7 +180,8 @@ class CreateUI(BASE, FORM):
         image = get_image(self.DrawingFrame)
         y_pred_class_idx = nn_predict(self.model, image=image)
         image_file_path = os.path.join(
-            IMAGE_DIR, str(y_pred_class_idx) + ".png"
+            IMAGE_DIR,
+            str(y_pred_class_idx) + ".png",
         )
         self.pixmap = QtGui.QPixmap(image_file_path)
         self.label.setPixmap(self.pixmap)

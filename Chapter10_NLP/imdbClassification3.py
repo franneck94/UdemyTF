@@ -17,7 +17,7 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.imdbDataAdvanced import IMDB
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

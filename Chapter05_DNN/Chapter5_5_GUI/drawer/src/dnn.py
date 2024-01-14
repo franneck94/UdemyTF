@@ -3,16 +3,22 @@ import os
 
 import numpy as np
 from keras.datasets import mnist
-from keras.initializers import Constant, TruncatedNormal
-from keras.layers import Activation, Dense
+from keras.initializers import Constant
+from keras.initializers import TruncatedNormal
+from keras.layers import Activation
+from keras.layers import Dense
 from keras.models import Sequential
 from keras.optimizers import Adam
 from keras.utils import to_categorical
 
+
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 MODEL_FILE_PATH = os.path.join(
-    PROJECT_DIR, "ressources", "weights", "dnn_mnist.h5"
+    PROJECT_DIR,
+    "ressources",
+    "weights",
+    "dnn_mnist.h5",
 )
 
 
@@ -44,15 +50,15 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             kernel_initializer=init_w,
             bias_initializer=init_b,
             input_shape=(num_features,),
-        )
+        ),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
@@ -60,7 +66,7 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             units=num_targets,
             kernel_initializer=init_w,
             bias_initializer=init_b,
-        )
+        ),
     )
     model.add(Activation("softmax"))
     model.summary()
@@ -80,7 +86,8 @@ def nn_train() -> None:
     num_targets = 10
 
     (x_train, y_train), (x_test, y_test) = prepare_dataset(
-        num_features, num_targets
+        num_features,
+        num_targets,
     )
 
     model = build_model(num_features, num_targets)

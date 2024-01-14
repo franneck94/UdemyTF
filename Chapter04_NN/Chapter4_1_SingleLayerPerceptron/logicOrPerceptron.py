@@ -22,7 +22,7 @@ class Perceptron:
     def __init__(self, learning_rate: float, input_dim: int) -> None:
         self.learning_rate = learning_rate
         self.input_dim = input_dim
-        self.w = np.random.uniform(-1, 1, size=(self.input_dim, 1))
+        self.w = np.random.uniform(-1, 1, size=(self.input_dim, 1))  # noqa: NPY002
 
     def _update_weights(
         self, x: np.ndarray, y: np.ndarray, y_pred: np.ndarray

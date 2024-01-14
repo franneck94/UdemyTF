@@ -51,7 +51,7 @@ def main() -> None:
                         print(rf"\File: {file_path} has unfinished code")
                         continue
                     print(f"\tRunning file: {file_path}")
-                    with open(os.devnull, "w") as null_file:
+                    with open(os.devnull, "w") as null_file:  # noqa: PLW1514
                         process = subprocess.Popen(
                             ["python", file_path],
                             stderr=null_file,

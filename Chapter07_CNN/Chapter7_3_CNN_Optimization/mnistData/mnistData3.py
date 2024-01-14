@@ -61,7 +61,7 @@ class MNIST:
             augment=True,
         )
         # Get random train images for the data augmentation
-        rand_idxs = np.random.randint(
+        rand_idxs = np.random.randint(  # noqa: NPY002
             self.train_size,
             size=augment_size,
         )

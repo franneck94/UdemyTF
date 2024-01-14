@@ -6,12 +6,12 @@ from .helper import f_prime_x1
 from .helper import plot_rosenbrock
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 
 
 def main() -> None:
-    x0 = np.random.uniform(-2.0, 2.0)
-    x1 = np.random.uniform(-2.0, 2.0)
+    x0 = np.random.uniform(-2.0, 2.0)  # noqa: NPY002
+    x1 = np.random.uniform(-2.0, 2.0)  # noqa: NPY002
 
     x_start = np.array([x0, x1])
     y_start = f(x0, x1)

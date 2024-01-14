@@ -24,7 +24,7 @@ from tf_utils.callbacks import schedule_fn
 from tf_utils.cifarDataAdvanced import CIFAR10
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

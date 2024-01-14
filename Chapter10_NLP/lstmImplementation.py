@@ -4,7 +4,7 @@ from keras.layers import LSTM
 from keras.models import Sequential
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # output shape = (num_timesteps, units)
     # Else:
     # output shape = (1, units)
-    x = np.random.normal(size=(1, 3, 2))
+    x = np.random.normal(size=(1, 3, 2))  # noqa: NPY002
     units = 4
     return_sequences = True
 

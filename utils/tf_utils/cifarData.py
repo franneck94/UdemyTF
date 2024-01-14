@@ -6,7 +6,7 @@ from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 
@@ -67,7 +67,7 @@ class CIFAR10:
         # Fit the data generator
         image_generator.fit(self.x_train, augment=True)
         # Get random train images for the data augmentation
-        rand_idxs = np.random.randint(self.train_size, size=augment_size)
+        rand_idxs = np.random.randint(self.train_size, size=augment_size)  # noqa: NPY002
         x_augmented = self.x_train[rand_idxs].copy()
         y_augmented = self.y_train[rand_idxs].copy()
         x_augmented = image_generator.flow(

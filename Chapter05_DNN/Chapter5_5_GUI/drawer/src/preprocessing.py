@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from scipy.ndimage import center_of_mass
 
+
 FILE_PATH = os.path.abspath(__file__)
 PROJECT_DIR = os.path.dirname(os.path.dirname(FILE_PATH))
 
@@ -37,7 +38,10 @@ def get_image(
 ) -> np.ndarray:
     pixmap = drawing_frame.grab()
     temp_image_file_path = os.path.join(
-        PROJECT_DIR, "ressources", "imgs", "temp_image.jpg"
+        PROJECT_DIR,
+        "ressources",
+        "imgs",
+        "temp_image.jpg",
     )
     pixmap.save(temp_image_file_path)
     image = load(temp_image_file_path)

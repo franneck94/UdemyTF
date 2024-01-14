@@ -3,13 +3,15 @@ import os
 import numpy as np
 import tensorflow as tf
 from keras.callbacks import TensorBoard
-from keras.layers import Activation, Dense
+from keras.layers import Activation
+from keras.layers import Dense
 from keras.losses import MeanSquaredError
 from keras.models import Sequential
 from keras.optimizers import Adam
 
+
 LOGS_DIR = os.path.abspath(
-    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/computation/"
+    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/computation/",
 )
 MODEL_LOG_DIR = os.path.join(LOGS_DIR, "gradient_model")
 
@@ -49,7 +51,7 @@ def get_gradients(
         loss_value,
         model.trainable_variables,
     )
-    return list(zip(grads, model.trainable_variables))
+    return list(zip(grads, model.trainable_variables, strict=False))
 
 
 def main() -> None:
@@ -82,13 +84,13 @@ def main() -> None:
         [
             np.array([[-0.250], [1.000]]),
             np.array([0.100]),
-        ]
+        ],
     )
     model.layers[2].set_weights(
         [
             np.array([[1.250]]),
             np.array([0.125]),
-        ]
+        ],
     )
 
     # Test

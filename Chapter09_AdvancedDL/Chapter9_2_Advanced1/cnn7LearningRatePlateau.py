@@ -21,7 +21,7 @@ from tf_utils.callbacks import LRTensorBoard
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

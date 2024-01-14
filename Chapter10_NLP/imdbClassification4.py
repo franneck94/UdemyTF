@@ -22,7 +22,7 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.imdbDataAdvanced import IMDB
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 
@@ -43,7 +43,7 @@ def save_embedding(
         os.path.expanduser("~"),
         f".keras/datasets/glove.6B.{embedding_dim}d.txt",
     )
-    with open(path_to_glove_file) as f:
+    with open(path_to_glove_file) as f:  # noqa: PLW1514
         for line in f:
             word, coefs_ = line.split(maxsplit=1)
             coefs = np.fromstring(coefs_, "f", sep=" ")

@@ -5,7 +5,7 @@ from keras.models import Sequential
 from tensorcross.utils import dataset_split
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

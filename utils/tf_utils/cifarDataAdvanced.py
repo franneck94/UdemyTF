@@ -21,7 +21,7 @@ else:
     from keras.layers.preprocessing.image_preprocessing import RandomZoom
     from keras.layers.preprocessing.image_preprocessing import Rescaling
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 

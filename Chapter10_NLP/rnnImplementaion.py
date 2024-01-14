@@ -4,7 +4,7 @@ from keras.layers import SimpleRNN
 from keras.models import Sequential
 
 
-np.random.seed(0)
+np.random.seed(0)  # noqa: NPY002
 tf.random.set_seed(0)
 
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     #   output shape = (num_timesteps, num_units)
     # else:
     #   output shape = (1, num_units)
-    x = np.random.normal(size=(1, 3, 2))
+    x = np.random.normal(size=(1, 3, 2))  # noqa: NPY002
     num_units = 4
     return_sequences = True
 
