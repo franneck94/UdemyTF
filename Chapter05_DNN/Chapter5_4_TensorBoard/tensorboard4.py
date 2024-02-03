@@ -47,19 +47,19 @@ def build_model(num_features: int, num_classes: int) -> Sequential:
             kernel_initializer=init_w,
             bias_initializer=init_b,
             input_shape=(num_features,),
-        )
+        ),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=300, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=50, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=50, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
@@ -67,7 +67,7 @@ def build_model(num_features: int, num_classes: int) -> Sequential:
             units=num_classes,
             kernel_initializer=init_w,
             bias_initializer=init_b,
-        )
+        ),
     )
     model.add(Activation("softmax"))
     model.summary()
@@ -80,7 +80,8 @@ if __name__ == "__main__":
     num_classes = 10
 
     (x_train, y_train), (x_test, y_test) = prepare_dataset(
-        num_features, num_classes
+        num_features,
+        num_classes,
     )
 
     optimizer = Adam(learning_rate=0.001)
@@ -96,13 +97,19 @@ if __name__ == "__main__":
     )
 
     tb_callback = TensorBoard(
-        log_dir=MODEL_LOG_DIR, histogram_freq=1, write_graph=True
+        log_dir=MODEL_LOG_DIR,
+        histogram_freq=1,
+        write_graph=True,
     )
 
     classes_list = list(range(num_classes))
 
     cm_callback = ConfusionMatrix(
-        model, x_test, y_test, classes_list=classes_list, log_dir=MODEL_LOG_DIR
+        model,
+        x_test,
+        y_test,
+        classes_list=classes_list,
+        log_dir=MODEL_LOG_DIR,
     )
 
     model.fit(

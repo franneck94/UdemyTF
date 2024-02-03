@@ -25,7 +25,8 @@ def prepare_dataset(num_classes: int) -> tuple:
 
 
 def build_model(
-    img_shape: tuple[int, int, int], num_classes: int
+    img_shape: tuple[int, int, int],
+    num_classes: int,
 ) -> Sequential:
     model = Sequential()
 

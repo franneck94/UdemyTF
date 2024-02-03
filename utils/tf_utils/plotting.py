@@ -64,7 +64,7 @@ def display_digit_and_predictions(
         image = image.reshape((28, 28))
     _, axs = plt.subplots(1, 2)
     pred_one_hot_lst: list[list[int]] = [
-        [int(round(val * 100.0, 4)) for val in pred_one_hot[0]]
+        [int(round(val * 100.0, 4)) for val in pred_one_hot[0]],
     ]
     labels = list(range(10))
     axs[0].axis("tight")

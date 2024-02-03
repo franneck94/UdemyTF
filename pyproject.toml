@@ -36,9 +36,34 @@ line-length = 80
 indent-width = 4
 extend-exclude = ["docs", "test", "tests"]
 [tool.ruff.lint]
+ignore = [
+    "ANN101",
+    "ANN102",
+    "I001",
+    "NPY002",
+    "INP001",
+    "TRY003",
+    "CPY",
+    "D",
+    "T",
+    "ISC001",
+    "COM812",
+    "FBT",
+    "PTH",
+    "PGH",
+    "PLR2004",
+    "N999",
+    "PLR0912",
+    "PLR0913",
+    "PLR0917",
+    "PLR0914",
+    "PLR0915",
+    "ANN401",
+    "ERA001",
+    "S101",
+]
 select = ["F", "E"]
 extend-select = ["ALL"]
-ignore = ["I001", "NPY002", "INP001", "TRY003", "CPY", "D", "T"]
 fixable = ["ALL"]
 
 unfixable = []
@@ -49,7 +74,7 @@ force-single-line = true
 force-sort-within-sections = false
 lines-after-imports = 2
 known-first-party = []
-known-local-folder = []
+known-local-folder = ["tf_utils"]
 known-third-party = []
 section-order = [
     "future",

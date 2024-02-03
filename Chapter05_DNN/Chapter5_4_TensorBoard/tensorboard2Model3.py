@@ -46,19 +46,19 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             kernel_initializer=init_w,
             bias_initializer=init_b,
             input_shape=(num_features,),
-        )
+        ),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=250, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=100, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
-        Dense(units=50, kernel_initializer=init_w, bias_initializer=init_b)
+        Dense(units=50, kernel_initializer=init_w, bias_initializer=init_b),
     )
     model.add(Activation("relu"))
     model.add(
@@ -66,7 +66,7 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             units=num_targets,
             kernel_initializer=init_w,
             bias_initializer=init_b,
-        )
+        ),
     )
     model.add(Activation("softmax"))
     model.summary()
@@ -79,7 +79,8 @@ if __name__ == "__main__":
     num_targets = 10
 
     (x_train, y_train), (x_test, y_test) = prepare_dataset(
-        num_features, num_targets
+        num_features,
+        num_targets,
     )
 
     model = build_model(num_features, num_targets)
@@ -91,7 +92,9 @@ if __name__ == "__main__":
     )
 
     tb_callback = TensorBoard(
-        log_dir=MODEL_LOG_DIR, histogram_freq=0, write_graph=False
+        log_dir=MODEL_LOG_DIR,
+        histogram_freq=0,
+        write_graph=False,
     )
 
     model.fit(

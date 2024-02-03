@@ -19,11 +19,11 @@ from tensorcross.model_selection import RandomSearch
 from tf_utils.cifarDataAdvanced import CIFAR10
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 LOGS_DIR = os.path.abspath(
-    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/cifarRandom"
+    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/cifarRandom",
 )
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)

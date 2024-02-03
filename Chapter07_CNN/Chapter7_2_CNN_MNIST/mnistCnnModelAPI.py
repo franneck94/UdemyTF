@@ -75,22 +75,22 @@ if __name__ == "__main__":
     )
 
     tb_callback = TensorBoard(
-        log_dir=MODEL_LOG_DIR, histogram_freq=1, write_graph=True
+        log_dir=MODEL_LOG_DIR,
+        histogram_freq=1,
+        write_graph=True,
     )
 
-    # model.fit(
-    #     x=x_train,
-    #     y=y_train,
-    #     epochs=40,
-    #     batch_size=128,
-    #     verbose=1,
-    #     validation_data=(x_test, y_test),
-    #     callbacks=[tb_callback]
-    # )
+    train = False
+    if train:
+        model.fit(
+            x=x_train,
+            y=y_train,
+            epochs=40,
+            batch_size=128,
+            verbose=1,
+            validation_data=(x_test, y_test),
+            callbacks=[tb_callback],
+        )
 
-    # scores = model.evaluate(
-    #     x=x_test,
-    #     y=y_test,
-    #     verbose=0
-    # )
-    # print(scores)
+        scores = model.evaluate(x=x_test, y=y_test, verbose=0)
+        print(scores)

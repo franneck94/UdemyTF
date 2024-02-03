@@ -37,7 +37,9 @@ def prepare_dataset(num_features: int, num_targets: int) -> tuple:
 
 
 def build_model(
-    num_features: int, num_targets: int, num_extra_layers: int = 2
+    num_features: int,
+    num_targets: int,
+    num_extra_layers: int = 2,
 ) -> tuple[Sequential, TensorBoard]:
     log_name = get_model_log_dir("mnist", num_extra_layers)
     model = Sequential()
@@ -54,7 +56,9 @@ def build_model(
         metrics=["accuracy"],
     )
     tb_callback = TensorBoard(
-        log_dir=log_name, histogram_freq=0, write_graph=False
+        log_dir=log_name,
+        histogram_freq=0,
+        write_graph=False,
     )
     return model, tb_callback
 
@@ -64,12 +68,15 @@ def main() -> None:
     num_targets = 10
 
     (x_train, y_train), (x_test, y_test) = prepare_dataset(
-        num_features, num_targets
+        num_features,
+        num_targets,
     )
 
     for num_extra_layers in range(1, 4):
         model, tb_callback = build_model(
-            num_features, num_targets, num_extra_layers
+            num_features,
+            num_targets,
+            num_extra_layers,
         )
 
         model.fit(

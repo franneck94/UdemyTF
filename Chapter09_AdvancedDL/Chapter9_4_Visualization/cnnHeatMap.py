@@ -23,7 +23,7 @@ from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 from tf_utils.plotting import get_heatmap
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -135,7 +135,9 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     return model

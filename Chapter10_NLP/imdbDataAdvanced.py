@@ -5,7 +5,7 @@ from keras.models import Sequential
 from tensorcross.utils import dataset_split
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -20,7 +20,8 @@ class IMDB:
         # Load the data set
         dataset = tfds.load("imdb_reviews", as_supervised=True)
         self.train_dataset, self.val_dataset = dataset_split(
-            dataset["train"], split_fraction=validation_size
+            dataset["train"],
+            split_fraction=validation_size,
         )
         self.test_dataset = dataset["test"]
         # Dataset attributes

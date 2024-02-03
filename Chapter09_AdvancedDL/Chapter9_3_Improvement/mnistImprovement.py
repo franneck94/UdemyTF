@@ -24,7 +24,7 @@ from tf_utils.callbacks import schedule_fn2
 from tf_utils.mnistDataAdvanced import MNIST
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 

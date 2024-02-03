@@ -8,7 +8,8 @@ from keras.utils import to_categorical
 
 
 def get_dataset(
-    num_features: int, num_classes: int
+    num_features: int,
+    num_classes: int,
 ) -> tuple[tuple[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray]]:
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     x_train = x_train.reshape(-1, num_features).astype(np.float32)
@@ -37,7 +38,8 @@ def main() -> None:
     num_classes = 10
 
     (x_train, y_train), (x_test, y_test) = get_dataset(
-        num_features, num_classes
+        num_features,
+        num_classes,
     )
 
     print(f"x_train shape: {x_train.shape}")
@@ -50,7 +52,9 @@ def main() -> None:
     opt = Adam(learning_rate=0.002)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=opt,
+        metrics=["accuracy"],
     )
 
     model.fit(

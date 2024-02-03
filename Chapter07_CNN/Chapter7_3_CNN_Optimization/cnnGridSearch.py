@@ -12,7 +12,7 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.mnistDataAdvanced import MNIST
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -27,7 +27,7 @@ def build_model(
     input_img = Input(shape=(28, 28, 1))
 
     x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding="same")(
-        input_img
+        input_img,
     )
     x = Activation("relu")(x)
     x = Conv2D(filters=filters_1, kernel_size=kernel_size_1, padding="same")(x)

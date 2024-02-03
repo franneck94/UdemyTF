@@ -17,11 +17,11 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.cifarDataAdvanced import CIFAR10
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 LOGS_DIR = os.path.abspath(
-    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/cifarGrid"
+    "C:/Users/Jan/OneDrive/_Coding/UdemyTF/logs/cifarGrid",
 )
 if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)

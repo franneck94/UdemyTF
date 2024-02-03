@@ -6,7 +6,7 @@ from keras.models import Sequential
 from tensorcross.utils import dataset_split
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -25,7 +25,8 @@ class IMDB:
         # Load the data set
         dataset = tfds.load("imdb_reviews", as_supervised=True)
         self.train_dataset, self.val_dataset = dataset_split(
-            dataset["train"], split_fraction=validation_size
+            dataset["train"],
+            split_fraction=validation_size,
         )
         self.test_dataset = dataset["test"]
         # Dataset attributes
@@ -38,11 +39,11 @@ class IMDB:
             output_mode="int",
             output_sequence_length=self.sequence_length,
         )
-        text_data = self.train_dataset.map(lambda x, y: x)  # noqa
+        text_data = self.train_dataset.map(lambda x, _: x)
         self.vectorization_layer.adapt(text_data)
         self.vocabulary = self.vectorization_layer.get_vocabulary()
         self.word_index = dict(
-            zip(self.vocabulary, range(len(self.vocabulary)))
+            zip(self.vocabulary, range(len(self.vocabulary)), strict=False),
         )
         # Prepare Datasets
         self.train_dataset = self._prepare_dataset(self.train_dataset)
@@ -66,7 +67,9 @@ class IMDB:
         return model
 
     def _mask_to_categorical(
-        self, x: tf.Tensor, y: tf.Tensor
+        self,
+        x: tf.Tensor,
+        y: tf.Tensor,
     ) -> tuple[tf.Tensor, tf.Tensor]:
         y = tf.one_hot(tf.cast(y, tf.int32), depth=self.num_classes)
         y = tf.cast(y, tf.float32)
@@ -95,8 +98,6 @@ if __name__ == "__main__":
     sequnce_length = 80
     imdb_data = IMDB(vocab_size, sequnce_length)
     train_dataset = imdb_data.get_train_set()
-    # print(imdb_data.vocabulary)
-    # print(imdb_data.word_index)
     for text_batch, label_batch in train_dataset.take(1):
         for i in range(3):
             print(text_batch[i].numpy(), label_batch[i].numpy())

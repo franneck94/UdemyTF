@@ -22,7 +22,7 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.imdbDataAdvanced import IMDB
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -36,7 +36,7 @@ def save_embedding(
     !unzip -q glove.6B.zip
     """
     vocab = vectorizer.get_vocabulary()
-    word_index = dict(zip(vocab, range(len(vocab))))
+    word_index = dict(zip(vocab, range(len(vocab)), strict=False))
     num_tokens = len(vocab)
     embeddings_index = {}
     path_to_glove_file = os.path.join(
@@ -74,7 +74,7 @@ def save_embedding(
 
 def load_embedding() -> np.ndarray:
     return np.load(
-        os.path.join(os.path.expanduser("~"), ".keras/datasets/embedding.npy")
+        os.path.join(os.path.expanduser("~"), ".keras/datasets/embedding.npy"),
     )
 
 
@@ -103,13 +103,13 @@ def create_rnn_model(
         SimpleRNN(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         SimpleRNN(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
@@ -155,13 +155,13 @@ def create_gru_model(
         GRU(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         GRU(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
@@ -178,7 +178,6 @@ def create_gru_model(
         optimizer=optimizer,
         metrics=["accuracy"],
     )
-    # model.summary()
     return model
 
 
@@ -207,13 +206,13 @@ def create_lstm_model(
         LSTM(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         LSTM(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)

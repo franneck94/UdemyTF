@@ -85,13 +85,13 @@ class MNIST:
         self.img_shape = (self.width, self.height, self.depth)
         # tf.data Datasets
         self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_train, self.y_train)
+            (self.x_train, self.y_train),
         )
         self.test_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_test, self.y_test)
+            (self.x_test, self.y_test),
         )
         self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_val, self.y_val)
+            (self.x_val, self.y_val),
         )
         self.train_dataset = self._prepare_dataset(
             self.train_dataset,

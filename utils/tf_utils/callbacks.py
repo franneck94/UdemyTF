@@ -148,7 +148,7 @@ class LRTensorBoard(tf.keras.callbacks.TensorBoard):  # type: ignore
         logs: dict,
     ) -> None:
         logs.update(
-            {"learning_rate": self.model.optimizer.learning_rate.numpy()}
+            {"learning_rate": self.model.optimizer.learning_rate.numpy()},
         )
         super().on_epoch_end(epoch, logs)
 

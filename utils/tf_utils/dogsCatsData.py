@@ -9,7 +9,7 @@ from skimage import transform
 from sklearn.model_selection import train_test_split
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -30,10 +30,14 @@ class DOGSCATS:
         y = np.load(y_filepath)
         # Split the dataset
         x_train, x_test, y_train, y_test = train_test_split(
-            x, y, test_size=test_size
+            x,
+            y,
+            test_size=test_size,
         )
         x_train, x_val, y_train, y_val = train_test_split(
-            x_train, y_train, test_size=validation_size
+            x_train,
+            y_train,
+            test_size=validation_size,
         )
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
@@ -86,7 +90,7 @@ class DOGSCATS:
             augment=True,
         )
         # Get random train images for the data augmentation
-        rand_idxs = np.random.randint(self.train_size, size=augment_size)  # noqa: NPY002
+        rand_idxs = np.random.randint(self.train_size, size=augment_size)
         x_augmented = self.x_train[rand_idxs].copy()
         y_augmented = self.y_train[rand_idxs].copy()
         x_augmented = image_generator.flow(

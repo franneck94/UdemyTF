@@ -83,8 +83,8 @@ def plot_rosenbrock(
 
 
 def main() -> None:
-    x0 = np.random.uniform(-2.0, 2.0)  # noqa: NPY002
-    x1 = np.random.uniform(-2.0, 2.0)  # noqa: NPY002
+    x0 = np.random.uniform(-2.0, 2.0)
+    x1 = np.random.uniform(-2.0, 2.0)
     x_start = np.array([x0, x1])
     plot_rosenbrock(x_start)
 

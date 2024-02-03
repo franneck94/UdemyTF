@@ -50,7 +50,12 @@ def build_model(
     model = Sequential()
 
     model.add(
-        Conv2D(filters=32, kernel_size=3, padding="same", input_shape=img_shape)
+        Conv2D(
+            filters=32,
+            kernel_size=3,
+            padding="same",
+            input_shape=img_shape,
+        ),
     )
     model.add(Activation("relu"))
     model.add(Conv2D(filters=32, kernel_size=3, padding="same"))

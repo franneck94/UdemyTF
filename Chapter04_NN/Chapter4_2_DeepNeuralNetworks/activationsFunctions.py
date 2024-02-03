@@ -3,7 +3,9 @@ import numpy as np
 
 
 def plot_function(
-    input_signal: np.ndarray, output_signal: np.ndarray, name: str = ""
+    input_signal: np.ndarray,
+    output_signal: np.ndarray,
+    name: str = "",
 ) -> None:
     plt.step(input_signal, output_signal)
     plt.xlabel("a")
@@ -23,7 +25,7 @@ def main() -> None:
     # Tanh
     # f(a) = tanh(a) = 2 / (1+e^(-2a)) - 1
     output_signal = np.array(
-        [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal]
+        [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal],
     )
     plot_function(input_signal, output_signal, name="tanh")
 

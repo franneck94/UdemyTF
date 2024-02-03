@@ -4,7 +4,7 @@ from keras.layers import SimpleRNN
 from keras.models import Sequential
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -53,16 +53,12 @@ class SimpleRNNInference:
 if __name__ == "__main__":
     # data set shape = (num_samples, num_timesteps, num_features)
     # input shape = (num_timesteps, num_features)
-    # iöf return_sequences is True:
-    #   output shape = (num_timesteps, num_units)
-    # else:
-    #   output shape = (1, num_units)
-    x = np.random.normal(size=(1, 3, 2))  # noqa: NPY002
+    x = np.random.normal(size=(1, 3, 2))
     num_units = 4
     return_sequences = True
 
-    # num_features = 2
-    # num_units = 4
+    # num_features: 2
+    # num_units: 4
     # h_t shape = (4),        (num_units)
     # W shape   = (2, 4),     (num_features, num_units)
     # U shape   = (4, 4),     (num_units, num_units)
@@ -77,13 +73,12 @@ if __name__ == "__main__":
             units=num_units,
             return_sequences=return_sequences,
             input_shape=x.shape[1:],
-        )
+        ),
     )
     model.compile(
         loss="mse",
         optimizer="Adam",
     )
-    # model.summary()
 
     rnn = SimpleRNNInference(
         rnn_layer=model.layers[0],

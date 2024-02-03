@@ -22,7 +22,7 @@ else:
     from keras.layers.preprocessing.image_preprocessing import RandomTranslation
     from keras.layers.preprocessing.image_preprocessing import RandomZoom
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -79,13 +79,13 @@ class DOGSCATS:
         self.img_shape = (self.width, self.height, self.depth)
         # tf.data Datasets
         self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_train, self.y_train)
+            (self.x_train, self.y_train),
         )
         self.test_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_test, self.y_test)
+            (self.x_test, self.y_test),
         )
         self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_val, self.y_val)
+            (self.x_val, self.y_val),
         )
         self.train_dataset = self._prepare_dataset(
             self.train_dataset,

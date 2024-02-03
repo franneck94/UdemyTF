@@ -27,7 +27,7 @@ from tf_utils.callbacks import schedule_fn2
 from tf_utils.dogsCatsDataAdvanced import DOGSCATS
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -223,23 +223,26 @@ if __name__ == "__main__":
         min_delta=0.0005,
     )
 
-    # model.fit(
-    #     train_dataset,
-    #     verbose=1,
-    #     epochs=epochs,
-    #     callbacks=[es_callback, lrs_callback, lr_callback],
-    #     validation_data=test_dataset,
-    # )
-    # scores = model.evaluate(
-    #     test_dataset,
-    #     verbose=0,
-    #     batch_size=258,
-    # )
-    # print(
-    #     f"Test performance: {scores[1]} for final model!",
-    # )
+    train = False
+    if train:
+        model.fit(
+            train_dataset,
+            verbose=1,
+            epochs=epochs,
+            callbacks=[es_callback, lrs_callback, lr_callback],
+            validation_data=test_dataset,
+        )
+        scores = model.evaluate(
+            test_dataset,
+            verbose=0,
+            batch_size=258,
+        )
+        print(
+            f"Test performance: {scores[1]} for final model!",
+        )
 
-    # model.save_weights(MODEL_FILE_PATH)
+        model.save_weights(MODEL_FILE_PATH)
+
     model.load_weights(MODEL_FILE_PATH)
 
     image_names = [

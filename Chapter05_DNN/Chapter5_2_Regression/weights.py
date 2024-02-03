@@ -46,7 +46,7 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             kernel_initializer=init_w,
             bias_initializer=init_b,
             input_shape=(num_features,),
-        )
+        ),
     )
     model.add(Activation("relu"))
     model.add(
@@ -54,7 +54,7 @@ def build_model(num_features: int, num_targets: int) -> Sequential:
             units=num_targets,
             kernel_initializer=init_w,
             bias_initializer=init_b,
-        )
+        ),
     )
     model.summary()
     return model

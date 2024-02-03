@@ -17,7 +17,7 @@ from tensorcross.model_selection import GridSearch
 from tf_utils.imdbDataAdvanced import IMDB
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -42,13 +42,13 @@ def create_rnn_model(
         SimpleRNN(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         SimpleRNN(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
@@ -90,13 +90,13 @@ def create_gru_model(
         GRU(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         GRU(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
@@ -113,7 +113,6 @@ def create_gru_model(
         optimizer=optimizer,
         metrics=["accuracy"],
     )
-    # model.summary()
     return model
 
 
@@ -138,13 +137,13 @@ def create_lstm_model(
         LSTM(
             units=rec_units1,
             return_sequences=True,
-        )
+        ),
     )(x)
     x = Bidirectional(
         LSTM(
             units=rec_units2,
             return_sequences=False,
-        )
+        ),
     )(x)
     x = Dense(units=dense_units)(x)
     x = Activation("relu")(x)
@@ -161,7 +160,6 @@ def create_lstm_model(
         optimizer=optimizer,
         metrics=["accuracy"],
     )
-    # model.summary()
     return model
 
 

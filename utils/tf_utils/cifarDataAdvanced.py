@@ -21,7 +21,7 @@ else:
     from keras.layers.preprocessing.image_preprocessing import RandomZoom
     from keras.layers.preprocessing.image_preprocessing import Rescaling
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -42,7 +42,9 @@ class CIFAR10:
         (x_train, y_train), (x_test, y_test) = cifar10.load_data()
         # Split the dataset
         x_train, x_val, y_train, y_val = train_test_split(
-            x_train, y_train, test_size=validation_size
+            x_train,
+            y_train,
+            test_size=validation_size,
         )
         # Preprocess x data
         self.x_train = x_train.astype(np.float32)
@@ -62,13 +64,13 @@ class CIFAR10:
         self.img_shape = (self.width, self.height, self.depth)
         # tf.data Datasets
         self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_train, self.y_train)
+            (self.x_train, self.y_train),
         )
         self.test_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_test, self.y_test)
+            (self.x_test, self.y_test),
         )
         self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (self.x_val, self.y_val)
+            (self.x_val, self.y_val),
         )
         self.train_dataset = self._prepare_dataset(
             self.train_dataset,

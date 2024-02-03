@@ -32,7 +32,8 @@ if __name__ == "__main__":
     num_targets = 10
 
     (x_train, y_train), (x_test, y_test) = prepare_dataset(
-        num_features, num_targets
+        num_features,
+        num_targets,
     )
 
     model = load_model(MODEL_FILE_PATH)

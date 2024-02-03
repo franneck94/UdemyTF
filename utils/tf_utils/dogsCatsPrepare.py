@@ -43,7 +43,7 @@ def load_image_files(
     y: np.ndarray,
 ) -> int:
     cnt = 0
-    for d, class_name in zip(dirs, class_names):
+    for d, class_name in zip(dirs, class_names, strict=False):
         for f in os.listdir(d):
             img_file_path = os.path.join(d, f)
             try:

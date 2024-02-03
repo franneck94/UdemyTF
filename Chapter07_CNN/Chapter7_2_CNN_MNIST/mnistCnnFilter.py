@@ -95,7 +95,9 @@ if __name__ == "__main__":
     )
 
     tb_callback = TensorBoard(
-        log_dir=MODEL_LOG_DIR, histogram_freq=1, write_graph=True
+        log_dir=MODEL_LOG_DIR,
+        histogram_freq=1,
+        write_graph=True,
     )
 
     model.fit(

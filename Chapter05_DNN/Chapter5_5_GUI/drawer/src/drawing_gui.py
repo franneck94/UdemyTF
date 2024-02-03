@@ -165,7 +165,8 @@ class CreateUI(BASE, FORM):
         if os.path.exists(MODEL_FILE_PATH):
             self.model.load_weights(MODEL_FILE_PATH)
         else:
-            raise FileNotFoundError("Weights file not found!")
+            err_msg = "Weights file not found!"
+            raise FileNotFoundError(err_msg)
 
     # Reset Button
     def ClearSlate(self):  # noqa: N802, ANN201

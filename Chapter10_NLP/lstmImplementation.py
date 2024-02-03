@@ -4,7 +4,7 @@ from keras.layers import LSTM
 from keras.models import Sequential
 
 
-np.random.seed(0)  # noqa: NPY002
+np.random.seed(0)
 tf.random.set_seed(0)
 
 
@@ -65,16 +65,16 @@ class LSTMInference:
         h_t: np.ndarray,
     ) -> tuple[np.ndarray, np.ndarray]:
         i_t = sigmoid_fn(
-            np.matmul(x_t, self.W_i) + np.matmul(h_t, self.U_i) + self.b_i
+            np.matmul(x_t, self.W_i) + np.matmul(h_t, self.U_i) + self.b_i,
         )
         f_t = sigmoid_fn(
-            np.matmul(x_t, self.W_f) + np.matmul(h_t, self.U_f) + self.b_f
+            np.matmul(x_t, self.W_f) + np.matmul(h_t, self.U_f) + self.b_f,
         )
         c_tilde = tanh_fn(
-            np.matmul(x_t, self.W_c) + np.matmul(h_t, self.U_c) + self.b_c
+            np.matmul(x_t, self.W_c) + np.matmul(h_t, self.U_c) + self.b_c,
         )
         o_t = sigmoid_fn(
-            np.matmul(x_t, self.W_o) + np.matmul(h_t, self.U_o) + self.b_o
+            np.matmul(x_t, self.W_o) + np.matmul(h_t, self.U_o) + self.b_o,
         )
         c_t = f_t * c_t + i_t * c_tilde
         h_t = o_t * tanh_fn(c_t)
@@ -88,12 +88,12 @@ if __name__ == "__main__":
     # output shape = (num_timesteps, units)
     # Else:
     # output shape = (1, units)
-    x = np.random.normal(size=(1, 3, 2))  # noqa: NPY002
+    x = np.random.normal(size=(1, 3, 2))
     units = 4
     return_sequences = True
 
-    # num_features = 2
-    # units = 4
+    # num_features: 2
+    # units: 4
     # h_t shape = (4),        (units)
     # W shape   = (2, 4),     (num_features, units)
     # U shape   = (4, 4),     (units, units)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             units=units,
             return_sequences=return_sequences,
             input_shape=x.shape[1:],
-        )
+        ),
     )
     model.compile(
         loss="mse",

@@ -30,7 +30,7 @@ def main() -> None:
     # Tanh
     # f(a) = tanh(a) = 2 / (1+e^(-2a)) - 1
     output_signal = np.array(
-        [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal]
+        [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal],
     )
     plot_function(input_signal, output_signal, offset, name="tanh")
 
