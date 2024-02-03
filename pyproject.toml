@@ -32,118 +32,19 @@ filter_files = true
 
 [tool.ruff]
 target-version = "py310"
-select = ["F", "E"]
-extend-select = [
-    "W",
-    "C90",
-    "I",
-    "N",
-    "UP",
-    "YTT",
-    "ANN",
-    "ASYNC",
-    "BLE",
-    "B",
-    "A",
-    "COM",
-    "C4",
-    "EXE",
-    "FA",
-    "ISC",
-    "ICN",
-    "INP",
-    "PIE",
-    "PYI",
-    "PT",
-    "Q",
-    "RSE",
-    "RET",
-    "SLF",
-    "SLOT",
-    "SIM",
-    "TID",
-    "TCH",
-    "INT",
-    "ARG",
-    "PTH",
-    "TD",
-    "FIX",
-    "PD",
-    "PL",
-    "TRY",
-    "FLY",
-    "NPY",
-    "PERF",
-    "FURB",
-    "RUF",
-    "TRIO",
-]
-ignore = [
-    "I001",
-    "PTH",
-    "INP001",
-    "TRY003",
-    "COM812",
-    "ANN101",
-    "N999",
-    "PLR2004",
-    "PLR09",
-    "ANN401",
-    "B905",
-]
-fixable = [
-    "W",
-    "C90",
-    "I",
-    "N",
-    "UP",
-    "YTT",
-    "ANN",
-    "ASYNC",
-    "BLE",
-    "B",
-    "A",
-    "COM",
-    "C4",
-    "EXE",
-    "FA",
-    "ISC",
-    "ICN",
-    "INP",
-    "PIE",
-    "PYI",
-    "PT",
-    "Q",
-    "RSE",
-    "RET",
-    "SLF",
-    "SLOT",
-    "SIM",
-    "TID",
-    "TCH",
-    "INT",
-    "ARG",
-    "PTH",
-    "TD",
-    "FIX",
-    "PD",
-    "PL",
-    "TRY",
-    "FLY",
-    "NPY",
-    "PERF",
-    "FURB",
-    "RUF",
-    "TRIO",
-]
-unfixable = []
 line-length = 80
 indent-width = 4
 extend-exclude = ["docs", "test", "tests"]
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 [tool.ruff.lint]
+select = ["F", "E"]
+extend-select = ["ALL"]
+ignore = ["I001", "NPY002", "INP001", "TRY003", "CPY", "D", "T"]
+fixable = ["ALL"]
+
+unfixable = []
 preview = true
-[tool.ruff.isort]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+[tool.ruff.lint.isort]
 force-single-line = true
 force-sort-within-sections = false
 lines-after-imports = 2
@@ -157,13 +58,13 @@ section-order = [
     "first-party",
     "local-folder",
 ]
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 24
-[tool.ruff.pycodestyle]
+[tool.ruff.lint.pycodestyle]
 ignore-overlong-task-comments = true
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
-[tool.ruff.flake8-annotations]
+[tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = false
 ignore-fully-untyped = false
 [tool.ruff.format]
