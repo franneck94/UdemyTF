@@ -29,7 +29,8 @@ def main() -> None:
     layer = MaxPool2D(pool_size=(2, 2), strides=2, padding="valid")
     pooling_image_tf = layer(image.reshape((1, 28, 28, 1))).numpy()
     print(f"Pooled Image TF:\n{pooling_image_tf.squeeze()}")
-    assert np.allclose(pooling_image.flatten(), pooling_image_tf.flatten())
+    if not np.allclose(pooling_image.flatten(), pooling_image_tf.flatten()):
+        raise AssertionError
 
     _, axs = plt.subplots(nrows=1, ncols=3)
     axs[0].imshow(image, cmap="gray")

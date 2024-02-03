@@ -27,7 +27,8 @@ def main() -> None:
     layer.set_weights([np.ones_like(W), np.zeros_like(b)])
     conv_image_tf = layer(image.reshape((1, 4, 4, 1))).numpy()
     print(f"Conved Image TF:\n{conv_image_tf.squeeze()}")
-    assert np.allclose(conv_image.flatten(), conv_image_tf.flatten())
+    if not np.allclose(conv_image.flatten(), conv_image_tf.flatten()):
+        raise AssertionError
 
     _, axs = plt.subplots(nrows=1, ncols=3)
     axs[0].imshow(image, cmap="gray")

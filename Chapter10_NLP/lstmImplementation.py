@@ -125,4 +125,5 @@ if __name__ == "__main__":
     print("\n\n")
     output_rnn_tf = model.predict(x[[0]])
     print(output_rnn_tf)  # 10.5
-    assert np.all(np.isclose(output_rnn_own - output_rnn_tf, 0.0, atol=1e-06))
+    if not np.all(np.isclose(output_rnn_own - output_rnn_tf, 0.0, atol=1e-06)):
+        raise AssertionError
