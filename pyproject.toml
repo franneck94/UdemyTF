@@ -105,56 +105,7 @@ ignore = [
     "PLR0914",
     "PLR0915",
 ]
-fixable = [
-    "C90",
-    "I",
-    "N",
-    "UP",
-    "YTT",
-    "ANN",
-    "ASYNC",
-    "TRIO",
-    "S",
-    "BLE",
-    "B",
-    "A",
-    "COM",
-    "C4",
-    "DTZ",
-    "T10",
-    "DJ",
-    "EM",
-    "EXE",
-    "FA",
-    "ISC",
-    "ICN",
-    "G",
-    "INP",
-    "PIE",
-    "PYI",
-    "PT",
-    "Q",
-    "RSE",
-    "RET",
-    "SLOT",
-    "SIM",
-    "TID",
-    "TCH",
-    "INT",
-    "ARG",
-    "PTH",
-    "PD",
-    "PL",
-    "TRY",
-    "FLY",
-    "NPY",
-    "AIR",
-    "PERF",
-    "FURB",
-    "LOG",
-    "RUF",
-]
-
+fixable = ["ALL"]
 unfixable = []
 preview = true
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -181,6 +132,11 @@ convention = "numpy"
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = false
 ignore-fully-untyped = false
+[tool.ruff.lint.pylint]
+max-args = 5
+max-branches = 12
+max-locals = 15
+max-statements = 50
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
