@@ -1,3 +1,4 @@
+# noqa: N999
 import numpy as np
 import tensorflow as tf
 from keras.datasets import cifar10

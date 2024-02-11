@@ -1,3 +1,4 @@
+# noqa: N999
 # pyright: reportMissingImports=false
 import os
 

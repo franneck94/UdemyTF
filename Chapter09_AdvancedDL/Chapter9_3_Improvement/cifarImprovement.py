@@ -33,7 +33,7 @@ if not os.path.exists(LOGS_DIR):
     os.mkdir(LOGS_DIR)
 
 
-def build_model(
+def build_model(  # noqa: PLR0915
     optimizer: Optimizer,
     learning_rate: float,
     filter_block1: int,

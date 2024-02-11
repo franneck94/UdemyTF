@@ -15,7 +15,7 @@ def accuracy_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 
 
 def step_function(input_signal: np.ndarray) -> np.ndarray:
-    return (input_signal > 0.0).astype(np.int_)
+    return (input_signal > 0.0).astype(np.int_)  # noqa: PLR2004
 
 
 class Perceptron:

@@ -35,6 +35,7 @@ target-version = "py310"
 line-length = 80
 indent-width = 4
 extend-exclude = ["docs", "test", "tests"]
+
 [tool.ruff.lint]
 select = ["F", "E"]
 extend-select = [
@@ -97,18 +98,16 @@ ignore = [
     "TRY003",
     "ISC001",
     "COM812",
-    "PLR2004",
-    "N999",
     "PLR0912",
     "PLR0913",
-    "PLR0917",
     "PLR0914",
-    "PLR0915",
+    "PLR0917",
 ]
 fixable = ["ALL"]
 unfixable = []
 preview = true
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
 [tool.ruff.lint.isort]
 force-single-line = true
 force-sort-within-sections = false
@@ -123,20 +122,26 @@ section-order = [
     "first-party",
     "local-folder",
 ]
+
 [tool.ruff.lint.mccabe]
 max-complexity = 24
+
 [tool.ruff.lint.pycodestyle]
 ignore-overlong-task-comments = true
+
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = false
 ignore-fully-untyped = false
+
 [tool.ruff.lint.pylint]
 max-args = 5
 max-branches = 12
 max-locals = 15
 max-statements = 50
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"

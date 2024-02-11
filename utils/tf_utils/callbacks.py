@@ -90,9 +90,9 @@ def schedule_fn(
     epoch: int,
 ) -> float:
     learning_rate = 1e-3
-    if epoch < 5:
+    if epoch < 5:  # noqa: PLR2004
         learning_rate = 1e-3
-    elif epoch < 20:
+    elif epoch < 20:  # noqa: PLR2004
         learning_rate = 5e-4
     else:
         learning_rate = 1e-4
@@ -102,7 +102,7 @@ def schedule_fn(
 def schedule_fn2(
     epoch: int,
 ) -> float:
-    if epoch < 10:
+    if epoch < 10:  # noqa: PLR2004
         return 1e-3
     return float(1e-3 * np.exp(0.1 * (10 - epoch)))
 
@@ -123,11 +123,11 @@ def schedule_fn5(
     epoch: int,
 ) -> float:
     learning_rate = 1e-3
-    if epoch < 100:
+    if epoch < 100:  # noqa: PLR2004
         learning_rate = 1e-3
-    elif epoch < 200:
+    elif epoch < 200:  # noqa: PLR2004
         learning_rate = 5e-4
-    elif epoch < 300:
+    elif epoch < 300:  # noqa: PLR2004
         learning_rate = 1e-4
     else:
         learning_rate = 5e-5

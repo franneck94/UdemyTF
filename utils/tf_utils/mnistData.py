@@ -1,3 +1,4 @@
+# noqa: N999
 import numpy as np
 from keras.datasets import mnist
 from keras.preprocessing.image import ImageDataGenerator

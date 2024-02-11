@@ -1,3 +1,4 @@
+# noqa: N999
 import numpy as np
 
 
