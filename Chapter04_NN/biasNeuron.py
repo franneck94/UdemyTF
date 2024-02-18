@@ -3,46 +3,49 @@ import numpy as np
 
 
 def plot_function(
-    input_signal: np.ndarray,
-    output_signal: np.ndarray,
-    offset: float = 0.0,
+    x: np.ndarray,
+    y: np.ndarray,
+    b: float = 0.0,
     name: str = "",
 ) -> None:
-    plt.step(input_signal + offset, output_signal, color="blue")
-    plt.step(input_signal, output_signal, color="black")
-    plt.step(input_signal - offset, output_signal, color="red")
+    plt.step(x + b, y, color="blue")
+    plt.step(x, y, color="black")
+    plt.step(x - b, y, color="red")
     plt.xlabel("a")
     plt.ylabel("f(a)")
-    plt.legend([f"Bias: -{offset}", "Bias: 0", f"Bias: {offset}"])
+    plt.legend([f"Bias: -{b}", "Bias: 0", f"Bias: {b}"])
     plt.title(f"Activation function: {name}")
     plt.show()
 
 
 def main() -> None:
-    input_signal = np.linspace(start=-10, stop=10, num=1000)
-    offset = 2
-
-    # Step function
-    # f(a) = 0, if a <= 0 else 1
-    output_signal = np.array([0 if a <= 0 else 1 for a in input_signal])
-    plot_function(input_signal, output_signal, offset, name="step")
+    x = np.linspace(
+        start=-10,
+        stop=10,
+        num=1000,
+    )
+    b = 2
 
     # Tanh
-    # f(a) = tanh(a) = 2 / (1+e^(-2a)) - 1
-    output_signal = np.array(
-        [2 / (1 + np.exp(-2 * a)) - 1 for a in input_signal],
+    # f(a) = tanh(a) = (2 / (1+e^(-2a)) )- 1
+    y = np.array(
+        [(2 / (1 + np.exp(-2 * a))) - 1 for a in x],
     )
-    plot_function(input_signal, output_signal, offset, name="tanh")
+    plot_function(x, y, b, name="tanh")
 
     # SIGMOID
-    # sigmoid(a) = 1 / (1 + e^-a)
-    output_signal = np.array([1 / (1 + np.exp(-a)) for a in input_signal])
-    plot_function(input_signal, output_signal, offset, name="sigmoid")
+    # sigmoid(a) = 1 / (1 + e^(-a))
+    y = np.array(
+        [1 / (1 + np.exp(-a)) for a in x],
+    )
+    plot_function(x, y, b, name="sigmoid")
 
     # RELU = Rectified Linear Unit
     # f(a) = max (0, a)
-    output_signal = np.array([max(0, a) for a in input_signal])
-    plot_function(input_signal, output_signal, offset, name="relu")
+    y = np.array(
+        [max(0, a) for a in x],
+    )
+    plot_function(x, y, b, name="relu")
 
 
 if __name__ == "__main__":
