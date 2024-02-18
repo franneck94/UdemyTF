@@ -14,17 +14,17 @@ def f(
 
 
 def f_prime_x0(
-    x0: float | np.ndarray,
-    x1: float | np.ndarray,
-) -> float | np.ndarray:
+    x0: float,
+    x1: float,
+) -> float:
     """Derivative of f w.r.t. x0."""
     return 2.0 * (200.0 * x0 * (x0**2.0 - x1) + x0 - 1.0)
 
 
 def f_prime_x1(
-    x0: float | np.ndarray,
-    x1: float | np.ndarray,
-) -> float | np.ndarray:
+    x0: float,
+    x1: float,
+) -> float:
     """Derivative of f w.r.t. x0."""
     return -200.0 * (x0**2.0 - x1)
 
