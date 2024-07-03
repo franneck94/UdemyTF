@@ -58,16 +58,16 @@ class Shapes:
         self.shapes = []
 
     # Returns the number of shapes
-    def NumberOfShapes(self):  # noqa: N802, ANN201
+    def NumberOfShapes(self):  # noqa: N802
         return len(self.shapes)
 
     # Add a shape to the database, recording its position
-    def NewShape(self, L: Any, S: Any):  # noqa: ANN201, N802, N803
+    def NewShape(self, L: Any, S: Any):  # noqa: N802, N803
         shape = Shape(L, S)
         self.shapes.append(shape)
 
     # Returns a shape of the requested data.
-    def GetShape(self, Index) -> Any:  # noqa: ANN001, N802, N803
+    def GetShape(self, Index) -> Any:  # noqa: N802, N803
         return self.shapes[Index]
 
 
@@ -83,13 +83,13 @@ class Painter(QtWidgets.QWidget):
         self.LastPos = Point(0, 0)
 
     # Mouse down event
-    def mousePressEvent(self, event=None):  # noqa: N802, ANN001, ANN201, ARG002
+    def mousePressEvent(self, event=None):  # noqa: N802
         self.ParentLink.IsPainting = True
         self.ParentLink.ShapeNum += 1
         self.LastPos = Point(0, 0)
 
     # Mouse Move event
-    def mouseMoveEvent(self, event=None):  # noqa: N802, ANN001, ANN201
+    def mouseMoveEvent(self, event=None):  # noqa: N802
         if self.ParentLink.IsPainting is True:
             positions = event.position()
             self.MouseLoc = Point(int(positions.x()), int(positions.y()))
@@ -104,22 +104,22 @@ class Painter(QtWidgets.QWidget):
             self.repaint()
 
     # Mose Up Event
-    def mouseReleaseEvent(  # noqa: N802, ANN201
+    def mouseReleaseEvent(  # noqa: N802
         self,
-        event=None,  # noqa: ARG002, ANN001
+        event=None,
     ):
         if self.ParentLink.IsPainting is True:
             self.ParentLink.IsPainting = False
 
     # Paint Event
-    def paintEvent(self, event):  # noqa: ANN001, ANN201, N802
+    def paintEvent(self, event):  # noqa: N802
         painter = QtGui.QPainter()
         painter.begin(self)
         self.drawLines(event, painter)
         painter.end()
 
     # Draw the line
-    def drawLines(self, event, painter):  # noqa: N802, ANN201, ANN001, ARG002
+    def drawLines(self, event, painter):  # noqa: N802
         for i in range(self.ParentLink.DrawingShapes.NumberOfShapes() - 1):
             T = self.ParentLink.DrawingShapes.GetShape(i)  # noqa: N806
             T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)  # noqa: N806
@@ -169,7 +169,7 @@ class CreateUI(BASE, FORM):
             raise FileNotFoundError(err_msg)
 
     # Reset Button
-    def ClearSlate(self):  # noqa: N802, ANN201
+    def ClearSlate(self):  # noqa: N802
         self.DrawingShapes = Shapes()
         self.PaintPanel.repaint()
         default_image_path = os.path.join(IMAGE_DIR, str(-1) + ".png")
@@ -177,7 +177,7 @@ class CreateUI(BASE, FORM):
         self.label.setPixmap(self.pixmap)
 
     # Predict Button
-    def PredictNumber(self):  # noqa: N802, ANN201
+    def PredictNumber(self):  # noqa: N802
         image = get_image(self.DrawingFrame)
         y_pred_class_idx = nn_predict(self.model, image=image)
         image_file_path = os.path.join(

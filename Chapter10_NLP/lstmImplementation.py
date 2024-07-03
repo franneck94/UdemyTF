@@ -50,7 +50,7 @@ class LSTMInference:
         h_t = np.zeros((1, self.units))
         c_t = np.zeros((1, self.units))
         for t, x_t in enumerate(x):
-            x_t = x_t.reshape(1, -1)  # (2) => (1, 2)  # noqa: PLW2901
+            x_t = x_t.reshape(1, -1)  # (2) => (1, 2)
             c_t, h_t = self.forward_step(x_t, c_t, h_t)
             if self.return_sequences:
                 self.h[t] = h_t

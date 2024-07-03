@@ -121,7 +121,7 @@ class MNIST:
         self,
         dataset: tf.data.Dataset,
         shuffle: bool = False,
-        augment: bool = False,  # noqa: ARG002
+        augment: bool = False,
     ) -> tf.data.Dataset:
         preprocessing_model = self._build_preprocessing()
         dataset = dataset.map(

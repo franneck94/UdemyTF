@@ -43,7 +43,7 @@ def save_embedding(
         os.path.expanduser("~"),
         f".keras/datasets/glove.6B.{embedding_dim}d.txt",
     )
-    with open(path_to_glove_file) as f:  # noqa: PLW1514
+    with open(path_to_glove_file) as f:
         for line in f:
             word, coefs_ = line.split(maxsplit=1)
             coefs = np.fromstring(coefs_, "f", sep=" ")

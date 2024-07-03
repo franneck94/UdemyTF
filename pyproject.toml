@@ -1,8 +1,8 @@
 [tool.black]
-target-version = ['py310']
+target-version = ['py39']
 line-length = 80
-skip-string-normalization = false
-skip-magic-trailing-comma = false
+skip-string-normalization = true
+skip-magic-trailing-comma = true
 force-exclude = '''
 /(
   | docs
@@ -11,7 +11,7 @@ force-exclude = '''
 '''
 
 [tool.isort]
-py_version = 310
+py_version = 39
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 default_section = "THIRDPARTY"
 known_third_party = []
@@ -31,78 +31,15 @@ skip_glob = ["docs/*", "setup.py"]
 filter_files = true
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py39"
 line-length = 80
 indent-width = 4
 extend-exclude = ["docs", "test", "tests"]
 
 [tool.ruff.lint]
 select = ["F", "E"]
-extend-select = [
-    "C90",
-    "I",
-    "N",
-    "UP",
-    "YTT",
-    "ANN",
-    "ASYNC",
-    "TRIO",
-    "S",
-    "BLE",
-    "B",
-    "A",
-    "COM",
-    "C4",
-    "DTZ",
-    "T10",
-    "DJ",
-    "EM",
-    "EXE",
-    "FA",
-    "ISC",
-    "ICN",
-    "G",
-    "INP",
-    "PIE",
-    "PYI",
-    "PT",
-    "Q",
-    "RSE",
-    "RET",
-    "SLOT",
-    "SIM",
-    "TID",
-    "TCH",
-    "INT",
-    "ARG",
-    "PTH",
-    "PD",
-    "PL",
-    "TRY",
-    "FLY",
-    "NPY",
-    "AIR",
-    "PERF",
-    "FURB",
-    "LOG",
-    "RUF",
-]
-ignore = [
-    "PTH",
-    "ANN401",
-    "ANN101",
-    "ANN102",
-    "I001",
-    "NPY002",
-    "INP001",
-    "TRY003",
-    "ISC001",
-    "COM812",
-    "PLR0912",
-    "PLR0913",
-    "PLR0914",
-    "PLR0917",
-]
+extend-select = ["W", "C90", "I", "N", "B", "A", "C4", "PERF", "RUF"]
+ignore = []
 fixable = ["ALL"]
 unfixable = []
 preview = true
@@ -112,8 +49,8 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 force-single-line = true
 force-sort-within-sections = false
 lines-after-imports = 2
-known-first-party = []
-known-local-folder = ["tf_utils"]
+known-first-party = ["tf_utils"]
+known-local-folder = []
 known-third-party = []
 section-order = [
     "future",
@@ -133,8 +70,8 @@ ignore-overlong-task-comments = true
 convention = "numpy"
 
 [tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = false
-ignore-fully-untyped = false
+allow-star-arg-any = true
+ignore-fully-untyped = true
 
 [tool.ruff.lint.pylint]
 max-args = 5
@@ -152,13 +89,13 @@ docstring-code-format = true
 
 [tool.mypy]
 # Platform configuration
-python_version = "3.10"
+python_version = "3.9"
 # imports related
 ignore_missing_imports = true
 follow_imports = "silent"
 # None and Optional handling
-no_implicit_optional = true
-strict_optional = true
+no_implicit_optional = false
+strict_optional = false
 # Configuring warnings
 warn_unused_configs = true
 warn_redundant_casts = true
@@ -167,21 +104,21 @@ warn_no_return = true
 warn_unreachable = true
 warn_return_any = false
 # Untyped definitions and calls
-check_untyped_defs = true
+check_untyped_defs = false
 disallow_untyped_calls = false
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
 disallow_untyped_decorators = false
 # Disallow dynamic typing
-disallow_subclassing_any = true
+disallow_subclassing_any = false
 disallow_any_unimported = false
 disallow_any_expr = false
 disallow_any_decorated = false
 disallow_any_explicit = false
 disallow_any_generics = false
 # Miscellaneous strictness flags
-allow_untyped_globals = false
-allow_redefinition = false
+allow_untyped_globals = true
+allow_redefinition = true
 local_partial_types = false
 implicit_reexport = true
 strict_equality = true

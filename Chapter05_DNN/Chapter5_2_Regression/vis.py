@@ -11,7 +11,7 @@ def main() -> None:
     print(f"Feature names:\n{dataset.feature_names}")
     print(f"DESCR:\n{dataset.DESCR}")
 
-    df = pd.DataFrame(x, columns=dataset.feature_names)  # noqa: PD901
+    df = pd.DataFrame(x, columns=dataset.feature_names)
     df["y"] = y
 
     print(df.head(n=10))

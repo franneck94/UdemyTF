@@ -1,5 +1,5 @@
-"""Plotting helper functions.
-"""
+"""Plotting helper functions."""
+
 import io
 from typing import Any
 from typing import Optional
@@ -12,8 +12,8 @@ from sklearn.metrics import confusion_matrix
 
 def display_digit(
     image: np.ndarray,
-    label: Optional[np.ndarray] = None,  # noqa: UP007
-    pred_label: Optional[np.ndarray] = None,  # noqa: UP007
+    label: Optional[np.ndarray] = None,
+    pred_label: Optional[np.ndarray] = None,
 ) -> None:
     """Display the MNIST image.
     If the *label* and *label* is given, these are also displayed.
