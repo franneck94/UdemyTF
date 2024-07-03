@@ -1,5 +1,4 @@
 # noqa: N999
-# pyright: reportMissingImports=false
 import os
 
 import cv2

@@ -1,4 +1,3 @@
-# pyright: reportMissingImports=false
 import numpy as np
 import tensorflow as tf
 from keras.datasets import mnist

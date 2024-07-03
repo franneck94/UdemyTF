@@ -180,7 +180,7 @@ def plot_confusion_matrix(
     plt.imshow(
         cm,
         interpolation="nearest",
-        cmap=plt.cm.Blues,  # type: ignore
+        cmap=plt.cm.Blues,
     )
     plt.title("Confusion matrix")
     plt.colorbar()

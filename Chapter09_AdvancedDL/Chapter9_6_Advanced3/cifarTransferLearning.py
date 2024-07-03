@@ -1,4 +1,3 @@
-# pyright: reportMissingImports=false
 import tensorflow as tf
 from keras.applications import MobileNetV2
 from keras.callbacks import EarlyStopping

@@ -46,7 +46,7 @@ def plot_rosenbrock(
     # Rosenbrock function w/ two parameters using numpy Arrays
     Z = f(X, Y)  # noqa: N806
 
-    surf = ax.plot_surface(  # type: ignore
+    surf = ax.plot_surface(
         X,
         Y,
         Z,
@@ -54,19 +54,19 @@ def plot_rosenbrock(
         cstride=1,
         linewidth=0,
         alpha=0.8,
-        cmap=cm.coolwarm,  # type: ignore
+        cmap=cm.coolwarm,
     )
     # Global minimum
-    ax.scatter(1, 1, f(1.0, 1.0), color="red", marker="*", s=200)  # type: ignore
+    ax.scatter(1, 1, f(1.0, 1.0), color="red", marker="*", s=200)
     # Starting point
     x0, x1 = x_start
-    ax.scatter(x0, x1, f(x0, x1), color="green", marker="o", s=200)  # type: ignore
+    ax.scatter(x0, x1, f(x0, x1), color="green", marker="o", s=200)
 
     # Eps off set of the z axis, to plot the points above the surface for vis
     eps = 50
     if gradient_steps:
         for x0, x1 in gradient_steps:
-            ax.scatter(  # type: ignore
+            ax.scatter(
                 x0,
                 x1,
                 f(x0, x1) + eps,
@@ -77,7 +77,7 @@ def plot_rosenbrock(
 
     ax.set_xlabel("x")
     ax.set_ylabel("y")
-    ax.set_zlabel("z")  # type: ignore
+    ax.set_zlabel("z")
     fig.colorbar(surf, shrink=0.5, aspect=5)
     plt.show()
 

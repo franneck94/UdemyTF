@@ -1,4 +1,3 @@
-# pyright: reportMissingImports=false, reportUnusedImport=false
 # ruff: noqa: F401
 import numpy as np
 import tensorflow as tf
