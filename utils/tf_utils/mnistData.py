@@ -22,11 +22,11 @@ class MNIST:
         self.x_train = x_train.astype(np.float32)
         self.x_train = np.expand_dims(x_train, axis=-1)
         if with_normalization:
-            self.x_train = self.x_train / 255.0
+            self.x_train /= 255.0
         self.x_test = x_test.astype(np.float32)
         self.x_test = np.expand_dims(x_test, axis=-1)
         if with_normalization:
-            self.x_test = self.x_test / 255.0
+            self.x_test /= 255.0
         # Dataset attributes
         self.train_size = self.x_train.shape[0]
         self.test_size = self.x_test.shape[0]

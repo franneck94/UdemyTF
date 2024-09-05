@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import os
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 from typing import Any
 
 import numpy as np
@@ -9,10 +11,14 @@ from .plotting import plot_confusion_matrix
 from .plotting import plot_to_image
 
 
-class ImageCallback(tf.keras.callbacks.Callback):  # type: ignore
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+
+class ImageCallback(tf.keras.callbacks.Callback):
     """Custom tensorboard callback, to store images."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913, PLR0917
         self,
         model: tf.keras.Model,
         x_test: np.ndarray,
@@ -41,7 +47,7 @@ class ImageCallback(tf.keras.callbacks.Callback):  # type: ignore
     def on_epoch_end(
         self,
         epoch: int,
-        logs: dict | None = None,
+        logs: dict | None = None,  # noqa: ARG002
     ) -> None:
         y_pred_prob = self.model(self.x_test, training=False)
         y_pred = np.argmax(y_pred_prob, axis=1)
@@ -90,9 +96,9 @@ def schedule_fn(
     epoch: int,
 ) -> float:
     learning_rate = 1e-3
-    if epoch < 5:
+    if epoch < 5:  # noqa: PLR2004
         learning_rate = 1e-3
-    elif epoch < 20:
+    elif epoch < 20:  # noqa: PLR2004
         learning_rate = 5e-4
     else:
         learning_rate = 1e-4
@@ -102,7 +108,7 @@ def schedule_fn(
 def schedule_fn2(
     epoch: int,
 ) -> float:
-    if epoch < 10:
+    if epoch < 10:  # noqa: PLR2004
         return 1e-3
     return float(1e-3 * np.exp(0.1 * (10 - epoch)))
 
@@ -123,18 +129,18 @@ def schedule_fn5(
     epoch: int,
 ) -> float:
     learning_rate = 1e-3
-    if epoch < 100:
+    if epoch < 100:  # noqa: PLR2004
         learning_rate = 1e-3
-    elif epoch < 200:
+    elif epoch < 200:  # noqa: PLR2004
         learning_rate = 5e-4
-    elif epoch < 300:
+    elif epoch < 300:  # noqa: PLR2004
         learning_rate = 1e-4
     else:
         learning_rate = 5e-5
     return learning_rate
 
 
-class LRTensorBoard(tf.keras.callbacks.TensorBoard):  # type: ignore
+class LRTensorBoard(tf.keras.callbacks.TensorBoard):
     def __init__(
         self,
         log_dir: str,

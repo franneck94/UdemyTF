@@ -12,10 +12,11 @@ from sklearn.metrics import confusion_matrix
 
 def display_digit(
     image: np.ndarray,
-    label: Optional[np.ndarray] = None,
-    pred_label: Optional[np.ndarray] = None,
+    label: Optional[np.ndarray] = None,  # noqa: FA100
+    pred_label: Optional[np.ndarray] = None,  # noqa: FA100
 ) -> None:
     """Display the MNIST image.
+
     If the *label* and *label* is given, these are also displayed.
 
     Parameters
@@ -31,6 +32,7 @@ def display_digit(
         image = image.reshape((28, 28))
     if isinstance(label, np.ndarray):
         label = np.argmax(label)  # type: ignore
+
     if pred_label is None and label is not None:
         plt.title(f"Label: {label}")
     elif label is not None:
@@ -180,7 +182,7 @@ def plot_confusion_matrix(
     plt.imshow(
         cm,
         interpolation="nearest",
-        cmap=plt.cm.Blues,
+        cmap=plt.cm.Blues,  # type: ignore
     )
     plt.title("Confusion matrix")
     plt.colorbar()

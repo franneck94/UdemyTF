@@ -33,11 +33,11 @@ class CIFAR10:
         self.x_test = x_test.astype(np.float32)
         self.x_val = x_val.astype(np.float32)
         if with_normalization:
-            self.x_train = self.x_train / 255.0
+            self.x_train /= 255.0
         if with_normalization:
-            self.x_train = self.x_train / 255.0
+            self.x_train /= 255.0
         if with_normalization:
-            self.x_train = self.x_train / 255.0
+            self.x_train /= 255.0
         # Preprocess y data
         self.y_train = to_categorical(y_train, num_classes=self.num_classes)
         self.y_test = to_categorical(y_test, num_classes=self.num_classes)
