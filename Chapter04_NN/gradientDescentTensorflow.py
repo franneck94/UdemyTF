@@ -1,8 +1,7 @@
 import tensorflow as tf
+from helper import plot_rosenbrock
 from keras.optimizers import SGD
 from keras.optimizers import Optimizer
-
-from .helper import plot_rosenbrock
 
 
 class Model:
