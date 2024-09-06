@@ -2,12 +2,10 @@
 import numpy as np
 import tensorflow as tf
 from keras.datasets import mnist
-from keras.layers import (
-    RandomRotation,
-    RandomTranslation,
-    RandomZoom,
-    Rescaling,
-)
+from keras.layers import RandomRotation
+from keras.layers import RandomTranslation
+from keras.layers import RandomZoom
+from keras.layers import Rescaling
 from keras.models import Sequential
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split

@@ -1,14 +1,18 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
+from typing import Any
 
 import numpy as np
 import tensorflow as tf
 from keras import Model
-from keras.callbacks import Callback, TensorBoard
+from keras.callbacks import Callback
+from keras.callbacks import TensorBoard
 
-from .plotting import plot_confusion_matrix, plot_to_image
+from .plotting import plot_confusion_matrix
+from .plotting import plot_to_image
+
 
 if TYPE_CHECKING:
     from collections.abc import Callable

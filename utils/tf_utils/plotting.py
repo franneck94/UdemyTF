@@ -1,7 +1,8 @@
 """Plotting helper functions."""
 
 import io
-from typing import Any, Optional
+from typing import Any
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np

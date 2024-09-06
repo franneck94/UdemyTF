@@ -6,6 +6,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
+
 np.random.seed(0)
 tf.random.set_seed(0)
 

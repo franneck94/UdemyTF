@@ -6,6 +6,7 @@ from keras.layers import TextVectorization
 from keras.models import Sequential
 from tensorcross.utils import dataset_split
 
+
 np.random.seed(0)
 tf.random.set_seed(0)
 
