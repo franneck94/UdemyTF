@@ -1,26 +1,25 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import tensorflow as tf
+from keras import Model
+from keras.callbacks import Callback, TensorBoard
 
-from .plotting import plot_confusion_matrix
-from .plotting import plot_to_image
-
+from .plotting import plot_confusion_matrix, plot_to_image
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
 
-class ImageCallback(tf.keras.callbacks.Callback):
+class ImageCallback(Callback):
     """Custom tensorboard callback, to store images."""
 
     def __init__(  # noqa: PLR0913, PLR0917
         self,
-        model: tf.keras.Model,
+        model: Model,
         x_test: np.ndarray,
         y_test: np.ndarray,
         log_dir: str = "./",
@@ -49,7 +48,7 @@ class ImageCallback(tf.keras.callbacks.Callback):
         epoch: int,
         logs: dict | None = None,  # noqa: ARG002
     ) -> None:
-        y_pred_prob = self.model(self.x_test, training=False)
+        y_pred_prob: np.ndarray = self.model(self.x_test, training=False)
         y_pred = np.argmax(y_pred_prob, axis=1)
         y_true = np.argmax(self.y_test, axis=1)
 
@@ -66,7 +65,7 @@ class ConfusionMatrix(ImageCallback):
 
     def __init__(
         self,
-        model: tf.keras.Model,
+        model: Model,
         x_test: np.ndarray,
         y_test: np.ndarray,
         classes_list: list,
@@ -140,7 +139,7 @@ def schedule_fn5(
     return learning_rate
 
 
-class LRTensorBoard(tf.keras.callbacks.TensorBoard):
+class LRTensorBoard(TensorBoard):
     def __init__(
         self,
         log_dir: str,

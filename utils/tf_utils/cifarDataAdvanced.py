@@ -2,24 +2,15 @@
 import numpy as np
 import tensorflow as tf
 from keras.datasets import cifar10
+from keras.layers import (
+    RandomRotation,
+    RandomTranslation,
+    RandomZoom,
+    Rescaling,
+)
 from keras.models import Sequential
 from keras.utils import to_categorical
-from packaging import version
 from sklearn.model_selection import train_test_split
-
-
-required_version = version.parse("2.10")
-installed_version = version.parse(".".join(tf.__version__.split(".")[:2]))
-if installed_version > required_version:
-    from keras.layers.experimental.preprocessing import RandomRotation
-    from keras.layers.experimental.preprocessing import RandomTranslation
-    from keras.layers.experimental.preprocessing import RandomZoom
-    from keras.layers.experimental.preprocessing import Rescaling
-else:
-    from keras.layers.preprocessing.image_preprocessing import RandomRotation
-    from keras.layers.preprocessing.image_preprocessing import RandomTranslation
-    from keras.layers.preprocessing.image_preprocessing import RandomZoom
-    from keras.layers.preprocessing.image_preprocessing import Rescaling
 
 np.random.seed(0)
 tf.random.set_seed(0)

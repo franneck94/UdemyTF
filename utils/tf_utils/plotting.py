@@ -1,8 +1,7 @@
 """Plotting helper functions."""
 
 import io
-from typing import Any
-from typing import Optional
+from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -64,6 +63,7 @@ def display_digit_and_predictions(
     """
     if image.shape == (784,):
         image = image.reshape((28, 28))
+
     _, axs = plt.subplots(1, 2)
     pred_one_hot_lst: list[list[int]] = [
         [int(round(val * 100.0, 4)) for val in pred_one_hot[0]],
@@ -116,6 +116,7 @@ def display_convergence_error(
             color="red",
         )
         plt.legend(["Train"])
+
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.show()
@@ -153,6 +154,7 @@ def display_convergence_acc(
             color="red",
         )
         plt.legend(["Train"])
+
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
     plt.show()
