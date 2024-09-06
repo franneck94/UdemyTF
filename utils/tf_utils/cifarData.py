@@ -1,6 +1,5 @@
 # noqa: N999
 import numpy as np
-import tensorflow as tf
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import to_categorical
@@ -8,7 +7,6 @@ from sklearn.model_selection import train_test_split
 
 
 np.random.seed(0)
-tf.random.set_seed(0)
 
 
 class CIFAR10:
