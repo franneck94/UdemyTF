@@ -83,7 +83,7 @@ class Painter(QtWidgets.QWidget):
         self.LastPos = Point(0, 0)
 
     # Mouse down event
-    def mousePressEvent(self, event=None):  # noqa: N802
+    def mousePressEvent(self, event=None):  # noqa: ARG002, N802
         self.ParentLink.IsPainting = True
         self.ParentLink.ShapeNum += 1
         self.LastPos = Point(0, 0)
@@ -106,7 +106,7 @@ class Painter(QtWidgets.QWidget):
     # Mose Up Event
     def mouseReleaseEvent(  # noqa: N802
         self,
-        event=None,
+        event=None,  # noqa: ARG002
     ):
         if self.ParentLink.IsPainting is True:
             self.ParentLink.IsPainting = False
@@ -119,7 +119,7 @@ class Painter(QtWidgets.QWidget):
         painter.end()
 
     # Draw the line
-    def drawLines(self, event, painter):  # noqa: N802
+    def drawLines(self, event, painter):  # noqa: ARG002, N802
         for i in range(self.ParentLink.DrawingShapes.NumberOfShapes() - 1):
             T = self.ParentLink.DrawingShapes.GetShape(i)  # noqa: N806
             T1 = self.ParentLink.DrawingShapes.GetShape(i + 1)  # noqa: N806

@@ -13,6 +13,6 @@ openpyxl
 tensorflow==2.10.*
 keras==2.10.*
 tensorflow-datasets==4.8.*
-tensorcross>=1.0.*
+tensorcross>=1.0
 
 -r requirements-dev.txt

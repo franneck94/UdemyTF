@@ -36,14 +36,14 @@ def save_embedding(
     !unzip -q glove.6B.zip
     """
     vocab = vectorizer.get_vocabulary()
-    word_index = dict(zip(vocab, range(len(vocab)), strict=False))
+    word_index = dict(zip(vocab, range(len(vocab))))
     num_tokens = len(vocab)
     embeddings_index = {}
     path_to_glove_file = os.path.join(
         os.path.expanduser("~"),
         f".keras/datasets/glove.6B.{embedding_dim}d.txt",
     )
-    with open(path_to_glove_file) as f:
+    with open(path_to_glove_file, encoding="utf-8") as f:
         for line in f:
             word, coefs_ = line.split(maxsplit=1)
             coefs = np.fromstring(coefs_, "f", sep=" ")

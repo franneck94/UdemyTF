@@ -23,7 +23,7 @@ class Model:
         with tf.GradientTape() as tape:
             current_loss_val = self.loss()
         gradients = tape.gradient(current_loss_val, self.x)
-        self.optimizer.apply_gradients(zip([gradients], [self.x], strict=False))
+        self.optimizer.apply_gradients(zip([gradients], [self.x]))
 
 
 def main() -> None:

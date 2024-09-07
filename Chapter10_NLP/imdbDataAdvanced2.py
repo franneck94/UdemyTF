@@ -43,7 +43,7 @@ class IMDB:
         self.vectorization_layer.adapt(text_data)
         self.vocabulary = self.vectorization_layer.get_vocabulary()
         self.word_index = dict(
-            zip(self.vocabulary, range(len(self.vocabulary)), strict=False),
+            zip(self.vocabulary, range(len(self.vocabulary))),
         )
         # Prepare Datasets
         self.train_dataset = self._prepare_dataset(self.train_dataset)

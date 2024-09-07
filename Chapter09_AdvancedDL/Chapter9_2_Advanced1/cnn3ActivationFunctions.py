@@ -150,8 +150,7 @@ def main() -> None:
         "ELU": ELU(),
     }
 
-    for activation_key in activations:
-        activation_cls = activations[activation_key]
+    for activation_key, activation_cls in activations.items():
         activation_name = f"ACTIVATION_{activation_key}"
 
         model = build_model(

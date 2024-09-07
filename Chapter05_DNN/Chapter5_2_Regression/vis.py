@@ -11,14 +11,14 @@ def main() -> None:
     print(f"Feature names:\n{dataset.feature_names}")
     print(f"DESCR:\n{dataset.DESCR}")
 
-    df = pd.DataFrame(x, columns=dataset.feature_names)
-    df["y"] = y
+    df_dataset = pd.DataFrame(x, columns=dataset.feature_names)
+    df_dataset["y"] = y
 
-    print(df.head(n=10))
-    print(df.info())
-    print(df.describe())
+    print(df_dataset.head(n=10))
+    print(df_dataset.info())
+    print(df_dataset.describe())
 
-    df.hist(bins=30, figsize=(15, 15))
+    df_dataset.hist(bins=30, figsize=(15, 15))
     plt.show()
 
 

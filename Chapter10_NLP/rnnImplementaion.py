@@ -37,7 +37,7 @@ class SimpleRNNInference:
             self.h = np.zeros(self.num_units)
         h_t = np.zeros((1, self.num_units))
         for t, x_t in enumerate(x):
-            x_t = x_t.reshape(1, -1)  # (2) => (1, 2)
+            x_t = x_t.reshape(1, -1)  # (2) => (1, 2)  # noqa: PLW2901
             h_t = self.forward_step(x_t, h_t)
             if self.return_sequences:
                 self.h[t] = h_t
